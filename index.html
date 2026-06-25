@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="听见中国 · Hearing China —— 一个以小提琴串联中国民族音乐的数字声音档案，由广府小提琴演奏者梁珏童策展。A digital sound archive of Chinese ethnic music threaded through the violin, curated by Liang Juetong.">
+<meta name="author" content="梁珏童 Liang Juetong">
+<meta property="og:title" content="听见中国 · Hearing China">
+<meta property="og:description" content="一个以小提琴串联中国民族音乐的数字声音档案，策展人 梁珏童 Liang Juetong。">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%239e3b2c'/><circle cx='16' cy='16' r='7' fill='none' stroke='%23b08a3e' stroke-width='2'/></svg>">
+<title>听见中国 · Hearing China</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<script src="china.js"></script>
+<style>
+  :root{ --ink:#262220; --paper:#f4efe4; --paper2:#ece4d4; --cinnabar:#9e3b2c; --gold:#b08a3e; --muted:#726b5e; --card:#fffdf9; --line:#ddd3c0;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{ font-family:"Songti SC","STSong","Noto Serif SC",serif; color:var(--ink); line-height:1.8;
+    background:radial-gradient(circle at 20% 10%, rgba(176,138,62,.06), transparent 40%),radial-gradient(circle at 85% 30%, rgba(158,59,44,.05), transparent 40%),var(--paper); background-attachment:fixed;}
+  body::before{ content:""; position:fixed; inset:0; pointer-events:none; opacity:.5; z-index:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");}
+  .wrap{position:relative; z-index:1;}
+  header{ text-align:center; padding:90px 20px 40px;}
+  .seal{ display:inline-block; border:2px solid var(--cinnabar); color:var(--cinnabar); font-size:13px; letter-spacing:3px; padding:6px 14px; border-radius:4px; margin-bottom:26px; font-family:sans-serif; opacity:0; transform:translateY(10px); animation:fadeUp .8s .2s forwards;}
+  header h1{ font-size:54px; letter-spacing:14px; margin-bottom:18px; opacity:0; transform:translateY(16px); animation:fadeUp 1s .4s forwards;}
+  header h1 .vio{ color:var(--cinnabar); display:inline-block; animation:inkBleed 1.5s .5s both;}
+  @keyframes inkBleed{ 0%{ opacity:0; filter:blur(16px); transform:scale(1.55);} 55%{ opacity:1; filter:blur(3px); transform:scale(1.04);} 100%{ opacity:1; filter:blur(0); transform:scale(1);} }
+  /* 岭南解锁过场 */
+  .unlock-flare{ position:fixed; inset:0; z-index:55; display:none; align-items:center; justify-content:center; pointer-events:none; background:radial-gradient(circle at 50% 50%, rgba(176,138,62,.22), rgba(244,239,228,0) 62%);}
+  .unlock-flare.show{ display:flex; animation:flareBg 1.5s ease forwards;}
+  .unlock-seal{ font-family:"Songti SC",serif; color:#fff; background:var(--cinnabar); border:2px solid var(--gold); border-radius:12px; padding:24px 30px; font-size:30px; letter-spacing:8px; line-height:1.3; text-align:center; box-shadow:0 18px 50px rgba(158,59,44,.4);}
+  .unlock-flare.show .unlock-seal{ animation:sealDrop 1.4s cubic-bezier(.2,.85,.3,1.15) forwards;}
+  .unlock-seal small{ display:block; margin-top:8px; font-family:Georgia,serif; font-style:italic; font-size:13px; letter-spacing:2px; color:rgba(255,245,224,.85);}
+  @keyframes flareBg{ 0%{opacity:0;} 22%{opacity:1;} 100%{opacity:0;} }
+  @keyframes sealDrop{ 0%{ transform:scale(1.65) rotate(-11deg); opacity:0;} 34%{ transform:scale(.9) rotate(-11deg); opacity:1;} 70%{ transform:scale(1) rotate(-11deg); opacity:1;} 100%{ transform:scale(1.06) rotate(-11deg); opacity:0;} }
+  header .en{ font-size:14px; letter-spacing:3px; color:var(--gold); margin-bottom:18px; font-family:Georgia,serif; opacity:0; animation:fadeIn 1.2s .9s forwards;}
+  header .byline{ font-size:15px; letter-spacing:3px; color:var(--ink); margin-bottom:30px; opacity:0; animation:fadeUp 1.1s 1.05s forwards;}
+  header .byline .b-seal{ display:inline-block; width:7px; height:7px; margin:0 10px 2px; border-radius:50%; background:var(--cinnabar); vertical-align:middle;}
+  header .byline .byline-en{ display:block; margin-top:6px; font-family:Georgia,serif; font-style:italic; font-size:12px; letter-spacing:1px; color:var(--muted);}
+  /* 顶部阅读进度条 */
+  .scroll-progress{ position:fixed; top:0; left:0; height:3px; width:0; z-index:60; background:linear-gradient(90deg,var(--gold),var(--cinnabar)); box-shadow:0 0 8px rgba(158,59,44,.35); transition:width .12s linear;}
+  /* 滚动浮现 */
+  .reveal-up{ opacity:0; transform:translateY(22px); transition:opacity .8s ease, transform .8s ease;}
+  .reveal-up.in{ opacity:1; transform:translateY(0);}
+  header .intro{ max-width:660px; margin:0 auto; font-size:16px; color:var(--muted); opacity:0; animation:fadeIn 1.4s 1.2s forwards;}
+  header .intro .en-intro{ display:block; margin-top:12px; font-size:13px; font-family:Georgia,serif; color:#9a9080;}
+  .divider{ width:70px; height:2px; margin:34px auto 0; background:linear-gradient(90deg,transparent,var(--gold),transparent); opacity:0; animation:fadeIn 1.4s 1.4s forwards;}
+  #map-section{ max-width:1000px; margin:20px auto 0; padding:0 24px;}
+  .map-hint{ text-align:center; color:var(--muted); font-family:sans-serif; font-size:13px; margin-bottom:10px;}
+  #china-map{ width:100%; height:520px;}
+  .filter-bar{ max-width:1000px; margin:20px auto 0; padding:0 24px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+  .filter-btn{ font-family:"Songti SC",serif; font-size:15px; letter-spacing:2px; padding:7px 20px; border:1px solid var(--gold); border-radius:22px; background:transparent; color:var(--gold); cursor:pointer; transition:all .3s;}
+  .filter-btn:hover{ background:rgba(176,138,62,.1);}
+  .filter-btn.active{ background:var(--cinnabar); border-color:var(--cinnabar); color:#fff;}
+  .section-block.hide{ display:none;}
+  .section-title{ max-width:1000px; margin:50px auto 6px; padding:0 24px; font-size:26px; letter-spacing:4px; color:var(--cinnabar); display:flex; align-items:center; gap:14px;}
+  .section-title::before{ content:"\266A"; color:var(--gold); font-size:22px;}
+  .section-sub{ max-width:1000px; margin:0 auto 34px; padding:0 24px; color:var(--muted); font-size:13.5px; font-family:sans-serif;}
+  .grid{ max-width:1000px; margin:0 auto; padding:6px 24px 30px; display:grid; gap:40px;}
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:8px; overflow:hidden; box-shadow:0 6px 22px rgba(60,40,20,.06); display:grid; grid-template-columns:1fr 1.15fr; scroll-margin-top:30px; opacity:0; transform:translateY(28px); transition:opacity .8s ease, transform .8s ease, box-shadow .4s;}
+  .card.show{ opacity:1; transform:translateY(0);}
+  .card.hide{ display:none;}
+  .card:hover{ box-shadow:0 14px 36px rgba(60,40,20,.14);}
+  .card.flash{ box-shadow:0 0 0 3px var(--cinnabar), 0 14px 36px rgba(158,59,44,.3);}
+  .card.playing{ box-shadow:0 0 0 2px var(--gold), 0 14px 36px rgba(176,138,62,.25);}
+  .card .imgbox{ overflow:hidden; position:relative; background:linear-gradient(135deg,#efe7d6,#e4d9c2);}
+  .card .imgbox::after{ content:""; position:absolute; inset:0; z-index:2; pointer-events:none; background:linear-gradient(100deg, transparent 32%, rgba(255,253,249,.5) 50%, transparent 68%); transform:translateX(-100%); animation:imgShimmer 1.7s ease-in-out infinite;}
+  .card .imgbox.loaded::after{ display:none;}
+  .card img{ position:relative; z-index:1; width:100%; height:100%; object-fit:cover; display:block; min-height:320px; transition:transform .9s ease, opacity .7s ease;}
+  @keyframes imgShimmer{ to{ transform:translateX(100%); } }
+  .card:hover img{ transform:scale(1.06);}
+  .card .body{ padding:30px 32px;}
+  .card .region{ display:inline-block; font-size:12px; color:#fff; background:linear-gradient(135deg,var(--cinnabar),var(--gold)); padding:3px 13px; border-radius:20px; letter-spacing:1px; margin-bottom:14px; font-family:sans-serif;}
+  .card h3{ font-size:28px; margin-bottom:3px; letter-spacing:2px;}
+  .card .en-title{ font-size:14px; color:var(--gold); font-family:Georgia,serif; font-style:italic; margin-bottom:18px;}
+  .card p.zh{ font-size:15px; margin-bottom:12px;}
+  .card p.en{ font-size:12.5px; color:var(--muted); font-family:Georgia,serif; line-height:1.7;}
+  .card audio{ width:100%; margin-top:18px; height:38px;}
+  .audio-slot{ margin-top:18px; padding:11px 16px; background:var(--paper2); border-left:3px solid var(--gold); border-radius:3px; font-size:12.5px; color:var(--muted); font-family:sans-serif;}
+  .culture-toggle{ margin-top:16px; display:inline-block; font-family:sans-serif; font-size:13px; color:var(--cinnabar); cursor:pointer; border-bottom:1px dashed var(--cinnabar); padding-bottom:2px;}
+  .culture-toggle:hover{ color:var(--gold); border-color:var(--gold);}
+  .culture-box{ max-height:0; overflow:hidden; transition:max-height .6s ease;}
+  .culture-box.open{ max-height:900px;}
+  .culture-inner{ margin-top:14px; padding:18px 20px; background:linear-gradient(135deg, rgba(176,138,62,.07), rgba(158,59,44,.04)); border-radius:6px; line-height:1.85;}
+  .culture-inner .clabel{ font-family:sans-serif; font-size:11px; color:var(--gold); letter-spacing:1px; display:block; margin-bottom:10px;}
+  .culture-inner .cul-zh{ font-size:13.5px; color:var(--ink); margin-bottom:12px;}
+  .culture-inner .cul-en{ font-size:12px; color:var(--muted); font-family:Georgia,serif; line-height:1.7;}
+
+  /* ===== 听后回声 · 广东手信明信片 ===== */
+  .echo-postcard{ max-width:1000px; margin:58px auto 0; padding:0 24px; }
+  .echo-kicker{ color:var(--gold); font-family:Georgia,serif; font-size:12px; letter-spacing:2px; text-align:center; margin-bottom:7px; text-transform:uppercase; }
+  .echo-title{ text-align:center; color:var(--cinnabar); font-size:28px; letter-spacing:4px; margin-bottom:8px; }
+  .echo-sub{ max-width:720px; margin:0 auto 26px; color:var(--muted); font-family:sans-serif; font-size:13.5px; text-align:center; line-height:1.8; }
+  .echo-shell{ display:grid; grid-template-columns:.92fr 1.08fr; gap:22px; align-items:start; }
+  .echo-form,.postcard-preview{ border:1px solid var(--line); border-radius:8px; background:rgba(255,253,249,.9); box-shadow:0 10px 28px rgba(60,40,20,.08); padding:26px; }
+  .echo-form h3,.postcard-preview h3{ color:var(--cinnabar); font-size:22px; letter-spacing:3px; margin-bottom:9px; }
+  .echo-form p,.postcard-preview p{ color:var(--muted); font-family:sans-serif; font-size:13px; line-height:1.75; margin-bottom:18px; }
+  .echo-field{ margin-bottom:18px; }
+  .echo-field label{ display:block; font-size:15px; letter-spacing:2px; margin-bottom:9px; color:var(--ink); }
+  .souvenir-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .souvenir-chip,.rating-chip{ border:1px solid var(--gold); border-radius:6px; background:transparent; color:var(--gold); cursor:pointer; font-family:"Songti SC",serif; transition:all .22s ease; }
+  .souvenir-chip{ padding:9px 6px; font-size:13px; line-height:1.35; }
+  .souvenir-chip span{ display:block; font-family:sans-serif; font-size:11px; color:var(--muted); letter-spacing:0; margin-top:2px; }
+  .souvenir-chip.active,.rating-chip.active{ background:var(--cinnabar); border-color:var(--cinnabar); color:#fff; }
+  .souvenir-chip.active span{ color:rgba(255,255,255,.78); }
+  .rating-row{ display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
+  .rating-chip{ min-height:46px; font-size:16px; }
+  .echo-form textarea,.echo-form input{ width:100%; border:1px solid var(--line); border-radius:6px; background:#fffdf9; color:var(--ink); outline:none; font-family:sans-serif; font-size:13.5px; }
+  .echo-form textarea{ min-height:94px; resize:vertical; padding:11px 12px; line-height:1.65; }
+  .echo-form input{ height:40px; padding:0 12px; }
+  .echo-form textarea:focus,.echo-form input:focus{ border-color:var(--gold); box-shadow:0 0 0 3px rgba(176,138,62,.13); }
+  .echo-actions,.postcard-actions{ display:flex; gap:10px; margin-top:18px; }
+  .postcard-actions{ flex-wrap:wrap; }
+  .echo-actions button,.postcard-actions button,.postcard-actions a{ flex:1; border:1px solid var(--gold); border-radius:6px; padding:10px 12px; background:transparent; color:var(--gold); cursor:pointer; text-align:center; text-decoration:none; font-family:"Songti SC",serif; font-size:14px; letter-spacing:1px; }
+  .postcard-actions button,.postcard-actions a{ min-width:128px; }
+  .echo-actions .primary,.postcard-actions a.ready{ background:var(--cinnabar); border-color:var(--cinnabar); color:#fff; }
+  .postcard-frame{ position:relative; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:linear-gradient(135deg,#fffdf9,#efe7d6); min-height:330px; }
+  .postcard-empty{ min-height:330px; display:flex; align-items:center; justify-content:center; text-align:center; padding:28px; color:var(--muted); font-family:sans-serif; font-size:13.5px; line-height:1.8; }
+  #souvenir-card{ display:block; width:100%; height:auto; background:#fffdf9; }
+  .postcard-note{ margin-top:12px; color:var(--muted); font-family:sans-serif; font-size:12px; line-height:1.65; }
+  .postcard-zoom{ position:fixed; inset:0; z-index:40; display:none; align-items:center; justify-content:center; padding:28px; background:rgba(38,34,32,.72); backdrop-filter:blur(4px); }
+  .postcard-zoom.open{ display:flex; }
+  .postcard-zoom img{ display:block; max-width:min(1100px,96vw); max-height:88vh; border-radius:8px; box-shadow:0 24px 70px rgba(0,0,0,.32); }
+  .postcard-zoom button{ position:absolute; top:18px; right:20px; width:42px; height:42px; border:1px solid rgba(255,255,255,.58); border-radius:50%; background:rgba(255,253,249,.9); color:var(--ink); font-size:24px; cursor:pointer; }
+  .visit-ending{ margin:42px 0 4px; padding:34px 24px 8px; border-top:1px solid var(--line); text-align:center; }
+  .visit-ending .ending-kicker{ color:var(--gold); font-family:Georgia,serif; font-size:12px; font-style:italic; letter-spacing:2px; }
+  .visit-ending h3{ margin:10px 0 8px; color:var(--cinnabar); font-size:24px; letter-spacing:3px; font-weight:normal; }
+  .visit-ending p{ max-width:580px; margin:0 auto 20px; color:var(--muted); font-family:sans-serif; font-size:13.5px; line-height:1.8; }
+  .visit-ending button{ border:1px solid var(--cinnabar); border-radius:6px; background:var(--cinnabar); color:#fff; padding:12px 26px; cursor:pointer; font-family:"Songti SC",serif; font-size:15px; letter-spacing:2px; transition:.2s ease; }
+  .visit-ending button.ready{ box-shadow:0 0 0 5px rgba(158,59,44,.1); }
+  .farewell-layer{ position:fixed; inset:0; z-index:70; display:none; align-items:center; justify-content:center; padding:24px; background:rgba(38,34,32,.68); backdrop-filter:blur(5px); }
+  .farewell-layer.open{ display:flex; }
+  .farewell-window{ position:relative; width:min(760px,100%); max-height:92vh; overflow:auto; border:1px solid var(--gold); border-radius:8px; background:linear-gradient(145deg,#fffdf9,#f2eadb); box-shadow:0 26px 80px rgba(20,15,10,.34); padding:42px; text-align:center; }
+  .farewell-window::before{ content:""; position:absolute; inset:12px; border:1px dashed rgba(176,138,62,.36); border-radius:6px; pointer-events:none; }
+  .farewell-window > *{ position:relative; z-index:1; }
+  .farewell-close{ position:absolute; top:20px; right:22px; width:40px; height:40px; border:0; border-radius:50%; background:rgba(255,253,249,.82); color:var(--ink); font-size:24px; cursor:pointer; }
+  .farewell-kicker{ color:var(--gold); font-family:Georgia,serif; font-size:12px; font-style:italic; letter-spacing:2px; }
+  .farewell-window h2{ margin:12px 0 12px; color:var(--cinnabar); font-size:30px; font-weight:normal; letter-spacing:4px; }
+  .farewell-copy{ max-width:570px; margin:0 auto 26px; color:var(--muted); font-family:sans-serif; font-size:14px; line-height:1.9; }
+  .farewell-choices{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .farewell-choices button,.camera-actions button,.goodbye-actions button{ min-height:48px; border:1px solid var(--gold); border-radius:6px; background:rgba(255,253,249,.72); color:var(--gold); padding:11px 14px; cursor:pointer; font-family:"Songti SC",serif; font-size:14px; letter-spacing:1px; }
+  .farewell-choices .primary{ border-color:var(--cinnabar); background:var(--cinnabar); color:#fff; }
+  .camera-panel[hidden],.goodbye-panel[hidden],.farewell-intro[hidden]{ display:none; }
+  .camera-frame{ position:relative; width:min(540px,100%); aspect-ratio:16/10; margin:10px auto 16px; overflow:hidden; border:1px solid var(--gold); border-radius:8px; background:#262220; }
+  .camera-frame video{ width:100%; height:100%; object-fit:cover; transform:scaleX(-1); }
+  .camera-frame::after{ content:""; position:absolute; inset:14px; border:1px solid rgba(255,255,255,.58); border-radius:5px; pointer-events:none; }
+  #gesture-canvas{ display:none; }
+  .gesture-status{ min-height:28px; margin:0 0 14px; color:var(--muted); font-family:sans-serif; font-size:13px; line-height:1.7; }
+  .camera-actions,.goodbye-actions{ display:flex; justify-content:center; gap:10px; }
+  .goodbye-panel{ padding:18px 0 6px; }
+  .goodbye-mark{ position:relative; width:136px; height:136px; margin:6px auto 20px; }
+  .goodbye-mark i{ position:absolute; left:58px; top:54px; width:22px; height:42px; border-radius:60% 20% 60% 20%; background:rgba(158,59,44,.78); transform-origin:11px 14px; animation:farewellPetal 2.6s ease-in-out infinite; }
+  .goodbye-mark i:nth-child(2){ transform:rotate(72deg); animation-delay:.12s; }
+  .goodbye-mark i:nth-child(3){ transform:rotate(144deg); animation-delay:.24s; }
+  .goodbye-mark i:nth-child(4){ transform:rotate(216deg); animation-delay:.36s; }
+  .goodbye-mark i:nth-child(5){ transform:rotate(288deg); animation-delay:.48s; }
+  .goodbye-mark::after{ content:""; position:absolute; left:62px; top:62px; width:14px; height:14px; border-radius:50%; background:var(--gold); }
+  @keyframes farewellPetal{ 50%{ opacity:.54; transform:translateY(-8px) rotate(18deg); } }
+  body.farewell-open{ overflow:hidden; }
+  .final-page{ position:fixed; inset:0; z-index:90; display:none; overflow:hidden; background-image:url('8-kapok.png.png'); background-size:cover; background-position:center; color:#fff; }
+  .final-page.open{ display:block; animation:finalPageIn .7s ease both; }
+  .final-page::before{ content:""; position:absolute; inset:0; background:rgba(28,20,16,.64); }
+  .final-page::after{ content:""; position:absolute; inset:22px; border:1px solid rgba(255,245,224,.42); pointer-events:none; }
+  .final-content{ position:absolute; left:50%; top:47%; width:min(760px,calc(100% - 48px)); transform:translate(-50%,-50%); text-align:center; }
+  .final-kicker{ color:#ead7a8; font-family:Georgia,serif; font-size:13px; font-style:italic; letter-spacing:3px; }
+  .final-content h1{ margin:16px 0 16px; color:#fffaf0; font-size:clamp(38px,7vw,72px); font-weight:normal; letter-spacing:8px; }
+  .final-content p{ max-width:610px; margin:0 auto; color:rgba(255,250,240,.88); font-family:"Songti SC",serif; font-size:18px; line-height:2; letter-spacing:1px; }
+  .final-rule{ width:74px; height:1px; margin:26px auto; background:#d6b56f; }
+  .final-actions{ display:flex; justify-content:center; gap:12px; margin-top:30px; }
+  .final-actions button{ min-width:168px; border:1px solid rgba(255,245,224,.72); border-radius:6px; background:rgba(255,253,249,.94); color:#6f3027; padding:12px 20px; cursor:pointer; font-family:"Songti SC",serif; font-size:14px; letter-spacing:2px; }
+  .final-credit{ position:absolute; left:34px; right:34px; bottom:30px; display:flex; justify-content:space-between; gap:20px; color:rgba(255,250,240,.68); font-family:Georgia,"Songti SC",serif; font-size:11px; letter-spacing:1px; }
+  body.final-open{ overflow:hidden; }
+  @keyframes finalPageIn{ from{ opacity:0; transform:scale(1.015); } to{ opacity:1; transform:scale(1); } }
+  @media(max-width:820px){ .echo-shell{ grid-template-columns:1fr; } .souvenir-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:720px){ .farewell-window{ padding:38px 22px 26px; } .farewell-choices{ grid-template-columns:1fr; } .camera-actions,.goodbye-actions{ flex-direction:column; } .final-content h1{ letter-spacing:4px; } .final-content p{ font-size:16px; } .final-credit{ display:block; text-align:center; line-height:1.8; } }
+
+  footer{ max-width:1000px; margin:50px auto 0; padding:34px 24px 70px; border-top:1px solid var(--line); color:var(--muted); font-size:12.5px; text-align:center; font-family:sans-serif; line-height:2;}
+  /* ===== 城市声音漫游小游戏 ===== */
+  .city-game{ max-width:1000px; margin:50px auto 0; padding:0 24px; }
+  .game-kicker{ color:var(--gold); font-family:Georgia,serif; font-size:12px; letter-spacing:2px; text-align:center; margin-bottom:7px; text-transform:uppercase; }
+  .game-title{ text-align:center; color:var(--cinnabar); font-size:28px; letter-spacing:4px; margin-bottom:8px; }
+  .game-sub{ max-width:690px; margin:0 auto 26px; color:var(--muted); font-family:sans-serif; font-size:13.5px; text-align:center; line-height:1.8; }
+  .game-shell{ display:grid; grid-template-columns:1.15fr .85fr; gap:22px; align-items:stretch; }
+  .city-board{ min-height:440px; position:relative; overflow:hidden; border:1px solid var(--line); border-radius:8px;
+    background:
+      radial-gradient(circle at 16% 16%, rgba(176,138,62,.18), transparent 26%),
+      radial-gradient(circle at 80% 22%, rgba(158,59,44,.12), transparent 28%),
+      radial-gradient(circle at 60% 70%, rgba(95,132,137,.10), transparent 30%),
+      linear-gradient(135deg, rgba(255,253,249,.95), rgba(236,228,212,.85)),
+      var(--card);
+    box-shadow:0 10px 28px rgba(60,40,20,.08); }
+  .city-board::before{ content:""; position:absolute; inset:26px; border:1px dashed rgba(176,138,62,.4); border-radius:8px; pointer-events:none; }
+  .city-board::after{ content:"岭南城市声音地图"; position:absolute; right:30px; top:28px; color:rgba(158,59,44,.20); font-family:"Songti SC",serif; font-size:15px; letter-spacing:5px; pointer-events:none; border:1px solid rgba(158,59,44,.16); padding:5px 11px; border-radius:3px; background:rgba(255,253,249,.38); }
+  /* 远山剪影 */
+  .city-board .hills{ content:""; position:absolute; left:0; right:0; top:0; height:120px;
+    background:radial-gradient(ellipse 220px 80px at 20% 100%, rgba(110,100,80,.10), transparent 70%),
+               radial-gradient(ellipse 260px 90px at 55% 100%, rgba(110,100,80,.08), transparent 70%),
+               radial-gradient(ellipse 200px 70px at 85% 100%, rgba(110,100,80,.10), transparent 70%); }
+  .city-river{ position:absolute; left:-8%; right:-8%; bottom:14%; height:78px;
+    background:linear-gradient(180deg, rgba(95,132,137,.10), rgba(95,132,137,.24), rgba(95,132,137,.10)); transform:rotate(-7deg);
+    border-top:1px solid rgba(95,132,137,.28); border-bottom:1px solid rgba(95,132,137,.28); }
+  .city-river::before{ content:""; position:absolute; left:0; right:0; top:22px; height:1px; background:repeating-linear-gradient(90deg, rgba(95,132,137,.5) 0 22px, transparent 22px 42px); opacity:.5; animation:flow 6s linear infinite; }
+  @keyframes flow{ from{background-position:0 0;} to{background-position:64px 0;} }
+  .city-river::after{ content:"珠 江 PEARL RIVER"; position:absolute; left:40%; top:24px; color:rgba(95,132,137,.78); font-family:"Songti SC",serif; font-size:12px; letter-spacing:4px; }
+  .city-silhouette{ position:absolute; color:rgba(158,59,44,.17); pointer-events:none; z-index:1; }
+  .city-silhouette::before,.city-silhouette::after{ content:""; position:absolute; display:block; }
+  .sil-qilou{ left:7%; top:4%; width:152px; height:102px; border-bottom:3px solid currentColor; }
+  .sil-qilou::before{ left:10px; right:10px; bottom:0; height:62px; border:3px solid currentColor; border-bottom:0; }
+  .sil-qilou::after{ left:26px; bottom:0; width:24px; height:42px; border:3px solid currentColor; border-bottom:0; border-radius:22px 22px 0 0; box-shadow:38px 0 0 -3px rgba(0,0,0,0),38px 0 0 0 currentColor,76px 0 0 -3px rgba(0,0,0,0),76px 0 0 0 currentColor; }
+  .sil-tea{ left:38%; top:1%; width:148px; height:116px; }
+  .sil-tea::before{ left:20px; right:20px; bottom:0; height:56px; border:3px solid currentColor; border-bottom:0; border-radius:28px 28px 0 0; }
+  .sil-tea::after{ left:44px; bottom:54px; width:48px; height:34px; border-top:3px solid currentColor; border-radius:50%; box-shadow:18px -12px 0 -9px currentColor; }
+  .sil-metro{ right:7%; top:22%; width:150px; height:82px; }
+  .sil-metro::before{ left:8px; right:8px; bottom:8px; height:52px; border:3px solid currentColor; border-radius:26px 26px 8px 8px; }
+  .sil-metro::after{ left:46px; right:46px; bottom:34px; height:14px; border:3px solid currentColor; border-radius:4px; box-shadow:-34px 36px 0 -8px currentColor,34px 36px 0 -8px currentColor; }
+  .sil-river{ left:18%; bottom:14%; width:150px; height:94px; color:rgba(95,132,137,.26); }
+  .sil-river::before{ left:48px; bottom:30px; width:54px; height:34px; border:3px solid currentColor; border-top:0; }
+  .sil-river::after{ left:30px; bottom:64px; width:90px; height:26px; background:currentColor; clip-path:polygon(50% 0,100% 100%,0 100%); }
+  .sil-kapok{ right:9%; bottom:24%; width:120px; height:120px; opacity:.72; }
+  .sil-kapok::before{ left:58px; bottom:0; width:16px; height:56px; background:currentColor; border-radius:12px 12px 0 0; }
+  .sil-kapok::after{ left:20px; bottom:42px; width:92px; height:92px; background:radial-gradient(circle at 50% 50%, rgba(176,138,62,.45) 0 7px, transparent 8px), radial-gradient(circle at 50% 8%, currentColor 0 20px, transparent 21px), radial-gradient(circle at 18% 38%, currentColor 0 20px, transparent 21px), radial-gradient(circle at 82% 38%, currentColor 0 20px, transparent 21px), radial-gradient(circle at 30% 82%, currentColor 0 20px, transparent 21px), radial-gradient(circle at 70% 82%, currentColor 0 20px, transparent 21px); }
+  .sound-node{ position:absolute; width:88px; height:88px; border-radius:50%; border:1px solid var(--gold); cursor:pointer;
+    background:#fffdf9; color:var(--ink); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    font-family:"Songti SC",serif; font-size:13px; letter-spacing:1px; line-height:1.2; gap:3px;
+    box-shadow:0 8px 22px rgba(60,40,20,.12); transition:transform .25s ease, box-shadow .25s ease, background .25s ease, color .25s ease; z-index:2; }
+  .sound-node::before{ content:""; position:absolute; inset:7px; border:1px solid rgba(176,138,62,.34); border-radius:50%; pointer-events:none; }
+  .node-thumb{ width:42px; height:42px; border-radius:50%; border:1px solid rgba(176,138,62,.38); background:rgba(236,228,212,.55) center/cover no-repeat; display:block; }
+  .sound-node.visited .node-thumb{ border-color:rgba(255,255,255,.72); }
+  .sound-node:hover{ transform:translateY(-3px); box-shadow:0 14px 30px rgba(60,40,20,.16); }
+  .sound-node.visited{ background:var(--cinnabar); color:#fff; border-color:var(--cinnabar); }
+  .sound-node.selected{ box-shadow:0 0 0 4px rgba(176,138,62,.26), 0 14px 30px rgba(60,40,20,.16); }
+  .node-qilou{ left:12%; top:27%; }
+  .node-tea{ left:43%; top:18%; }
+  .node-metro{ right:7%; top:31%; }
+  .node-sea{ left:14%; bottom:20%; }
+  .node-kapok{ right:27%; top:45%; }
+  .game-panel{ border:1px solid var(--line); border-radius:8px; background:rgba(255,253,249,.88); padding:28px; box-shadow:0 10px 28px rgba(60,40,20,.08); display:flex; flex-direction:column; }
+  .game-label{ color:var(--gold); font-family:sans-serif; font-size:11px; letter-spacing:2px; margin-bottom:9px; }
+  .game-panel h3{ font-size:24px; color:var(--cinnabar); letter-spacing:3px; margin-bottom:8px; }
+  .game-panel p{ color:var(--muted); font-family:sans-serif; font-size:13px; line-height:1.7; margin-bottom:18px; }
+  .stamp-row{ display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin:4px 0 18px; }
+  .stamp{ min-height:42px; border:1px dashed var(--line); border-radius:6px; display:flex; align-items:center; justify-content:center; color:var(--muted); font-family:sans-serif; font-size:12px; text-align:center; padding:4px; transition:all .25s ease; }
+  .stamp.collected{ border-style:solid; border-color:var(--gold); color:var(--cinnabar); background:rgba(176,138,62,.08); }
+  .game-story{ min-height:118px; padding:16px 18px; border-left:3px solid var(--gold); background:var(--paper2); border-radius:4px; color:var(--ink); font-size:14px; line-height:1.8; margin-bottom:18px; }
+  .game-progress{ height:8px; border-radius:20px; overflow:hidden; background:#e4d8c1; margin-bottom:18px; }
+  .game-progress span{ display:block; width:0; height:100%; background:linear-gradient(90deg,var(--gold),var(--cinnabar)); transition:width .35s ease; }
+  .game-actions{ display:flex; gap:10px; margin-top:auto; }
+  .game-actions button{ flex:1; border:1px solid var(--gold); border-radius:6px; padding:10px 12px; background:transparent; color:var(--gold); cursor:pointer; font-family:"Songti SC",serif; font-size:14px; letter-spacing:1px; transition:all .25s ease; }
+  .game-actions button:hover{ background:rgba(176,138,62,.1); }
+  .game-actions button.primary{ background:var(--cinnabar); border-color:var(--cinnabar); color:#fff; }
+  .game-actions button:disabled{ opacity:.45; cursor:not-allowed; background:transparent; color:var(--muted); border-color:var(--line); }
+  .lingnan-locked{ display:none !important; }
+  .archive-layer{ position:fixed; inset:0; z-index:20; display:none; align-items:center; justify-content:center; padding:24px; background:rgba(38,34,32,.38); backdrop-filter:blur(3px); }
+  .archive-layer.open{ display:flex; }
+  .archive-window{ --archive-bg:none; position:relative; width:min(620px,100%); border:1px solid var(--gold); border-radius:8px; background:linear-gradient(135deg, rgba(255,253,249,.97), rgba(244,239,228,.96)); box-shadow:0 24px 70px rgba(38,34,32,.28); padding:34px; transform:translateY(8px) scale(.98); opacity:0; animation:archiveIn .22s ease forwards; overflow:hidden; }
+  .archive-window::before{ content:""; position:absolute; inset:12px; border:1px dashed rgba(176,138,62,.42); border-radius:6px; pointer-events:none; }
+  .archive-window::after{ content:""; position:absolute; inset:0; background-image:var(--archive-bg); background-position:center; background-size:cover; opacity:.13; filter:saturate(.8) contrast(.92); pointer-events:none; }
+  .archive-window > *{ position:relative; z-index:1; }
+  .archive-close{ position:absolute; right:18px; top:14px; width:34px; height:34px; border:1px solid var(--line); border-radius:50%; background:transparent; color:var(--muted); cursor:pointer; font-size:20px; line-height:1; }
+  .archive-kicker{ font-family:sans-serif; font-size:11px; letter-spacing:2px; color:var(--gold); margin-bottom:9px; }
+  .archive-title{ font-size:30px; color:var(--cinnabar); letter-spacing:4px; margin-bottom:6px; }
+  .archive-en{ font-family:Georgia,serif; font-size:13px; color:var(--gold); font-style:italic; margin-bottom:18px; }
+  .archive-text{ font-family:sans-serif; color:var(--muted); font-size:14px; line-height:1.9; margin-bottom:20px; }
+  .archive-shape{ position:relative; width:44px; height:44px; color:var(--cinnabar); opacity:.82; transform:scale(.42); transform-origin:center; }
+  .archive-shape.shape-qilou::before,.archive-shape.shape-tea::before{ content:""; position:absolute; left:30px; right:30px; bottom:0; height:58px; border:3px solid currentColor; border-bottom:0; background:rgba(158,59,44,.08); box-shadow:inset 0 18px 0 rgba(176,138,62,.16); }
+  .archive-shape.shape-qilou::after,.archive-shape.shape-tea::after{ content:""; position:absolute; left:46px; bottom:0; width:32px; height:42px; border:3px solid currentColor; border-bottom:0; border-radius:28px 28px 0 0; box-shadow:48px 0 0 -3px rgba(158,59,44,0), 48px 0 0 0 currentColor, 96px 0 0 -3px rgba(158,59,44,0), 96px 0 0 0 currentColor; }
+  .archive-shape.shape-tea .steam{ position:absolute; left:78px; bottom:46px; width:64px; height:34px; border-top:3px solid rgba(176,138,62,.8); border-radius:50%; }
+  .archive-shape.shape-metro::before{ content:""; position:absolute; left:18px; right:18px; bottom:10px; height:50px; border:3px solid currentColor; border-radius:28px 28px 10px 10px; background:rgba(158,59,44,.08); }
+  .archive-shape.shape-metro::after{ content:""; position:absolute; left:52px; right:52px; bottom:34px; height:16px; border:3px solid currentColor; border-radius:4px; box-shadow:-34px 38px 0 -8px currentColor, 34px 38px 0 -8px currentColor; }
+  .archive-shape.shape-river::before{ content:""; position:absolute; left:74px; bottom:28px; width:72px; height:42px; border:3px solid currentColor; border-top:0; background:rgba(158,59,44,.07); }
+  .archive-shape.shape-river::after{ content:""; position:absolute; left:52px; bottom:70px; width:116px; height:28px; background:currentColor; clip-path:polygon(50% 0,100% 100%,0 100%); }
+  .archive-shape.shape-river .water{ position:absolute; left:18px; right:18px; bottom:6px; height:12px; border-top:3px solid rgba(95,132,137,.75); border-bottom:3px solid rgba(95,132,137,.45); border-radius:50%; }
+  .archive-shape.shape-kapok::before{ content:""; position:absolute; left:100px; bottom:0; width:18px; height:48px; background:currentColor; border-radius:12px 12px 0 0; }
+  .archive-shape.shape-kapok::after{ content:""; position:absolute; left:58px; bottom:38px; width:104px; height:104px; background:radial-gradient(circle at 50% 50%, rgba(176,138,62,.8) 0 8px, transparent 9px), radial-gradient(circle at 50% 8%, currentColor 0 22px, transparent 23px), radial-gradient(circle at 18% 38%, currentColor 0 22px, transparent 23px), radial-gradient(circle at 82% 38%, currentColor 0 22px, transparent 23px), radial-gradient(circle at 30% 82%, currentColor 0 22px, transparent 23px), radial-gradient(circle at 70% 82%, currentColor 0 22px, transparent 23px); opacity:.9; }
+  .archive-wave{ height:74px; display:flex; align-items:center; gap:6px; padding:12px 14px; border-radius:6px; background:var(--paper2); margin-bottom:18px; overflow:hidden; }
+  .archive-wave i{ display:block; flex:1; max-width:9px; height:18px; border-radius:12px; background:linear-gradient(180deg,var(--gold),var(--cinnabar)); opacity:.72; transform-origin:center; }
+  .archive-wave.playing i{ animation:inkWave .9s ease-in-out infinite; }
+  .archive-wave i:nth-child(2n){ height:32px; animation-delay:.08s; }
+  .archive-wave i:nth-child(3n){ height:48px; animation-delay:.16s; }
+  .archive-wave i:nth-child(4n){ height:24px; animation-delay:.24s; }
+  .stamp-audio-player{ width:100%; height:38px; margin:-2px 0 16px; display:block; }
+  .archive-actions{ display:flex; gap:12px; }
+  .archive-actions button{ flex:1; border:1px solid var(--gold); border-radius:6px; background:transparent; color:var(--gold); padding:11px 14px; cursor:pointer; font-family:"Songti SC",serif; font-size:14px; letter-spacing:1px; }
+  .archive-actions .primary{ border-color:var(--cinnabar); background:var(--cinnabar); color:#fff; }
+  .archive-mark{ position:absolute; right:34px; bottom:88px; width:76px; height:76px; border:2px solid rgba(158,59,44,.78); border-radius:50%; color:rgba(158,59,44,.82); background:rgba(255,253,249,.72); display:none; align-items:center; justify-content:center; font-size:15px; line-height:1.25; letter-spacing:2px; transform:rotate(-14deg); }
+  .archive-window.collected .archive-mark{ display:flex; animation:stampIn .22s ease; }
+  @keyframes archiveIn{ to{ opacity:1; transform:translateY(0) scale(1); } }
+  @keyframes inkWave{ 50%{ transform:scaleY(1.45); opacity:1; } }
+  @keyframes stampIn{ from{ transform:rotate(-14deg) scale(1.35); opacity:0; } to{ transform:rotate(-14deg) scale(1); opacity:1; } }
+  @media(max-width:720px){
+    .game-shell{ grid-template-columns:1fr; }
+    .city-board{ min-height:380px; }
+    .sound-node{ width:78px; height:78px; font-size:12px; }
+    .node-thumb{ width:34px; height:34px; }
+    .game-panel{ padding:22px; }
+    .stamp{ font-size:11px; min-height:38px; }
+  }
+
+  @keyframes fadeUp{ to{opacity:1; transform:translateY(0);} }
+  @keyframes fadeIn{ to{opacity:1;} }
+  @media(max-width:720px){ .card{ grid-template-columns:1fr;} .card img{ min-height:240px;} header h1{ font-size:38px; letter-spacing:6px;} #china-map{ height:380px;} }
+  /* ===================== 新中式 · 视觉改造 ===================== */
+  /* 1) 去现代圆角与漂浮投影，改册页方框 */
+  .seal{ border-radius:0; border:1px solid var(--cinnabar); box-shadow:inset 0 0 0 3px var(--card), inset 0 0 0 4px rgba(158,59,44,.4); padding:8px 18px; font-family:"Songti SC","STSong",serif; letter-spacing:4px;}
+  .filter-btn{ border-radius:0; box-shadow:inset 0 0 0 3px var(--paper); transition:all .3s;}
+  .grid{ gap:46px;}
+  .card{ position:relative; border-radius:0; border:1px solid var(--gold); box-shadow:none;}
+  .card::before{ content:""; position:absolute; inset:7px; border:1px solid rgba(176,138,62,.45); pointer-events:none; z-index:3;}
+  .card:hover{ box-shadow:0 10px 30px rgba(60,40,20,.12);}
+  .card .imgbox{ border-radius:0;}
+  .card .region{ border-radius:0; background:var(--cinnabar); font-family:"Songti SC","STSong",serif; letter-spacing:2px; padding:4px 14px;}
+  .audio-slot,.culture-inner,.game-story,.game-panel,.city-board,.echo-form,.postcard-preview,.postcard-frame,.archive-window,.farewell-window,.souvenir-chip,.rating-chip,.stamp,.game-progress,.echo-form textarea,.echo-form input,.echo-actions button,.postcard-actions button,.postcard-actions a,.game-actions button,.archive-actions button,.visit-ending button,.filter-btn{ border-radius:0 !important;}
+  /* 2) 中文 UI 改用衬线/楷体，去掉无衬线的“应用感” */
+  .map-hint{ font-family:"Kaiti SC","STKaiti","Songti SC",serif; font-size:14.5px; letter-spacing:1px; color:var(--muted);}
+  .section-sub{ font-family:"Kaiti SC","STKaiti","Songti SC",serif; font-size:14.5px; letter-spacing:.5px;}
+  .section-title{ font-family:"Songti SC","STSong",serif;}
+  /* 章节标题用朱砂竖条代替音符记号 */
+  .section-title::before{ content:""; width:6px; min-width:6px; flex:0 0 6px; height:30px; background:linear-gradient(180deg,var(--cinnabar),var(--gold)); font-size:0;}
+  .game-label{ font-family:"Kaiti SC","STKaiti","Songti SC",serif; letter-spacing:2px;}
+  /* 3) 分隔符改为朱印 + 双线 */
+  .divider{ width:auto; max-width:260px; height:auto; background:none; display:flex; align-items:center; justify-content:center; gap:16px;}
+  .divider::before,.divider::after{ content:""; width:88px; height:1px;}
+  .divider::before{ background:linear-gradient(90deg,transparent,var(--gold));}
+  .divider::after{ background:linear-gradient(90deg,var(--gold),transparent);}
+  .divider i{ width:11px; height:11px; background:var(--cinnabar); transform:rotate(45deg); display:block; box-shadow:0 0 0 4px rgba(158,59,44,.12);}
+  /* 4) 标题区水墨远山 + 钤印 */
+  header{ position:relative; overflow:hidden; padding-bottom:64px;}
+  header > *{ position:relative; z-index:1;}
+  .header-ink{ position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:130%; height:200px; z-index:0; pointer-events:none; opacity:.6;}
+  .header-ink svg{ width:100%; height:100%; display:block;}
+  .header-seal{ position:absolute; top:74px; right:8%; width:88px; height:88px; transform:rotate(-6deg); z-index:2; opacity:0; animation:sealStampIn 1s 1.35s both; filter:drop-shadow(0 4px 10px rgba(158,59,44,.2));}
+  .header-seal svg{ width:100%; height:100%;}
+  @keyframes sealStampIn{ 0%{ opacity:0; transform:rotate(-6deg) scale(1.5);} 55%{ opacity:1; transform:rotate(-6deg) scale(.94);} 100%{ opacity:1; transform:rotate(-6deg) scale(1);} }
+  /* 5) 右侧竖排书脊（桌面端） */
+  .side-seal{ position:fixed; right:20px; top:50%; transform:translateY(-50%); z-index:30; display:flex; flex-direction:column; align-items:center; gap:16px; pointer-events:none; opacity:0; animation:fadeIn 1.6s 1.6s forwards;}
+  .side-seal .ss-mark{ width:26px; height:26px; background:var(--cinnabar); display:flex; align-items:center; justify-content:center; color:#f6efe1; font-size:13px; font-family:"Songti SC",serif;}
+  .side-seal .ss-title{ writing-mode:vertical-rl; font-family:"Songti SC","STSong",serif; font-size:16px; letter-spacing:10px; color:var(--ink); opacity:.5;}
+  .side-seal .ss-line{ width:1px; height:54px; background:linear-gradient(180deg,var(--gold),transparent);}
+  @media(max-width:1180px){ .side-seal{ display:none;} }
+  @media(max-width:760px){ .header-seal{ width:58px; top:28px; right:6%;} .header-ink{ height:140px;} }
+  /* 6) 页脚钤印 + 双线 */
+  footer{ position:relative; border-top:1px solid var(--gold); box-shadow:inset 0 3px 0 -1px rgba(176,138,62,.3);}
+  .footer-seal{ width:62px; height:62px; margin:0 auto 18px; opacity:.92; transform:rotate(-4deg);}
+  .footer-seal svg{ width:100%; height:100%;}
+  /* ===================== /新中式 ===================== */
+  @media(prefers-reduced-motion:reduce){
+    *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important;}
+    .reveal-up{ opacity:1 !important; transform:none !important;}
+    .scroll-progress{ display:none;}
+  }
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+<div class="unlock-flare" id="unlock-flare" aria-hidden="true"><span class="unlock-seal">岭南 · 启<small>Lingnan Unlocked</small></span></div>
+<div class="side-seal" aria-hidden="true"><span class="ss-mark">印</span><span class="ss-line"></span><span class="ss-title">听见中国</span></div>
+<div class="wrap">
+<header>
+  <div class="header-ink" aria-hidden="true"><svg viewBox="0 0 1200 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,220 L0,140 C120,108 260,96 380,120 C520,148 640,150 760,118 C900,80 1040,104 1200,128 L1200,220 Z" fill="#726b5e" opacity="0.10"/><path d="M0,220 L0,172 C160,150 320,176 470,182 C650,189 820,168 980,180 C1080,187 1140,184 1200,176 L1200,220 Z" fill="#9e3b2c" opacity="0.06"/></svg></div>
+  <div class="header-seal" aria-hidden="true"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="96" height="96" rx="5" fill="#9e3b2c"/><rect x="9" y="9" width="82" height="82" rx="2" fill="none" stroke="#f4efe4" stroke-width="2.4" opacity="0.9"/><g fill="#f6efe1" font-family="'Songti SC','STSong',serif" font-size="30" text-anchor="middle"><text x="68" y="41">听</text><text x="68" y="80">见</text><text x="32" y="41">中</text><text x="32" y="80">国</text></g></svg></div>
+  <div class="seal">数字声音档案 · DIGITAL SOUND ARCHIVE</div>
+  <h1><span class="vio">弦</span>· 听见中国</h1>
+  <div class="en">HEARING CHINA &nbsp;&middot;&nbsp; A Digital Sound Archive of Chinese Ethnic Music</div>
+  <div class="byline">策展 · 演奏<span class="b-seal"></span>梁珏童<span class="byline-en">Curated &amp; performed by Liang Juetong</span></div>
+  <p class="intro">一个以小提琴串联中国民族音乐的数字声音档案。从东北到西南，从西北边疆到岭南海岸，每一首作品都是一个地域、一段文化的声音切片。本项目由广府本土小提琴演奏者梁珏童策划与制作。
+  <span class="en-intro">A digital sound archive that threads China's ethnic music together through the violin. From the Northeast to the Southwest, from the western frontier to the Lingnan coast, each work is a sonic slice of a region and its culture — curated and produced by Liang Juetong, a Cantonese violinist.</span></p>
+  <div class="divider"><i></i></div>
+</header>
+<section id="map-section">
+  <div class="map-hint">&#127931; 点击地图上的亮点，跳到对应的曲目　Click a glowing point to jump to the piece</div>
+  <div id="china-map"></div>
+</section>
+<div class="filter-bar">
+  <button class="filter-btn active" data-region="all">全部 All</button>
+  <button class="filter-btn" data-region="东北">东北 Northeast</button>
+  <button class="filter-btn" data-region="西北">西北 Northwest</button>
+  <button class="filter-btn" data-region="西南">西南 Southwest</button>
+  <button class="filter-btn" data-region="岭南">岭南 Lingnan</button>
+</div>
+<div class="section-block" data-regions="东北,西北,西南">
+<div class="section-title">华弦集 · 中国民族化小提琴作品</div>
+<div class="section-sub">作曲・演奏：李泽熙（选自《华弦集》，经作曲家授权使用）　｜　策展：梁珏童<br><span style="font-family:Georgia,serif;font-size:12px;color:#9a9080;">Hua Xian Ji · Sinicised Violin Works — composed &amp; performed by Li Zexi (used with permission), curated by Liang Juetong</span></div>
+<div class="grid">
+  <div class="card" id="song-zandale" data-region="东北">
+    <div class="imgbox"><img loading="lazy" decoding="async" src="1-zandale.png.png" alt="扎恩达勒"></div>
+    <div class="body">
+      <span class="region">达斡尔族 · 东北</span>
+      <h3>扎恩达勒</h3><div class="en-title">Zandale</div>
+      <p class="zh">“扎恩达勒”在达斡尔语里意为“民歌”，是国家级非物质文化遗产。作曲家深入达斡尔族聚居地采集原生态曲调，用小提琴的双音、和弦与泛音重新谱写，呈现达斡尔民歌悠长而奔放的美，也拉出“落日万山寒，萧萧猎马还”的苍茫画面。</p>
+      <p class="en">In the Daur language, “Zandale” means “folk song,” a tradition recognised as national intangible cultural heritage. The composer collected original melodies in Daur communities, then rewrote them for violin using double stops, chords and harmonics — capturing both the soaring lines of Daur folk song and the vast image of hunters riding home against a cold mountain sunset.</p>
+      <audio controls preload="none" src="1-zandale.mp3.mp3"></audio>
+      <span class="culture-toggle" data-label="走进达斡尔 · 一个音乐人的听觉笔记">&#43; 走进达斡尔 · 一个音乐人的听觉笔记</span>
+      <div class="culture-box"><div class="culture-inner">
+        <span class="clabel">走进达斡尔 · 一个音乐人的听觉笔记 ｜ Into the Daur World · A Musician's Listening Notes</span>
+        <p class="cul-zh">我的老师李泽熙在创作这首作品时，深入达斡尔族聚居地采集原生态曲调，再用小提琴的双音、和弦与泛音把它重新写出来。达斡尔人的世界，声音是辽阔的——呼伦贝尔草原上，马蹄踏过草浪、风穿过白桦林，牧人即兴哼起的曲调没有谱子，想到哪唱到哪，正如曲中小提琴自由游走的散板。这里的柳蒿芽汤、手把肉就着马奶酒，是大口吃肉、大声唱歌的豪爽。当琴弓拉出那悠长的呼喊，其实是在用一件西方乐器，贴近一种对着天地歌唱的本能。</p>
+        <p class="cul-en">When my teacher Li Zexi composed this piece, she travelled into Daur communities to collect original folk melodies, then rewrote them for violin using double stops, chords and harmonics. In the Daur world, sound is vast — on the Hulunbuir grasslands, hooves brush through waves of grass and wind moves through birch forests. A herder's improvised tune follows no score, sung as it comes, just as the violin wanders freely here. Willow-shoot soup, hand-held mutton and mare's milk wine speak of a frank, open life: eat heartily, sing loudly. As the bow draws out that long call, a Western instrument reaches toward an instinct — to sing to the open land.</p>
+      </div></div>
+    </div>
+  </div>
+  <div class="card" id="song-changbai" data-region="东北">
+    <div class="imgbox"><img loading="lazy" decoding="async" src="2-changbai.png.png" alt="长白松"></div>
+    <div class="body">
+      <span class="region">朝鲜族 · 东北</span>
+      <h3>长白松</h3><div class="en-title">Changbai Pine</div>
+      <p class="zh">《长白松》取材朝鲜族传统民歌，借用其特有的“长短”节奏。小提琴运用连跳弓、拨弦等技巧，音符清亮，描摹长白山“美人松”的优雅——它在严寒中依然挺拔，正是朝鲜族坚韧品格的写照。</p>
+      <p class="en">“Changbai Pine” draws on traditional Korean-Chinese folk music, borrowing its distinctive jangdan rhythmic patterns. Through spiccato and pizzicato, the violin renders bright tones portraying the elegance of the “Beauty Pine” of Changbai Mountain — a mirror of the resilience of the Korean ethnic people.</p>
+      <audio controls preload="none" src="2-changbai.mp3.mp3"></audio>
+      <span class="culture-toggle" data-label="走进长白山 · 一个音乐人的听觉笔记">&#43; 走进长白山 · 一个音乐人的听觉笔记</span>
+      <div class="culture-box"><div class="culture-inner">
+        <span class="clabel">走进长白山 · 一个音乐人的听觉笔记 ｜ Into Changbai Mountain · A Musician's Listening Notes</span>
+        <p class="cul-zh">老师取材朝鲜族传统民歌，借用其特有的长短节奏，让小提琴在连跳弓与拨弦间，描摹长白山美人松的优雅。延边的朝鲜族村落里，伽倻琴的清音、长鼓的鼓点、节庆时的农乐舞，都带着这种富于弹性、张弛有致的呼吸感。打糕、冷面、辣白菜，是这片土地朴素又鲜明的味道。美人松在严寒中四季常青、挺拔不屈——当琴音清亮地立起来，听见的正是这种在寒冷里依然向上的坚韧。</p>
+        <p class="cul-en">My teacher drew on traditional Korean-Chinese folk music, borrowing its distinctive jangdan rhythmic patterns, letting the violin sketch the elegance of Changbai's Beauty Pine through spiccato and pizzicato. In the Korean villages of Yanbian, the clear tones of the gayageum, the beat of the janggu drum, and festival farmers' dances all carry this elastic, breathing sense of rhythm. Rice cakes, cold noodles and kimchi are the plain yet vivid flavours of this land. The Beauty Pine stands green and upright through the harshest cold — and when the violin's tone rises, bright and clear, what we hear is that same resilience reaching upward in the cold.</p>
+      </div></div>
+    </div>
+  </div>
+  <div class="card" id="song-kashgar" data-region="西北">
+    <div class="imgbox"><img loading="lazy" decoding="async" src="3-kashgar.png.png" alt="喀什噶尔星空"></div>
+    <div class="body">
+      <span class="region">维吾尔族 · 南疆</span>
+      <h3>喀什噶尔星空</h3><div class="en-title">Kashgar Starry Sky</div>
+      <p class="zh">《喀什噶尔星空》写的是南疆。喀什噶尔是古丝绸之路上一片绵延千年的古老绿洲，作曲家融入爵士乐的“切弓”（chopping）弓法，让节奏由慢到快、音色明暗交织，描绘一幅穿越千年的璀璨星河。</p>
+      <p class="en">“Kashgar Starry Sky” depicts southern Xinjiang, an ancient Silk Road oasis. The composer incorporates the jazz “chopping” bowing technique, building rhythm from slow to fast to paint a brilliant galaxy across a thousand years of history.</p>
+      <audio controls preload="none" src="3-kashgar.mp3.mp3"></audio>
+      <span class="culture-toggle" data-label="走进喀什噶尔 · 一个音乐人的听觉笔记">&#43; 走进喀什噶尔 · 一个音乐人的听觉笔记</span>
+      <div class="culture-box"><div class="culture-inner">
+        <span class="clabel">走进喀什噶尔 · 一个音乐人的听觉笔记 ｜ Into Kashgar · A Musician's Listening Notes</span>
+        <p class="cul-zh">老师写的是南疆——喀什噶尔，丝绸之路上一片绵延千年的古老绿洲。她融入爵士乐的“切弓”（chopping）弓法，让节奏由慢到快、音色明暗交织，像一幅穿越千年的星河。喀什老城的巴扎集市里，都塔尔与热瓦普的弹拨、铜匠敲打的叮当、烤包子出炉的吆喝，与十二木卡姆那宏大热烈的音响交织在一起。土黄色的民居、头顶璀璨的银河——当琴音由静谧转向奔放，听见的是这座千年古城在夜色里依然跳动的脉搏。</p>
+        <p class="cul-en">My teacher wrote of southern Xinjiang — Kashgar, an ancient Silk Road oasis alive for a thousand years. She wove in the jazz chopping bowing technique, building rhythm from slow to fast, light and shadow interlacing like a galaxy across millennia. In the bazaars of Kashgar's old city, the plucking of the dutar and rawap, the clang of coppersmiths and the calls of baked-bun sellers intertwine with the grand, fervent sound of the Twelve Muqam. Earth-yellow houses, a brilliant Milky Way overhead — as the music turns from stillness to abandon, we hear the pulse of this ancient city still beating in the night.</p>
+      </div></div>
+    </div>
+  </div>
+  <div class="card" id="song-erhai" data-region="西南">
+    <div class="imgbox"><img loading="lazy" decoding="async" src="4-erhai.png.png" alt="洱海泛舟"></div>
+    <div class="body">
+      <span class="region">白族 · 云南</span>
+      <h3>洱海泛舟</h3><div class="en-title">Boating on Erhai Lake</div>
+      <p class="zh">《洱海泛舟》以白族文化为底色，描绘洱海山水与人和谐相依的意境。旋律舒缓清澈，如轻舟荡漾于湖光山色之间，呈现苍山洱海间宁静、灵秀的南国气韵。</p>
+      <p class="en">“Boating on Erhai Lake” is grounded in Bai ethnic culture, evoking the harmony between people and the landscape of Erhai Lake, with flowing, limpid melodies conveying the serene, graceful spirit of the South.</p>
+      <audio controls preload="none" src="4-erhai.mp3.mp3"></audio>
+      <span class="culture-toggle" data-label="走进洱海 · 一个音乐人的听觉笔记">&#43; 走进洱海 · 一个音乐人的听觉笔记</span>
+      <div class="culture-box"><div class="culture-inner">
+        <span class="clabel">走进洱海 · 一个音乐人的听觉笔记 ｜ Into Erhai Lake · A Musician's Listening Notes</span>
+        <p class="cul-zh">老师以白族文化为底色，写洱海山水与人和谐相依的意境，旋律舒缓清澈，如轻舟荡漾。大理的白族村落里，三道茶的一苦二甜三回味、扎染布上晕开的蓝、本主庙会上的洞经古乐，都透着一种从容的慢。苍山雪、洱海月，下关风、上关花——白族人把山水写进了日子里。当琴音如水般流淌，听见的是一种与天地相处得格外松弛的南国气韵。</p>
+        <p class="cul-en">My teacher grounded this piece in Bai ethnic culture, evoking the harmony between people and the landscape of Erhai Lake, its melody flowing and clear like a drifting boat. In the Bai villages of Dali, the three-course tea — bitter, sweet, then lingering — the indigo blooming across tie-dyed cloth, and the ancient Dongjing music at temple fairs all carry an unhurried calm. Cangshan snow and Erhai moon, the wind of Xiaguan and flowers of Shangguan — the Bai people have woven landscape into daily life. As the music flows like water, we hear a southern serenity, a uniquely relaxed way of being with the world.</p>
+      </div></div>
+    </div>
+  </div></div>
+</div>
+<section class="city-game" id="city-game">
+  <div class="game-kicker">Lingnan Sound Walk</div>
+  <div class="game-title">城市声音漫游</div>
+  <p class="game-sub">把岭南城市文化做成一个轻量小游戏：点击城市地点，收集五枚声音印记，最后进入岭南作品。<br><span style="font-family:Georgia,serif;font-size:12px;">Click the city spots, collect five sound stamps, and enter the Lingnan works.</span></p>
+  <div class="game-shell">
+    <div class="city-board" aria-label="岭南城市声音地图">
+      <div class="hills"></div>
+      <div class="city-river"></div>
+      <div class="city-silhouette sil-qilou"></div>
+      <div class="city-silhouette sil-tea"></div>
+      <div class="city-silhouette sil-metro"></div>
+      <div class="city-silhouette sil-river"></div>
+      <div class="city-silhouette sil-kapok"></div>
+      <button class="sound-node node-qilou" data-sound="qilou" type="button"><span class="node-thumb" style="background-image:url('visual-qilou.png')"></span><span>骑楼街</span></button>
+      <button class="sound-node node-tea" data-sound="tea" type="button"><span class="node-thumb" style="background-image:url('visual-tea.png')"></span><span>茶楼</span></button>
+      <button class="sound-node node-metro" data-sound="metro" type="button"><span class="node-thumb" style="background-image:url('visual-metro.png')"></span><span>地铁站</span></button>
+      <button class="sound-node node-sea" data-sound="river" type="button"><span class="node-thumb" style="background-image:url('visual-river.png')"></span><span>江边</span></button>
+      <button class="sound-node node-kapok" data-sound="kapok" type="button"><span class="node-thumb" style="background-image:url('visual-kapok.png')"></span><span>木棉树</span></button>
+    </div>
+    <aside class="game-panel">
+      <span class="game-label">SOUND STAMPS · 声音印记</span>
+      <h3>收集城市声音印记</h3>
+      <p>岭南不是抽象的地理标签，而是茶楼、街巷、江风、地铁提示音与木棉花一起构成的听觉记忆。<br><span style="font-family:Georgia,serif;font-size:11.5px;color:#9a9080;">Lingnan is not an abstract label, but a sonic memory woven from teahouses, alleys, river breeze, metro chimes and kapok blossoms.</span></p>
+      <div class="stamp-row" aria-label="声音印记收集进度">
+        <span class="stamp" data-stamp="qilou">骑楼</span>
+        <span class="stamp" data-stamp="tea">茶楼</span>
+        <span class="stamp" data-stamp="metro">地铁</span>
+        <span class="stamp" data-stamp="river">江风</span>
+        <span class="stamp" data-stamp="kapok">木棉</span>
+      </div>
+      <div class="game-story" id="game-story">点击城市地图上的地点，开始收集第一枚声音印记。<br><span style="font-family:Georgia,serif;font-size:11.5px;color:#9a9080;">Click a spot on the city map to collect your first sound stamp.</span></div>
+      <div class="game-progress" aria-hidden="true"><span id="game-progress-fill"></span></div>
+      <div class="game-actions">
+        <button type="button" id="reset-sound-walk">重置 Reset</button>
+        <button type="button" class="primary" id="enter-lingnan" disabled>进入岭南作品 Enter</button>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<div class="archive-layer" id="archive-layer" role="dialog" aria-modal="true" aria-labelledby="archive-title">
+  <article class="archive-window" id="archive-window">
+    <button class="archive-close" id="archive-close" type="button" aria-label="关闭">×</button>
+    <div class="archive-kicker">城市声音档案</div>
+    <h2 class="archive-title" id="archive-title">江边</h2>
+    <div class="archive-en" id="archive-en">Pearl River Sound Stamp</div>
+    <p class="archive-text" id="archive-text"></p>
+    <div class="archive-wave" id="archive-wave" aria-hidden="true">
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+    <audio id="stamp-audio-player" class="stamp-audio-player" controls preload="auto"></audio>
+    <div class="archive-actions">
+      <button type="button" class="primary" id="archive-collect">播放并采集声音</button>
+    </div>
+    <div class="archive-mark">已采集</div>
+  </article>
+</div>
+
+<div class="section-block lingnan-locked" id="lingnan-section" data-regions="岭南">
+<div class="section-title">岭南 · 我的根</div>
+<div class="section-sub">演奏・策展：梁珏童（广府本土）<br><span style="font-family:Georgia,serif;font-size:12px;color:#9a9080;">Lingnan · My Roots — performed &amp; curated by Liang Juetong, a Cantonese native</span></div>
+<div class="grid">
+  <div class="card" id="song-fishing" data-region="岭南">
+    <div class="imgbox"><img loading="lazy" decoding="async" src="5-fishing.png.png" alt="丰收渔歌"></div>
+    <div class="body">
+      <span class="region">潮汕 · 粤东</span>
+      <h3>丰收渔歌</h3><div class="en-title">Harvest Fishing Song</div>
+      <p class="zh">《丰收渔歌》由李自立创作，取材广东汕尾的渔歌，借鉴古筝琶音技法，把渔民出海归来的丰收喜悦写进小提琴。这首曲子我小学就拉过，却是到大学为它写下并发表英文论文，才真正读懂它——从把音拉对，到读懂它背后的潮汕海洋文化。它是我作为演奏者，也作为研究者，最珍视的一首岭南作品。</p>
+      <p class="en">Composed by Li Zili, drawing on the fishing songs of Shanwei. I first played it as a child, but only understood it at university when I published an English research paper on it. As both performer and researcher, it is the Lingnan work I treasure most.</p>
+      <audio controls preload="none" src="5-fishing.mp3"></audio>
+      <span class="culture-toggle" data-label="走进潮汕 · 一个演奏者与研究者的笔记">&#43; 走进潮汕 · 一个演奏者与研究者的笔记</span>
+      <div class="culture-box"><div class="culture-inner">
+        <span class="clabel">走进潮汕 · 一个演奏者与研究者的笔记 ｜ Into Chaoshan · Notes of a Performer and Researcher</span>
+        <p class="cul-zh">丰收渔歌由李自立创作，取材广东汕尾的渔歌，借古筝琶音的技法，把渔民出海归来的喜悦写进小提琴。我小学就拉过它，却是到大学为它写下英文论文，才真正读懂它。潮汕是著名侨乡：工夫茶的精致、潮剧的婉转、牛肉丸的弹牙、潮州音乐的古朴典雅——这片向海而生的土地，把对丰收的盼望、对海洋的敬畏，都唱进了渔歌里。当琴弓模仿出收网时那串明亮的琶音，听见的是一整片海岸的生计与欢腾。</p>
+        <p class="cul-en">Harvest Fishing Song, composed by Li Zili, draws on the fishing songs of Shanwei in eastern Guangdong, bringing the joy of a returning catch onto the violin through guzheng-like arpeggios. I first played it as a child, but only understood it at university when I wrote an English research paper on it. Chaoshan is a famous homeland of overseas Chinese: the refinement of gongfu tea, the lilt of Chaoju opera, the bounce of handmade beef balls, the antique elegance of Chaozhou music — this seaward land sings its hope for harvest and reverence for the ocean into its fishing songs. As the bow imitates that bright cascade of arpeggios pulling in the nets, we hear the livelihood and jubilation of an entire coast.</p>
+      </div></div>
+    </div>
+  </div>
+  <div class="card" id="song-thunder" data-region="岭南">
+    <div class="imgbox"><img loading="lazy" decoding="async" src="6-thunder.png.png" alt="旱天雷"></div>
+    <div class="body">
+      <span class="region">广府</span>
+      <h3>旱天雷</h3><div class="en-title">Thunder in a Dry Sky</div>
+      <p class="zh">《旱天雷》是广东音乐的经典，旋律明快灵动，模拟旱天惊雷的清脆与生机。对很多广府人来说，它是一段不用刻意记、却早已刻进生活的旋律——就连在广州地铁里，都能听到它的变奏。它是我这一代广州人共同的听觉记忆。</p>
+      <p class="en">A classic of Cantonese music, bright and nimble, imitating thunder in a dry season. You can even hear its variations in the Guangzhou metro — part of the shared sonic memory of my generation.</p>
+      <audio controls preload="none" src="6-thunder.mp3"></audio>
+      <span class="culture-toggle" data-label="走进广府 · 一个广府人的听觉记忆">&#43; 走进广府 · 一个广府人的听觉记忆</span>
+      <div class="culture-box"><div class="culture-inner">
+        <span class="clabel">走进广府 · 一个广府人的听觉记忆 ｜ Into the Cantonese World · A Native's Sonic Memory</span>
+        <p class="cul-zh">旱天雷是广东音乐的经典，旋律明快灵动，模拟旱天惊雷的清脆生机。对广府人来说，它是不用刻意记、却早已刻进生活的旋律——连广州地铁里都能听到它的变奏。广东音乐以高胡、扬琴、秦琴主奏，曲调清新流畅、装饰繁密；它生长在早茶的喧腾、骑楼的市声、凉茶铺的苦香之间。这是一座把生活过得很有声音的城市——当琴音跳跃如雷，听见的是广府人骨子里那股鲜活、机灵又乐天的劲。</p>
+        <p class="cul-en">Thunder in a Dry Sky is a classic of Cantonese music, bright and nimble, imitating the crisp vitality of thunder in a dry season. For Cantonese people, it is a melody never deliberately memorised yet long woven into daily life — you can even hear its variations in the Guangzhou metro. Cantonese music, led by gaohu, yangqin and qinqin, is fresh, fluid and densely ornamented; it grows amid the bustle of morning tea, the street noise beneath the arcades, the bitter fragrance of herbal-tea shops. This is a city that lives out loud — as the music leaps like thunder, we hear the lively, quick-witted, optimistic spirit in the Cantonese bones.</p>
+      </div></div>
+    </div>
+  </div>
+  <div class="card" id="song-rising" data-region="岭南">
+    <div class="imgbox"><img loading="lazy" decoding="async" src="7-rising.png.png" alt="步步高"></div>
+    <div class="body">
+      <span class="region">广府</span>
+      <h3>步步高</h3><div class="en-title">Rising Step by Step</div>
+      <p class="zh">《步步高》是广东音乐中最喜庆、最广为流传的曲目之一，旋律层层递进、节节攀升，寓意生活越过越好。小时候看广东卫视，逢年过节几乎都能听到它。对广府人来说，它就是“好意头”和节庆气氛本身。</p>
+      <p class="en">One of the most festive Cantonese pieces, its melody climbs ever higher, symbolising a life that keeps getting better. For Cantonese people, it is the very sound of good fortune.</p>
+      <audio controls preload="none" src="7-rising.mp3"></audio>
+      <span class="culture-toggle" data-label="走进广府节庆 · 一个广府人的听觉记忆">&#43; 走进广府节庆 · 一个广府人的听觉记忆</span>
+      <div class="culture-box"><div class="culture-inner">
+        <span class="clabel">走进广府节庆 · 一个广府人的听觉记忆 ｜ Into Cantonese Festivities · A Native's Sonic Memory</span>
+        <p class="cul-zh">步步高旋律层层递进、节节攀升，寓意生活越过越好。小时候看广东卫视，逢年过节几乎都能听到它。在广府，音乐与节庆密不可分：春节的醒狮腾跃、行花街的人潮、开业时的锣鼓——步步高因步步高升的好意头，成了这些喜庆时刻最常响起的曲子。它不只是一首乐曲，更是广府人对美好生活的集体祝愿。当琴音一节节往上攀，听见的是一座城市对明天会更好的笃定相信。</p>
+        <p class="cul-en">Rising Step by Step climbs ever higher, symbolising a life that keeps getting better. Growing up watching Guangdong TV, I heard it during nearly every festival. In the Cantonese world, music and celebration are inseparable: the leaping lion dances of New Year, the crowds at the flower markets, the gongs and drums at shop openings — with its auspicious meaning of rising higher, this piece became the sound of these joyful moments. It is more than a melody; it is the Cantonese people's collective wish for a good life. As the music climbs note by note, we hear a city's firm belief that tomorrow will be better.</p>
+      </div></div>
+    </div>
+  </div>
+  <div class="card" id="song-kapok" data-region="岭南">
+    <div class="imgbox"><img loading="lazy" decoding="async" src="8-kapok.png.png" alt="木棉盛开时"></div>
+    <div class="body">
+      <span class="region">当代广府</span>
+      <h3>木棉盛开时</h3><div class="en-title">When the Kapok Blooms</div>
+      <p class="zh">《木棉盛开时》是我的老师李泽熙创作的作品。木棉是广州的市花，被称为“英雄花”。这首曲子让我看到，岭南音乐不只是旧的传统，它仍在生长——我的老师正在写它的当下，而我作为她的学生，也成了这条传承里的一环。</p>
+      <p class="en">Composed by my teacher, Li Zexi. The kapok is the city flower of Guangzhou, the “hero flower.” This piece shows me that Lingnan music is still growing — and as her student, I have become part of this living lineage.</p>
+      <audio controls preload="none" src="8-kapok.mp3"></audio>
+      <span class="culture-toggle" data-label="走进当代广州 · 传统仍在生长">&#43; 走进当代广州 · 传统仍在生长</span>
+      <div class="culture-box"><div class="culture-inner">
+        <span class="clabel">走进当代广州 · 传统仍在生长 ｜ Into Contemporary Guangzhou · A Tradition Still Growing</span>
+        <p class="cul-zh">木棉盛开时是我的老师李泽熙创作的作品。木棉是广州市花，每年早春先花后叶、满树火红，被称为英雄花，象征着这座城市热烈向上的性格。在传统广东音乐之外，当代作曲家持续以岭南为题材进行新的创作——这首曲子正是这种传统仍在生长的当代回声。从骑楼到珠江新城的天际线，广州始终在新旧之间生长。当琴音明亮地绽放，听见的是岭南音乐没有停在过去，而是被我们这一代继续书写下去。</p>
+        <p class="cul-en">When the Kapok Blooms was composed by my teacher Li Zexi. The kapok is Guangzhou's city flower, blossoming fiery red across bare branches each early spring — the hero flower, emblem of this city's ardent, upward spirit. Beyond traditional Cantonese music, contemporary composers keep creating new works rooted in Lingnan — and this piece is the present-day echo of a tradition still growing. From the old arcades to the skyline of Zhujiang New Town, Guangzhou keeps growing between old and new. As the music blooms bright, we hear that Lingnan music has not stayed in the past, but is being written onward by our generation.</p>
+      </div></div>
+    </div>
+  </div></div>
+  <div class="visit-ending">
+    <div class="ending-kicker">The Last Resonance</div>
+    <h3>当最后一个音符落下</h3>
+    <p>你可以留下一张声音手信，也可以轻轻挥手，与这次展览告别。</p>
+    <button type="button" id="finish-visit">结束参观</button>
+  </div>
+</div>
+
+<section class="echo-postcard lingnan-locked" id="echo-postcard">
+  <div class="echo-kicker">After Listening Echo</div>
+  <div class="echo-title">听后回声 · 广东手信明信片</div>
+  <p class="echo-sub">观众完成声音印记或看完作品后，可以留下一句听后回声，并生成一张带有广东手信印章的纪念明信片。</p>
+  <div class="echo-shell">
+    <form class="echo-form" id="echo-form">
+      <h3>生成我的声音手信</h3>
+      <p>选择一枚最能代表你听后记忆的广东印章，再留下你的声音回声。</p>
+      <div class="echo-field">
+        <label>选择手信印章</label>
+        <div class="souvenir-grid" id="souvenir-grid">
+          <button class="souvenir-chip active" type="button" data-souvenir="木棉花" data-en="Kapok Blossom">木棉花<span>广州城市花</span></button>
+          <button class="souvenir-chip" type="button" data-souvenir="早茶笼" data-en="Dim Sum Basket">早茶笼<span>一盅两件</span></button>
+          <button class="souvenir-chip" type="button" data-souvenir="醒狮头" data-en="Lion Dance">醒狮头<span>节庆锣鼓</span></button>
+          <button class="souvenir-chip" type="button" data-souvenir="骑楼窗" data-en="Qilou Arcade">骑楼窗<span>街巷记忆</span></button>
+          <button class="souvenir-chip" type="button" data-souvenir="广州塔" data-en="Canton Tower">广州塔<span>当代天际线</span></button>
+          <button class="souvenir-chip" type="button" data-souvenir="珠江水" data-en="Pearl River">珠江水<span>江风与归航</span></button>
+        </div>
+      </div>
+      <div class="echo-field">
+        <label>花印评分</label>
+        <div class="rating-row" id="postcard-rating">
+          <button class="rating-chip" type="button" data-rate="1">一枚</button>
+          <button class="rating-chip" type="button" data-rate="2">二枚</button>
+          <button class="rating-chip" type="button" data-rate="3">三枚</button>
+          <button class="rating-chip" type="button" data-rate="4">四枚</button>
+          <button class="rating-chip active" type="button" data-rate="5">五枚</button>
+        </div>
+      </div>
+      <div class="echo-field">
+        <label for="echo-message">留下一句回声</label>
+        <textarea id="echo-message" maxlength="82" placeholder="例如：我在江风和小提琴之间，听见了广州的记忆。">我在江风和小提琴之间，听见了广州的记忆。</textarea>
+      </div>
+      <div class="echo-field">
+        <label for="echo-name">署名</label>
+        <input id="echo-name" maxlength="16" placeholder="可不填，例如：一位听众">
+      </div>
+      <div class="echo-actions">
+        <button type="button" id="echo-random">换一句灵感</button>
+        <button type="submit" class="primary">生成明信片</button>
+      </div>
+    </form>
+    <aside class="postcard-preview">
+      <h3>声音回响卡预览</h3>
+      <p>明信片会以广东手信盒、朱砂印章、木棉纹样和城市小图标的方式生成，可下载成图片。</p>
+      <div class="postcard-frame">
+        <div class="postcard-empty" id="postcard-empty">点击“生成明信片”后，这里会出现你的声音手信卡。</div>
+        <canvas id="souvenir-card" width="1200" height="780" hidden></canvas>
+      </div>
+      <div class="postcard-zoom" id="postcard-zoom" aria-hidden="true">
+        <button type="button" id="postcard-zoom-close" aria-label="关闭">×</button>
+        <img id="postcard-zoom-img" alt="放大的广东手信明信片">
+      </div>
+      <div class="postcard-actions">
+        <button type="button" id="postcard-preview-btn">预览示例</button>
+        <a id="postcard-download" download="hearing-china-guangdong-souvenir-card.png" href="#">下载明信片</a>
+        <button type="button" id="postcard-finish">完成参观</button>
+      </div>
+      <p class="postcard-note">这个模块适合放在展览最后，作为“声音印记”之后的观众回响。</p>
+    </aside>
+  </div>
+</section>
+
+<div class="farewell-layer" id="farewell-layer" role="dialog" aria-modal="true" aria-labelledby="farewell-title" aria-hidden="true">
+  <section class="farewell-window">
+    <button type="button" class="farewell-close" id="farewell-close" aria-label="关闭">×</button>
+    <div class="farewell-intro" id="farewell-intro">
+      <div class="farewell-kicker">A Gentle Farewell</div>
+      <h2 id="farewell-title">带走一段回响</h2>
+      <p class="farewell-copy">谢谢你把时间留给这些声音。离开之前，你可以选择留下手信，或者用自己的方式与展览告别。</p>
+      <div class="farewell-choices">
+        <button type="button" class="primary" id="choose-postcard">留下声音手信</button>
+        <button type="button" id="choose-wave">挥手告别</button>
+        <button type="button" id="choose-goodbye">轻轻离开</button>
+      </div>
+    </div>
+    <div class="camera-panel" id="camera-panel" hidden>
+      <div class="farewell-kicker">Wave Goodbye</div>
+      <h2>向声音挥挥手</h2>
+      <p class="farewell-copy">请面对镜头举起手掌，轻轻挥动。画面只用于当前浏览器中的动作判断，不会保存或上传。</p>
+      <div class="camera-frame">
+        <video id="gesture-video" playsinline muted></video>
+        <canvas id="gesture-canvas" width="64" height="48"></canvas>
+      </div>
+      <p class="gesture-status" id="gesture-status">正在等待摄像头许可……</p>
+      <div class="camera-actions">
+        <button type="button" id="camera-back">返回选择</button>
+        <button type="button" id="camera-skip">不用摄像头，直接告别</button>
+      </div>
+    </div>
+    <div class="goodbye-panel" id="goodbye-panel" hidden>
+      <div class="goodbye-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="farewell-kicker">Thank You for Listening</div>
+      <h2>谢谢你的聆听</h2>
+      <p class="farewell-copy">愿你离开以后，仍带走一小段岭南的回响。再见，期待与你在另一段声音里重逢。</p>
+      <div class="goodbye-actions">
+        <button type="button" id="goodbye-postcard">再留一张声音手信</button>
+        <button type="button" id="goodbye-close">完成参观</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="final-page" id="final-page" aria-hidden="true">
+  <div class="final-content">
+    <div class="final-kicker">Thank You for Listening</div>
+    <h1>感谢聆听</h1>
+    <div class="final-rule"></div>
+    <p>一段声音的结束，也是另一段记忆的开始。<br>愿你离开以后，仍带走一小段岭南的回响。</p>
+    <div class="final-actions">
+      <button type="button" id="restart-exhibition">重新进入展览</button>
+    </div>
+  </div>
+  <div class="final-credit"><span>听见中国 · 数字音乐策展　｜　策展人：梁珏童</span><span>Hearing China · Curated by Liang Juetong</span></div>
+</section>
+
+<footer>
+  <div class="footer-seal" aria-hidden="true"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="96" height="96" rx="5" fill="#9e3b2c"/><rect x="9" y="9" width="82" height="82" rx="2" fill="none" stroke="#f4efe4" stroke-width="2.4" opacity="0.9"/><g fill="#f6efe1" font-family="'Songti SC','STSong',serif" font-size="30" text-anchor="middle"><text x="68" y="41">听</text><text x="68" y="80">见</text><text x="32" y="41">中</text><text x="32" y="80">国</text></g></svg></div>
+  策展人：梁珏童　｜　本项目为个人数字文化策展实践<br>
+  《华弦集》相关作品由李泽熙原创并演奏，经授权用于本项目；岭南部分由策展人梁珏童演奏；视觉图像由 AI 工具生成。<br>
+  <span style="font-family:Georgia,serif;">Curated by Liang Juetong · A personal digital cultural-curation project.<br>
+  Works from “Hua Xian Ji” are composed and performed by Li Zexi, used with permission; Lingnan pieces are performed by the curator; visuals generated with AI tools.</span><br>
+  © 2026
+</footer>
+</div>
+<script>
+  const cards = document.querySelectorAll('.card');
+  const io = new IntersectionObserver((entries)=>{ entries.forEach((e,i)=>{ if(e.isIntersecting){ setTimeout(()=> e.target.classList.add('show'), (i%2)*120); io.unobserve(e.target);} }); },{threshold:.12});
+  cards.forEach(c=>io.observe(c));
+  // 顶部阅读进度条
+  var scrollProgress = document.getElementById('scroll-progress');
+  function updateScrollProgress(){
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    scrollProgress.style.width = (max>0 ? (doc.scrollTop/max*100) : 0) + '%';
+  }
+  window.addEventListener('scroll', updateScrollProgress, {passive:true});
+  window.addEventListener('resize', updateScrollProgress);
+  updateScrollProgress();
+  // 章节标题滚动浮现（JS 失败时不隐藏内容）
+  var revealIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); revealIO.unobserve(e.target); } });
+  },{threshold:.18});
+  document.querySelectorAll('.section-title, .section-sub, .echo-title, .echo-sub, .game-title, .game-sub').forEach(function(el){
+    el.classList.add('reveal-up'); revealIO.observe(el);
+  });
+  // 卡片配图：加载完成前显示柔和占位，加载后淡入（JS 不跑时图片照常显示）
+  document.querySelectorAll('.card .imgbox').forEach(function(box){
+    var img = box.querySelector('img');
+    if(!img) return;
+    if(img.complete && img.naturalWidth){ box.classList.add('loaded'); return; }
+    img.style.opacity = '0';
+    var reveal = function(){ img.style.opacity = '1'; box.classList.add('loaded'); };
+    img.addEventListener('load', reveal);
+    img.addEventListener('error', reveal);
+  });
+  // 是否减弱动态效果
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // 卡片配图视差（用 object-position，不与 hover 缩放冲突）
+  var parallaxImgs = Array.prototype.slice.call(document.querySelectorAll('.card .imgbox img'));
+  var parallaxTicking = false;
+  function applyParallax(){
+    var vh = window.innerHeight;
+    parallaxImgs.forEach(function(img){
+      var box = img.parentElement.getBoundingClientRect();
+      if(box.bottom < 0 || box.top > vh) { parallaxTicking = false; return; }
+      var ratio = (box.top + box.height/2 - vh/2) / (vh/2);
+      ratio = Math.max(-1, Math.min(1, ratio));
+      img.style.objectPosition = '50% ' + (50 - ratio*12).toFixed(1) + '%';
+    });
+    parallaxTicking = false;
+  }
+  function onParallaxScroll(){ if(!parallaxTicking){ parallaxTicking = true; requestAnimationFrame(applyParallax); } }
+  if(!reduceMotion){
+    window.addEventListener('scroll', onParallaxScroll, {passive:true});
+    window.addEventListener('resize', onParallaxScroll);
+    applyParallax();
+  }
+  // 岭南解锁过场
+  function playUnlockFlare(){
+    var f = document.getElementById('unlock-flare');
+    if(!f) return;
+    f.classList.remove('show'); void f.offsetWidth; f.classList.add('show');
+    setTimeout(function(){ f.classList.remove('show'); }, 1600);
+  }
+  window.lingnanUnlocked = false;
+  document.querySelectorAll('.culture-toggle').forEach(t=>{
+    t.addEventListener('click', function(){
+      var box=this.nextElementSibling; box.classList.toggle('open');
+      this.innerHTML = box.classList.contains('open') ? '&#8722; 收起 Close' : '&#43; '+this.dataset.label;
+    });
+  });
+  document.querySelectorAll('.filter-btn').forEach(btn=>{
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      this.classList.add('active');
+      var r=this.dataset.region;
+      if(r==='岭南' && !window.lingnanUnlocked){
+        this.classList.remove('active');
+        var allBtn=document.querySelector('.filter-btn[data-region="all"]');
+        if(allBtn) allBtn.classList.add('active');
+        var story=document.getElementById('game-story');
+        if(story) story.innerHTML='<strong>岭南作品尚未解锁。</strong><br>请先打开五份城市声音档案，并采集全部声音印记。';
+        var game=document.getElementById('city-game');
+        if(game) game.scrollIntoView({behavior:'smooth',block:'center'});
+        return;
+      }
+      cards.forEach(c=>{ if(r==='all' || c.dataset.region===r){ c.classList.remove('hide'); c.classList.add('show'); } else { c.classList.add('hide'); } });
+      document.querySelectorAll('.section-block').forEach(sec=>{ var regions=sec.dataset.regions.split(','); if(r==='all' || regions.includes(r)) sec.classList.remove('hide'); else sec.classList.add('hide'); });
+    });
+  });
+  // ===== 城市声音漫游小游戏 =====
+  var soundWalk = {
+    qilou:{ title:'骑楼街', en:'Qilou Street Sound Stamp', stamp:'骑楼', file:'sound-qilou.mp3', visual:'visual-qilou.png', shape:'shape-qilou', tone:[392,440,523],
+      text:'骑楼把街道、商铺和人的日常连在一起。脚步声、招牌声、街边叫卖声，像一条很细的旋律，慢慢织出岭南城市生活。' },
+    tea:{ title:'茶楼', en:'Teahouse Sound Stamp', stamp:'茶楼', file:'sound-tea.mp3', visual:'visual-tea.png', shape:'shape-tea', tone:[330,392,494],
+      text:'茶楼里的声音很有层次：茶盅轻碰、粤语交谈、点心车经过。这种热闹不是喧哗，而是属于广府生活的节奏。' },
+    metro:{ title:'地铁站', en:'Metro Platform Sound Stamp', stamp:'地铁', file:'sound-metro.mp3', visual:'visual-metro.png', shape:'shape-metro', tone:[523,659,587],
+      text:'广州地铁的提示音与广东音乐旋律，已成为城市公共空间的一部分。《旱天雷》的影子，也可以在这样的日常声景里被听见。' },
+    river:{ title:'江边', en:'Pearl River Sound Stamp', stamp:'江风', file:'sound-river.mp3', visual:'visual-river.png', shape:'shape-river', tone:[294,349,440],
+      text:'江风把珠江水岸、码头记忆和岭南城市生活连在一起。《丰收渔歌》背后，有水路、归航与丰收的生活经验。' },
+    kapok:{ title:'木棉树', en:'Kapok Blossom Sound Stamp', stamp:'木棉', file:'sound-kapok.mp3', visual:'visual-kapok.png', shape:'shape-kapok', tone:[440,554,659],
+      text:'木棉是广州市花。它不是静止的城市符号，而是每年重新盛开的当代记忆，也通向《木棉盛开时》里仍在生长的岭南音乐。' }
+  };
+  var collectedSounds = new Set();
+  var currentSoundKey = null;
+  var soundStory = document.getElementById('game-story');
+  var progressFill = document.getElementById('game-progress-fill');
+  var enterLingnan = document.getElementById('enter-lingnan');
+  var archiveLayer = document.getElementById('archive-layer');
+  var archiveWindow = document.getElementById('archive-window');
+  var archiveWave = document.getElementById('archive-wave');
+  var stampAudioPlayer = document.getElementById('stamp-audio-player');
+  var cityAudioCtx;
+  var activeStampAudio = null;
+  function pauseOtherAudio(current){
+    document.querySelectorAll('audio').forEach(function(audio){
+      if(audio!==current && !audio.paused) audio.pause();
+    });
+  }
+  stampAudioPlayer.addEventListener('error', function(){
+    if(!currentSoundKey || !soundWalk[currentSoundKey]) return;
+    var file = soundWalk[currentSoundKey].file;
+    playSynthTone(currentSoundKey);
+    soundStory.innerHTML += '<br><span style="color:#9e3b2c;">音频文件没有加载成功：'+file+'。请确认它和 index.html 在同一个文件夹里。</span>';
+  });
+  // 优先播放AI音频文件;若文件不存在则回退到合成音效
+  function playSoundStamp(key){
+    var data = soundWalk[key];
+    if(!data) return;
+    activeStampAudio = stampAudioPlayer;
+    pauseOtherAudio(activeStampAudio);
+    activeStampAudio.pause();
+    activeStampAudio.currentTime = 0;
+    activeStampAudio.src = new URL(data.file, window.location.href).href;
+    activeStampAudio.volume = 0.92;
+    activeStampAudio.load();
+    activeStampAudio.play().catch(function(){
+      playSynthTone(key);
+      soundStory.innerHTML += '<br><span style="color:#9e3b2c;">真实音频暂未播放成功，已先播放提示音。请确认 '+data.file+' 已和 index.html 放在同一层。</span>';
+    });
+    if(archiveWave){
+      archiveWave.classList.add('playing');
+      setTimeout(function(){ archiveWave.classList.remove('playing'); }, 1400);
+    }
+  }
+  function playSynthTone(key){
+    var data = soundWalk[key];
+    if(!data || (!window.AudioContext && !window.webkitAudioContext)) return;
+    cityAudioCtx = cityAudioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    var now = cityAudioCtx.currentTime;
+    data.tone.forEach(function(freq,i){
+      var start=now+i*0.13; var osc=cityAudioCtx.createOscillator(); var gain=cityAudioCtx.createGain();
+      osc.type = i===1?'triangle':'sine'; osc.frequency.setValueAtTime(freq,start);
+      gain.gain.setValueAtTime(0.0001,start); gain.gain.exponentialRampToValueAtTime(0.055,start+0.025); gain.gain.exponentialRampToValueAtTime(0.0001,start+0.12);
+      osc.connect(gain).connect(cityAudioCtx.destination); osc.start(start); osc.stop(start+0.13);
+    });
+  }
+  function updateSoundWalk(key){
+    var total=Object.keys(soundWalk).length; var data=soundWalk[key];
+    collectedSounds.add(key);
+    document.querySelectorAll('.sound-node').forEach(function(node){
+      node.classList.toggle('selected', node.dataset.sound===key);
+      if(collectedSounds.has(node.dataset.sound)) node.classList.add('visited');
+    });
+    document.querySelectorAll('.stamp').forEach(function(stamp){ stamp.classList.toggle('collected', collectedSounds.has(stamp.dataset.stamp)); });
+    var count=collectedSounds.size;
+    progressFill.style.width=(count/total*100)+'%';
+    soundStory.innerHTML='<strong>'+data.title+' · '+data.stamp+'印记</strong><br>'+data.text;
+    if(count===total){
+      window.lingnanUnlocked=true;
+      enterLingnan.disabled=false;
+      soundStory.innerHTML+='<br><br><strong>五枚声音印记已集齐。</strong>请点击“进入岭南作品”，再打开后续展区。';
+    }
+  }
+  function openSoundArchive(key){
+    currentSoundKey=key;
+    var data=soundWalk[key];
+    if(!data) return;
+    pauseOtherAudio(stampAudioPlayer);
+    stampAudioPlayer.pause();
+    stampAudioPlayer.currentTime = 0;
+    stampAudioPlayer.src = new URL(data.file, window.location.href).href;
+    stampAudioPlayer.load();
+    document.getElementById('archive-title').textContent=data.title;
+    document.getElementById('archive-en').textContent=data.en;
+    document.getElementById('archive-text').textContent=data.text;
+    archiveWindow.style.setProperty('--archive-bg', "url('" + data.visual + "')");
+    archiveWindow.classList.toggle('collected', collectedSounds.has(key));
+    archiveLayer.classList.add('open');
+  }
+  function closeSoundArchive(){
+    archiveLayer.classList.remove('open');
+    if(activeStampAudio){
+      activeStampAudio.pause();
+      activeStampAudio.currentTime=0;
+    }
+    if(archiveWave) archiveWave.classList.remove('playing');
+  }
+  document.querySelectorAll('.sound-node').forEach(function(node){
+    node.addEventListener('click', function(){ openSoundArchive(this.dataset.sound); });
+  });
+  document.getElementById('archive-close').addEventListener('click', closeSoundArchive);
+  archiveLayer.addEventListener('click', function(e){ if(e.target===archiveLayer) closeSoundArchive(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeSoundArchive(); });
+  document.getElementById('archive-collect').addEventListener('click', function(){
+    if(!currentSoundKey) return;
+    playSoundStamp(currentSoundKey);
+    updateSoundWalk(currentSoundKey);
+    archiveWindow.classList.add('collected');
+  });
+  document.getElementById('reset-sound-walk').addEventListener('click', function(){
+    collectedSounds.clear();
+    window.lingnanUnlocked=false;
+    document.querySelectorAll('.sound-node').forEach(function(n){ n.classList.remove('visited','selected'); });
+    document.querySelectorAll('.stamp').forEach(function(s){ s.classList.remove('collected'); });
+    document.getElementById('lingnan-section').classList.add('lingnan-locked');
+    document.getElementById('echo-postcard').classList.add('lingnan-locked');
+    progressFill.style.width='0'; enterLingnan.disabled=true;
+    soundStory.textContent='点击城市地图上的地点，开始收集第一枚声音印记。';
+  });
+  enterLingnan.addEventListener('click', function(){
+    if(!window.lingnanUnlocked) return;
+    playUnlockFlare();
+    document.getElementById('lingnan-section').classList.remove('lingnan-locked');
+    var btn=document.querySelector('.filter-btn[data-region="岭南"]'); if(btn) btn.click();
+    var target=document.getElementById('song-fishing');
+    if(target){
+      setTimeout(function(){
+        target.scrollIntoView({behavior:'smooth',block:'center'});
+        target.classList.add('flash'); setTimeout(function(){ target.classList.remove('flash'); },1600);
+      }, reduceMotion ? 0 : 480);
+    }
+  });
+
+  // ===== 结束参观与挥手告别 =====
+  var farewellLayer=document.getElementById('farewell-layer');
+  var farewellIntro=document.getElementById('farewell-intro');
+  var cameraPanel=document.getElementById('camera-panel');
+  var goodbyePanel=document.getElementById('goodbye-panel');
+  var finalPage=document.getElementById('final-page');
+  var gestureVideo=document.getElementById('gesture-video');
+  var gestureCanvas=document.getElementById('gesture-canvas');
+  var gestureStatus=document.getElementById('gesture-status');
+  var gestureStream=null;
+  var gestureTimer=null;
+  var previousGestureFrame=null;
+  var gestureScore=0;
+  var gestureStartedAt=0;
+
+  function showFarewellView(view){
+    farewellIntro.hidden=view!=='intro';
+    cameraPanel.hidden=view!=='camera';
+    goodbyePanel.hidden=view!=='goodbye';
+  }
+  function stopGestureCamera(){
+    if(gestureTimer){ clearInterval(gestureTimer); gestureTimer=null; }
+    if(gestureStream){ gestureStream.getTracks().forEach(function(track){ track.stop(); }); gestureStream=null; }
+    gestureVideo.srcObject=null;
+    previousGestureFrame=null;
+    gestureScore=0;
+  }
+  function openFarewell(){
+    pauseOtherAudio(null);
+    closeSoundArchive();
+    stopGestureCamera();
+    showFarewellView('intro');
+    farewellLayer.classList.add('open');
+    farewellLayer.setAttribute('aria-hidden','false');
+    document.body.classList.add('farewell-open');
+  }
+  function closeFarewell(){
+    stopGestureCamera();
+    farewellLayer.classList.remove('open');
+    farewellLayer.setAttribute('aria-hidden','true');
+    document.body.classList.remove('farewell-open');
+  }
+  function revealPostcard(){
+    closeFarewell();
+    var postcard=document.getElementById('echo-postcard');
+    postcard.classList.remove('lingnan-locked');
+    setTimeout(function(){ postcard.scrollIntoView({behavior:'smooth',block:'start'}); },80);
+  }
+  function showGoodbye(){
+    stopGestureCamera();
+    showFarewellView('goodbye');
+  }
+  function showFinalPage(){
+    pauseOtherAudio(null);
+    closeFarewell();
+    var postcardZoom=document.getElementById('postcard-zoom');
+    postcardZoom.classList.remove('open');
+    postcardZoom.setAttribute('aria-hidden','true');
+    finalPage.classList.add('open');
+    finalPage.setAttribute('aria-hidden','false');
+    document.body.classList.add('final-open');
+  }
+  function restartExhibition(){
+    finalPage.classList.remove('open');
+    finalPage.setAttribute('aria-hidden','true');
+    document.body.classList.remove('final-open');
+    document.getElementById('reset-sound-walk').click();
+    var firstFilter=document.querySelector('.filter-btn');
+    if(firstFilter) firstFilter.click();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function scanFarewellGesture(){
+    if(!gestureStream || gestureVideo.readyState<2) return;
+    var ctx=gestureCanvas.getContext('2d',{willReadFrequently:true});
+    var w=gestureCanvas.width, h=gestureCanvas.height;
+    ctx.drawImage(gestureVideo,0,0,w,h);
+    var pixels=ctx.getImageData(0,0,w,h).data;
+    var frame=new Uint8Array(w*h);
+    var changed=0, sampled=0;
+    for(var y=0;y<Math.floor(h*.84);y++){
+      for(var x=0;x<w;x++){
+        var p=y*w+x, i=p*4;
+        var gray=(pixels[i]*3+pixels[i+1]*6+pixels[i+2])/10;
+        frame[p]=gray;
+        if(previousGestureFrame && Math.abs(gray-previousGestureFrame[p])>30) changed++;
+        sampled++;
+      }
+    }
+    if(previousGestureFrame && Date.now()-gestureStartedAt>1300){
+      var motion=changed/sampled;
+      gestureScore=motion>.075 ? gestureScore+1 : Math.max(0,gestureScore-1);
+      gestureStatus.textContent=gestureScore>0 ? '看见动作了，再轻轻挥一下……' : '请举起手掌，向镜头轻轻挥动。';
+      if(gestureScore>=3){
+        gestureStatus.textContent='收到你的挥手了。';
+        setTimeout(showGoodbye,420);
+      }
+    }
+    previousGestureFrame=frame;
+  }
+  async function startGestureFarewell(){
+    showFarewellView('camera');
+    gestureStatus.textContent='正在等待摄像头许可……';
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+      gestureStatus.textContent='当前浏览器无法使用摄像头，你仍可以直接告别。';
+      return;
+    }
+    try{
+      gestureStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:640},height:{ideal:400}},audio:false});
+      gestureVideo.srcObject=gestureStream;
+      await gestureVideo.play();
+      gestureStartedAt=Date.now();
+      gestureStatus.textContent='请举起手掌，向镜头轻轻挥动。';
+      gestureTimer=setInterval(scanFarewellGesture,170);
+    }catch(error){
+      gestureStatus.textContent='没有获得摄像头权限，你可以返回或直接告别。';
+    }
+  }
+
+  document.getElementById('finish-visit').addEventListener('click',openFarewell);
+  document.getElementById('farewell-close').addEventListener('click',closeFarewell);
+  document.getElementById('choose-postcard').addEventListener('click',revealPostcard);
+  document.getElementById('choose-wave').addEventListener('click',startGestureFarewell);
+  document.getElementById('choose-goodbye').addEventListener('click',showGoodbye);
+  document.getElementById('camera-back').addEventListener('click',function(){ stopGestureCamera(); showFarewellView('intro'); });
+  document.getElementById('camera-skip').addEventListener('click',showGoodbye);
+  document.getElementById('goodbye-postcard').addEventListener('click',revealPostcard);
+  document.getElementById('goodbye-close').addEventListener('click',showFinalPage);
+  document.getElementById('postcard-finish').addEventListener('click',showFinalPage);
+  document.getElementById('restart-exhibition').addEventListener('click',restartExhibition);
+  farewellLayer.addEventListener('click',function(e){ if(e.target===farewellLayer) closeFarewell(); });
+  document.querySelectorAll('.card audio').forEach(function(audio){ audio.addEventListener('ended',function(){ document.getElementById('finish-visit').classList.add('ready'); }); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && farewellLayer.classList.contains('open')) closeFarewell(); });
+
+
+  // ===== 听后回声 · 广东手信明信片 =====
+  var postcardState = { souvenir:'木棉花', en:'Kapok Blossom', rating:5 };
+  var echoLines = [
+    '我在江风和小提琴之间，听见了广州的记忆。',
+    '这一刻，城市像一段慢慢展开的旋律。',
+    '茶盏、江水与琴声，让岭南变得可以被听见。',
+    '我把一枚声音印记，留在木棉盛开的地方。',
+    '这不是一次浏览，而像一次温柔的回到。'
+  ];
+  function setActiveButtons(selector, activeButton){
+    document.querySelectorAll(selector + ' button').forEach(function(btn){ btn.classList.remove('active'); });
+    activeButton.classList.add('active');
+  }
+  document.querySelectorAll('.souvenir-chip').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      postcardState.souvenir = btn.dataset.souvenir;
+      postcardState.en = btn.dataset.en;
+      setActiveButtons('#souvenir-grid', btn);
+    });
+  });
+  document.querySelectorAll('.rating-chip').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      postcardState.rating = Number(btn.dataset.rate);
+      setActiveButtons('#postcard-rating', btn);
+    });
+  });
+  document.getElementById('echo-random').addEventListener('click', function(){
+    document.getElementById('echo-message').value = echoLines[Math.floor(Math.random()*echoLines.length)];
+  });
+  function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight){
+    var chars = Array.from(text); var line='';
+    for(var i=0;i<chars.length;i++){
+      var test=line+chars[i];
+      if(ctx.measureText(test).width>maxWidth && line){ ctx.fillText(line,x,y); line=chars[i]; y+=lineHeight; }
+      else line=test;
+    }
+    if(line) ctx.fillText(line,x,y);
+    return y;
+  }
+  function drawKapok(ctx,x,y,s,color){
+    ctx.save(); ctx.translate(x,y); ctx.fillStyle=color;
+    for(var i=0;i<5;i++){ ctx.rotate(Math.PI*2/5); ctx.beginPath(); ctx.ellipse(0,-s*.42,s*.18,s*.38,0,0,Math.PI*2); ctx.fill(); }
+    ctx.fillStyle='#b08a3e'; ctx.beginPath(); ctx.arc(0,0,s*.12,0,Math.PI*2); ctx.fill(); ctx.restore();
+  }
+  var souvenirImageFiles = {
+    '木棉花':'stamp-kapok.png',
+    '早茶笼':'stamp-dimsum.png',
+    '醒狮头':'stamp-lion.png',
+    '骑楼窗':'stamp-qilou.png',
+    '广州塔':'stamp-tower.png',
+    '珠江水':'stamp-river.png'
+  };
+  var souvenirPalettes = {
+    '木棉花':{ bg0:'#fffdf9', bg1:'#f7e7dc', bg2:'#ead1bc', accent:'#9e3b2c', sub:'#b08a3e', text:'#262220', muted:'#75685d', wash:'rgba(158,59,44,.12)' },
+    '早茶笼':{ bg0:'#fffdf8', bg1:'#edf1df', bg2:'#d8e2cf', accent:'#416d59', sub:'#a88538', text:'#25271f', muted:'#657263', wash:'rgba(65,109,89,.12)' },
+    '醒狮头':{ bg0:'#fff8ef', bg1:'#f7dfc7', bg2:'#edc99b', accent:'#b33127', sub:'#c18c2d', text:'#2a1f1a', muted:'#785a46', wash:'rgba(179,49,39,.12)' },
+    '骑楼窗':{ bg0:'#fffdf9', bg1:'#ede2d0', bg2:'#d9c2a6', accent:'#8b3f2f', sub:'#a9853a', text:'#2a211d', muted:'#76675a', wash:'rgba(139,63,47,.12)' },
+    '广州塔':{ bg0:'#f9fcff', bg1:'#dcecf1', bg2:'#c8dce2', accent:'#356978', sub:'#b08a3e', text:'#1f292b', muted:'#5e7377', wash:'rgba(53,105,120,.12)' },
+    '珠江水':{ bg0:'#fbfffc', bg1:'#dbecea', bg2:'#c5dfdc', accent:'#557f80', sub:'#b08a3e', text:'#202826', muted:'#627b78', wash:'rgba(85,127,128,.12)' }
+  };
+  function loadImageMaybe(src){
+    return new Promise(function(resolve){
+      var img = new Image();
+      img.onload = function(){ resolve(img); };
+      img.onerror = function(){ resolve(null); };
+      img.src = src;
+    });
+  }
+  function drawSouvenirIcon(ctx, type, x, y){
+    ctx.save(); ctx.translate(x,y); ctx.strokeStyle='#9e3b2c'; ctx.fillStyle='rgba(158,59,44,.08)'; ctx.lineWidth=4;
+    if(type==='早茶笼'){
+      ctx.beginPath(); ctx.ellipse(0,18,78,28,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(-76,18); ctx.bezierCurveTo(-54,-48,54,-48,76,18); ctx.stroke();
+      for(var a=-44;a<=44;a+=22){ ctx.beginPath(); ctx.arc(a,10,12,0,Math.PI*2); ctx.stroke(); }
+    }else if(type==='醒狮头'){
+      ctx.beginPath(); ctx.arc(0,0,68,0,Math.PI*2); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.arc(-24,-8,13,0,Math.PI*2); ctx.arc(24,-8,13,0,Math.PI*2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(-42,28); ctx.quadraticCurveTo(0,54,42,28); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(-66,-26); ctx.lineTo(-96,-54); ctx.moveTo(66,-26); ctx.lineTo(96,-54); ctx.stroke();
+    }else if(type==='骑楼窗'){
+      ctx.strokeRect(-70,-58,140,116); for(var i=-35;i<=35;i+=35){ ctx.beginPath(); ctx.moveTo(i,-58); ctx.lineTo(i,58); ctx.stroke(); }
+      ctx.beginPath(); ctx.arc(0,-58,70,Math.PI,0); ctx.stroke();
+    }else if(type==='广州塔'){
+      ctx.beginPath(); ctx.moveTo(-30,70); ctx.bezierCurveTo(10,20,-10,-20,28,-76); ctx.moveTo(30,70); ctx.bezierCurveTo(-10,20,10,-20,-28,-76); ctx.stroke();
+      for(var j=-48;j<=42;j+=24){ ctx.beginPath(); ctx.moveTo(-38,j); ctx.lineTo(38,j+10); ctx.stroke(); }
+    }else if(type==='珠江水'){
+      for(var k=-44;k<=44;k+=28){ ctx.beginPath(); ctx.moveTo(-88,k); ctx.bezierCurveTo(-48,k-18,-20,k+18,18,k); ctx.bezierCurveTo(46,k-14,66,k+12,88,k); ctx.stroke(); }
+    }else{ drawKapok(ctx,0,0,88,'rgba(158,59,44,.82)'); }
+    ctx.restore();
+  }
+  async function drawSouvenirCard(){
+    var canvas=document.getElementById('souvenir-card'); var ctx=canvas.getContext('2d');
+    var message=(document.getElementById('echo-message').value||'我在这次展览中，留下了一枚声音回声。').trim();
+    var visitor=(document.getElementById('echo-name').value||'一位听众').trim();
+    var d=new Date(); var dateText=d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0');
+    var palette=souvenirPalettes[postcardState.souvenir] || souvenirPalettes['木棉花'];
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    var bg=ctx.createLinearGradient(0,0,canvas.width,canvas.height); bg.addColorStop(0,palette.bg0); bg.addColorStop(.56,palette.bg1); bg.addColorStop(1,palette.bg2); ctx.fillStyle=bg; ctx.fillRect(0,0,canvas.width,canvas.height);
+    for(var p=0;p<9;p++) drawKapok(ctx,110+p*128,92+(p%2)*42,34,palette.wash);
+    ctx.strokeStyle=palette.sub; ctx.globalAlpha=.58; ctx.lineWidth=4; ctx.strokeRect(56,56,1088,668); ctx.globalAlpha=1;
+    ctx.setLineDash([18,12]); ctx.strokeStyle=palette.sub; ctx.globalAlpha=.34; ctx.lineWidth=2; ctx.strokeRect(82,82,1036,616); ctx.setLineDash([]); ctx.globalAlpha=1;
+    ctx.fillStyle=palette.accent; ctx.font='58px "Songti SC", "STSong", serif'; ctx.fillText('听后回声',112,154);
+    ctx.fillStyle=palette.sub; ctx.font='24px Georgia, serif'; ctx.fillText('Hearing China · Guangdong Souvenir Card',116,194);
+    ctx.strokeStyle=palette.sub; ctx.globalAlpha=.45; ctx.beginPath(); ctx.moveTo(112,226); ctx.lineTo(732,226); ctx.stroke(); ctx.globalAlpha=1;
+    ctx.fillStyle=palette.muted; ctx.font='27px "Songti SC", "STSong", serif'; ctx.fillText('我带走了一枚广东手信：'+postcardState.souvenir,112,292);
+    ctx.fillStyle=palette.text; ctx.font='39px "Songti SC", "STSong", serif'; var y=wrapCanvasText(ctx,'“'+message+'”',112,374,560,58);
+    ctx.fillStyle=palette.muted; ctx.font='23px "Songti SC", "STSong", serif'; ctx.fillText('花印评分',112,y+72);
+    for(var i=0;i<5;i++) drawKapok(ctx,250+i*50,y+63,28,i<postcardState.rating?palette.accent:palette.wash);
+    ctx.fillStyle=palette.muted; ctx.font='22px "Songti SC", "STSong", serif'; ctx.fillText('署名：'+visitor,112,646); ctx.fillText(dateText,112,682);
+    var souvenirImg = await loadImageMaybe(souvenirImageFiles[postcardState.souvenir]);
+    ctx.save();
+    ctx.beginPath(); ctx.arc(900,440,132,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,.62)'; ctx.fill();
+    ctx.strokeStyle=palette.sub; ctx.globalAlpha=.78; ctx.lineWidth=4; ctx.stroke(); ctx.globalAlpha=1;
+    ctx.beginPath(); ctx.arc(900,440,114,0,Math.PI*2); ctx.strokeStyle=palette.sub; ctx.globalAlpha=.38; ctx.lineWidth=2; ctx.stroke(); ctx.globalAlpha=1;
+    ctx.restore();
+    if(souvenirImg){
+      ctx.save();
+      ctx.beginPath(); ctx.arc(900,440,102,0,Math.PI*2);
+      ctx.clip();
+      ctx.drawImage(souvenirImg, 798, 338, 204, 204);
+      ctx.restore();
+    }else{
+      drawSouvenirIcon(ctx, postcardState.souvenir, 890, 355);
+    }
+    ctx.textAlign='center';
+    ctx.fillStyle=palette.accent; ctx.font='32px "Songti SC", "STSong", serif'; ctx.fillText(postcardState.souvenir+' · '+postcardState.en,900,626);
+    ctx.fillStyle=palette.sub; ctx.font='22px Georgia, "Songti SC", serif'; ctx.fillText('岭南声音手信 / Lingnan Sound Souvenir',900,664);
+    ctx.strokeStyle=palette.sub; ctx.globalAlpha=.45; ctx.beginPath(); ctx.moveTo(790,690); ctx.lineTo(1010,690); ctx.stroke(); ctx.globalAlpha=1; ctx.textAlign='start';
+    ctx.fillStyle=palette.wash; ctx.font='84px "Songti SC", "STSong", serif'; ctx.save(); ctx.translate(1048,130); ctx.rotate(Math.PI/2); ctx.fillText('广东手信',0,0); ctx.restore();
+    document.getElementById('postcard-empty').hidden=true; canvas.hidden=false;
+    var url=canvas.toDataURL('image/png'); var link=document.getElementById('postcard-download'); link.href=url; link.download='hearing-china-'+postcardState.en.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'-souvenir-card.png'; link.classList.add('ready');
+  }
+  document.getElementById('echo-form').addEventListener('submit', function(e){ e.preventDefault(); drawSouvenirCard(); });
+  function openPostcardZoom(){
+    var canvas=document.getElementById('souvenir-card');
+    if(canvas.hidden) return;
+    var zoom=document.getElementById('postcard-zoom');
+    document.getElementById('postcard-zoom-img').src=canvas.toDataURL('image/png');
+    zoom.classList.add('open');
+    zoom.setAttribute('aria-hidden','false');
+  }
+  document.getElementById('postcard-preview-btn').addEventListener('click', function(){
+    drawSouvenirCard().then(openPostcardZoom);
+  });
+  document.getElementById('postcard-zoom-close').addEventListener('click', function(){
+    var zoom=document.getElementById('postcard-zoom');
+    zoom.classList.remove('open');
+    zoom.setAttribute('aria-hidden','true');
+  });
+  document.getElementById('postcard-zoom').addEventListener('click', function(e){
+    if(e.target===this) document.getElementById('postcard-zoom-close').click();
+  });
+  document.getElementById('postcard-download').addEventListener('click', function(e){
+    if(!this.classList.contains('ready')){
+      e.preventDefault();
+      drawSouvenirCard().then(function(){ document.getElementById('postcard-download').click(); });
+    }
+  });
+
+  var chart;
+  var songs = [
+    {name:'扎恩达勒',id:'song-zandale',value:[124.0,48.5]},{name:'长白松',id:'song-changbai',value:[128.1,42.0]},
+    {name:'喀什噶尔星空',id:'song-kashgar',value:[75.99,39.47]},{name:'洱海泛舟',id:'song-erhai',value:[100.2,25.6]},
+    {name:'丰收渔歌',id:'song-fishing',value:[115.4,22.8]},{name:'旱天雷',id:'song-thunder',value:[113.3,23.13]},
+    {name:'步步高',id:'song-rising',value:[113.0,23.3]},{name:'木棉盛开时',id:'song-kapok',value:[113.6,22.9]}
+  ];
+  function songIndexById(id){ for(var i=0;i<songs.length;i++) if(songs[i].id===id) return i; return -1; }
+  function initMap(){
+    if(typeof echarts==='undefined' || typeof window.CHINA_GEO==='undefined'){ document.getElementById('china-map').innerHTML='<div style="text-align:center;color:#9e3b2c;padding:60px 0;font-family:sans-serif;">地图加载中…如长时间未显示请刷新</div>'; return; }
+    echarts.registerMap('china', window.CHINA_GEO);
+    chart = echarts.init(document.getElementById('china-map'));
+    chart.setOption({
+      geo:{ map:'china', roam:false, zoom:1.18, itemStyle:{ areaColor:'#efe7d6', borderColor:'#c9bda3', borderWidth:.6 }, emphasis:{ itemStyle:{ areaColor:'#e6dcc4' }, label:{show:false} } },
+      tooltip:{ trigger:'item', formatter:function(p){ return p.data ? ('&#127931; '+p.data.name) : ''; }, backgroundColor:'#fffdf9', borderColor:'#b08a3e', textStyle:{color:'#262220'} },
+      series:[{ type:'effectScatter', coordinateSystem:'geo', symbolSize:13, rippleEffect:{scale:3.5, brushType:'stroke'}, itemStyle:{ color:'#9e3b2c', shadowBlur:8, shadowColor:'#9e3b2c' }, label:{ show:true, formatter:'{b}', position:'right', color:'#5a3a20', fontSize:11, fontFamily:'serif' }, data: songs.map(s=>({name:s.name, value:s.value, songId:s.id})) }]
+    });
+    chart.on('click', function(p){ if(p.data && p.data.songId){ var el=document.getElementById(p.data.songId); el.scrollIntoView({behavior:'smooth', block:'center'}); el.classList.add('flash'); setTimeout(()=> el.classList.remove('flash'),1600);} });
+    window.addEventListener('resize', ()=> chart.resize());
+  }
+  if(document.readyState==='complete') initMap(); else window.addEventListener('load', initMap);
+  document.querySelectorAll('audio').forEach(au=>{
+    au.addEventListener('play', function(){ pauseOtherAudio(this); var card=this.closest('.card'); if(!card) return; card.classList.add('playing'); var idx=songIndexById(card.id); if(chart&&idx>=0) chart.dispatchAction({type:'highlight',seriesIndex:0,dataIndex:idx}); });
+    au.addEventListener('pause', function(){ var card=this.closest('.card'); if(!card) return; card.classList.remove('playing'); var idx=songIndexById(card.id); if(chart&&idx>=0) chart.dispatchAction({type:'downplay',seriesIndex:0,dataIndex:idx}); });
+  });
+</script>
+</body>
+</html>
