@@ -350,6 +350,7 @@
   .particle-stage{ position:fixed; inset:0; z-index:80; display:none; background:radial-gradient(circle at 50% 38%, #2b2722, #14110e 82%); touch-action:none;}
   .particle-stage.open{ display:block;}
   .particle-stage canvas{ display:block;}
+  .particle-stage::after{ content:""; position:absolute; inset:0; pointer-events:none; box-shadow:inset 0 0 240px 70px rgba(8,6,4,.78);}
   .ps-title{ position:absolute; top:26px; left:30px; z-index:2; color:#f6efe1; font-family:"Songti SC","STSong",serif; font-size:23px; letter-spacing:5px; pointer-events:none;}
   .ps-title small{ display:block; font-family:Georgia,serif; font-style:italic; font-size:12px; letter-spacing:1px; color:#caa86f; margin-top:5px;}
   .ps-close{ position:absolute; top:20px; right:22px; z-index:2; width:44px; height:44px; border:1px solid rgba(255,245,224,.5); border-radius:0; background:rgba(255,253,249,.12); color:#fff; font-size:24px; cursor:pointer;}
@@ -1301,7 +1302,7 @@
   if(typeof THREE==='undefined') return;
   var renderer,scene,camera,group,points,raf,sprite;
   var targets;
-  var autoRot=0,dragRotY=0,dragRotX=0,dragging=false,lastX,lastY,viewSize=14;
+  var autoRot=0,dragRotY=0,dragRotX=0,dragging=false,lastX,lastY,viewSize=14,clock=0;
   var mouseNDC=new THREE.Vector2(), cursorActive=false;
   var ray=new THREE.Raycaster(), plane=new THREE.Plane(new THREE.Vector3(0,0,1),0);
   var hitV=new THREE.Vector3(), cursorLocal=new THREE.Vector3(), invM=new THREE.Matrix4();
@@ -1379,8 +1380,8 @@
       var pr=Math.min(window.devicePixelRatio||1,2);
       var mat=new THREE.ShaderMaterial({
         uniforms:{ uTex:{value:sprite}, uSize:{value:3.2*pr}, uMono:{value:0}, uMonoColor:{value:new THREE.Color(0.95,0.86,0.62)} },
-        vertexShader:'attribute vec3 color; varying vec3 vColor; uniform float uSize; void main(){ vColor=color; vec4 mv=modelViewMatrix*vec4(position,1.0); gl_PointSize=uSize; gl_Position=projectionMatrix*mv; }',
-        fragmentShader:'uniform sampler2D uTex; uniform float uMono; uniform vec3 uMonoColor; varying vec3 vColor; void main(){ vec4 t=texture2D(uTex, gl_PointCoord); if(t.a<0.1) discard; vec3 c=mix(vColor, uMonoColor, uMono); gl_FragColor=vec4(c, t.a); }',
+        vertexShader:'attribute vec3 color; varying vec3 vColor; varying float vDepth; uniform float uSize; void main(){ vColor=color; vec4 mv=modelViewMatrix*vec4(position,1.0); vDepth=-mv.z; gl_PointSize=uSize; gl_Position=projectionMatrix*mv; }',
+        fragmentShader:'uniform sampler2D uTex; uniform float uMono; uniform vec3 uMonoColor; varying vec3 vColor; varying float vDepth; void main(){ vec4 t=texture2D(uTex, gl_PointCoord); if(t.a<0.1) discard; float fog=1.0-clamp((vDepth-86.0)/30.0,0.0,1.0)*0.5; vec3 c=mix(vColor, uMonoColor, uMono)*fog; gl_FragColor=vec4(c, t.a); }',
         transparent:true, depthTest:false, depthWrite:false
       });
       points=new THREE.Points(geo,mat); group.add(points);
@@ -1405,17 +1406,21 @@
           cursorLocal.copy(hitV).applyMatrix4(invM);
         } else { useCursor=false; }
       }
+      clock+=0.016;
       for(var k=0;k<n;k+=3){
         p[k]  +=(targets[k]  -p[k]  )*SPRING;
         p[k+1]+=(targets[k+1]-p[k+1])*SPRING;
         p[k+2]+=(targets[k+2]-p[k+2])*SPRING;
+        var ph=clock+targets[k]*0.22+targets[k+1]*0.16;
+        p[k]+=Math.sin(ph)*0.045; p[k+1]+=Math.cos(ph)*0.045;
         if(useCursor){
           var dx=p[k]-cursorLocal.x, dy=p[k+1]-cursorLocal.y, d2=dx*dx+dy*dy;
           if(d2<REPEL_R2){ var d=Math.sqrt(d2)||0.001, f=(1-d/REPEL_R)*REPEL_PUSH; p[k]+=dx/d*f; p[k+1]+=dy/d*f; p[k+2]+=(1-d/REPEL_R)*REPEL_PUSH*1.2; }
         }
       }
       points.geometry.attributes.position.needsUpdate=true;
-      autoRot+=0.003;
+      var ph2=((autoRot%(Math.PI*2))+Math.PI*2)%(Math.PI*2);
+      autoRot+=0.0011+0.0023*Math.pow(Math.abs(Math.sin(2.0*ph2)),1.4);
       group.rotation.y=dragRotY+autoRot;
       group.rotation.x=dragRotX;
       // A 方案：越接近侧面，粒子越褪成单色，让“字”浮现
