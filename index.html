@@ -1376,7 +1376,13 @@
       geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
       geo.setAttribute('color',new THREE.Float32BufferAttribute(col,3));
       targets=new Float32Array(tgt);
-      var mat=new THREE.PointsMaterial({size:0.5,map:sprite,vertexColors:true,sizeAttenuation:true,transparent:true,depthWrite:false,opacity:1});
+      var pr=Math.min(window.devicePixelRatio||1,2);
+      var mat=new THREE.ShaderMaterial({
+        uniforms:{ uTex:{value:sprite}, uSize:{value:3.2*pr}, uMono:{value:0}, uMonoColor:{value:new THREE.Color(0.95,0.86,0.62)} },
+        vertexShader:'attribute vec3 color; varying vec3 vColor; uniform float uSize; void main(){ vColor=color; vec4 mv=modelViewMatrix*vec4(position,1.0); gl_PointSize=uSize; gl_Position=projectionMatrix*mv; }',
+        fragmentShader:'uniform sampler2D uTex; uniform float uMono; uniform vec3 uMonoColor; varying vec3 vColor; void main(){ vec4 t=texture2D(uTex, gl_PointCoord); if(t.a<0.1) discard; vec3 c=mix(vColor, uMonoColor, uMono); gl_FragColor=vec4(c, t.a); }',
+        transparent:true, depthTest:false, depthWrite:false
+      });
       points=new THREE.Points(geo,mat); group.add(points);
       group.rotation.set(0,0,0); dragRotY=0; dragRotX=0; autoRot=0;
       // 按屏幕与画面尺寸自动适配缩放，打开即铺满
@@ -1412,6 +1418,10 @@
       autoRot+=0.003;
       group.rotation.y=dragRotY+autoRot;
       group.rotation.x=dragRotX;
+      // A 方案：越接近侧面，粒子越褪成单色，让“字”浮现
+      var ay=((group.rotation.y%(Math.PI*2))+Math.PI*2)%(Math.PI*2);
+      var side=Math.abs(Math.sin(ay));
+      if(points.material.uniforms) points.material.uniforms.uMono.value=Math.max(0,Math.min(1,(side-0.5)/0.35));
     }
     renderer.render(scene,camera);
   }
