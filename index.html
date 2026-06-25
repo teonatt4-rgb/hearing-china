@@ -371,7 +371,7 @@
 <div class="particle-stage" id="particle-stage" aria-hidden="true">
   <div class="ps-title" id="ps-title"></div>
   <button class="ps-close" id="ps-close" type="button" aria-label="关闭">×</button>
-  <div class="ps-hint">拖动旋转 · 滚轮缩放 · Drag to rotate</div>
+  <div class="ps-hint">移动鼠标拨动粒子 · 拖动旋转 · 滚轮缩放</div>
 </div>
 <div class="wrap">
 <header>
@@ -1297,9 +1297,13 @@
   });
 
   if(typeof THREE==='undefined') return;
-  var renderer,scene,camera,group,points,raf;
-  var targets,assembling=false;
-  var autoRot=0,dragRotY=0,dragRotX=0,dragging=false,lastX,lastY,camDist=46;
+  var renderer,scene,camera,group,points,raf,sprite;
+  var targets;
+  var autoRot=0,dragRotY=0,dragRotX=0,dragging=false,lastX,lastY,camDist=40;
+  var mouseNDC=new THREE.Vector2(), cursorActive=false;
+  var ray=new THREE.Raycaster(), plane=new THREE.Plane(new THREE.Vector3(0,0,1),0);
+  var hitV=new THREE.Vector3(), cursorLocal=new THREE.Vector3(), invM=new THREE.Matrix4();
+  var REPEL_R=5.5, REPEL_R2=REPEL_R*REPEL_R, REPEL_PUSH=1.0, SPRING=0.075;
 
   function initThree(){
     renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
@@ -1308,13 +1312,17 @@
     scene=new THREE.Scene();
     camera=new THREE.PerspectiveCamera(50,1,0.1,3000);
     group=new THREE.Group(); scene.add(group);
+    sprite=makeSprite();
     var el=renderer.domElement;
-    el.addEventListener('pointerdown',function(e){ dragging=true; lastX=e.clientX; lastY=e.clientY; });
-    window.addEventListener('pointermove',function(e){ if(!dragging)return; dragRotY+=(e.clientX-lastX)*0.005; dragRotX+=(e.clientY-lastY)*0.005; dragRotX=Math.max(-1.1,Math.min(1.1,dragRotX)); lastX=e.clientX; lastY=e.clientY; });
+    el.addEventListener('pointerdown',function(e){ dragging=true; lastX=e.clientX; lastY=e.clientY; updateNDC(e); });
+    window.addEventListener('pointermove',function(e){ updateNDC(e); if(dragging){ dragRotY+=(e.clientX-lastX)*0.008; dragRotX+=(e.clientY-lastY)*0.008; dragRotX=Math.max(-1.1,Math.min(1.1,dragRotX)); lastX=e.clientX; lastY=e.clientY; } });
     window.addEventListener('pointerup',function(){ dragging=false; });
-    el.addEventListener('wheel',function(e){ e.preventDefault(); camDist=Math.max(18,Math.min(95,camDist+e.deltaY*0.03)); if(camera)camera.position.z=camDist; },{passive:false});
+    el.addEventListener('pointerleave',function(){ cursorActive=false; });
+    el.addEventListener('wheel',function(e){ e.preventDefault(); camDist=Math.max(16,Math.min(95,camDist+e.deltaY*0.03)); if(camera)camera.position.z=camDist; },{passive:false});
     window.addEventListener('resize',function(){ if(stage.classList.contains('open')) resize(); });
   }
+  function updateNDC(e){ var r=stage.getBoundingClientRect(); if(!r.width)return; mouseNDC.x=((e.clientX-r.left)/r.width)*2-1; mouseNDC.y=-((e.clientY-r.top)/r.height)*2+1; cursorActive=true; }
+  function makeSprite(){ var c=document.createElement('canvas'); c.width=c.height=64; var x=c.getContext('2d'); var g=x.createRadialGradient(32,32,0,32,32,32); g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.4,'rgba(255,255,255,.75)'); g.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle=g; x.fillRect(0,0,64,64); return new THREE.CanvasTexture(c); }
   function resize(){
     var w=stage.clientWidth||window.innerWidth||800, h=stage.clientHeight||window.innerHeight||600;
     renderer.setSize(w,h); camera.aspect=w/h; camera.updateProjectionMatrix();
@@ -1322,18 +1330,18 @@
   function buildFromImage(src){
     var img=new Image(); img.crossOrigin='anonymous';
     img.onload=function(){
-      var cw=170, ch=Math.max(1,Math.round(cw*img.naturalHeight/img.naturalWidth));
+      var cw=260, ch=Math.max(1,Math.round(cw*img.naturalHeight/img.naturalWidth));
       var c=document.createElement('canvas'); c.width=cw; c.height=ch;
       var cx=c.getContext('2d'); cx.drawImage(img,0,0,cw,ch);
       var data; try{ data=cx.getImageData(0,0,cw,ch).data; }catch(err){ return; }
-      var scale=0.17, depth=7, pos=[], col=[], tgt=[];
+      var scale=0.14, depth=15, pos=[], col=[], tgt=[];
       for(var y=0;y<ch;y++){ for(var x=0;x<cw;x++){
         var i=(y*cw+x)*4;
-        var r=data[i]/255, g=data[i+1]/255, b=data[i+2]/255;
+        var r=Math.min(1,data[i]/255*1.12), g=Math.min(1,data[i+1]/255*1.12), b=Math.min(1,data[i+2]/255*1.12);
         var lum=0.299*r+0.587*g+0.114*b;
         tgt.push((x-cw/2)*scale, -(y-ch/2)*scale, (lum-0.5)*depth);
-        var a=Math.random()*Math.PI*2, rad=40+Math.random()*45;
-        pos.push(Math.cos(a)*rad, Math.sin(a)*rad, (Math.random()-0.5)*130);
+        var a=Math.random()*Math.PI*2, rad=45+Math.random()*55;
+        pos.push(Math.cos(a)*rad, Math.sin(a)*rad, (Math.random()-0.5)*160);
         col.push(r,g,b);
       }}
       if(points){ group.remove(points); points.geometry.dispose(); points.material.dispose(); }
@@ -1341,24 +1349,38 @@
       geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
       geo.setAttribute('color',new THREE.Float32BufferAttribute(col,3));
       targets=new Float32Array(tgt);
-      var mat=new THREE.PointsMaterial({size:0.22,vertexColors:true,sizeAttenuation:true,transparent:true,opacity:0.96});
+      var mat=new THREE.PointsMaterial({size:0.5,map:sprite,vertexColors:true,sizeAttenuation:true,transparent:true,depthWrite:false,opacity:1});
       points=new THREE.Points(geo,mat); group.add(points);
-      assembling=true; group.rotation.set(0,0,0); dragRotY=0; dragRotX=0; autoRot=0;
+      group.rotation.set(0,0,0); dragRotY=0; dragRotX=0; autoRot=0;
     };
     img.src=src;
   }
   function animate(){
     raf=requestAnimationFrame(animate);
     if(points){
-      if(assembling){
-        var p=points.geometry.attributes.position.array, done=true;
-        for(var k=0;k<p.length;k++){ var d=targets[k]-p[k]; p[k]+=d*0.1; if(Math.abs(d)>0.05) done=false; }
-        points.geometry.attributes.position.needsUpdate=true;
-        if(done) assembling=false;
+      var p=points.geometry.attributes.position.array, n=p.length;
+      var useCursor=cursorActive&&!dragging;
+      if(useCursor){
+        ray.setFromCamera(mouseNDC,camera);
+        if(ray.ray.intersectPlane(plane,hitV)){
+          group.updateMatrixWorld();
+          invM.copy(group.matrixWorld).invert();
+          cursorLocal.copy(hitV).applyMatrix4(invM);
+        } else { useCursor=false; }
       }
-      autoRot+=0.0022;
-      group.rotation.y=dragRotY+autoRot;
-      group.rotation.x=dragRotX;
+      for(var k=0;k<n;k+=3){
+        p[k]  +=(targets[k]  -p[k]  )*SPRING;
+        p[k+1]+=(targets[k+1]-p[k+1])*SPRING;
+        p[k+2]+=(targets[k+2]-p[k+2])*SPRING;
+        if(useCursor){
+          var dx=p[k]-cursorLocal.x, dy=p[k+1]-cursorLocal.y, d2=dx*dx+dy*dy;
+          if(d2<REPEL_R2){ var d=Math.sqrt(d2)||0.001, f=(1-d/REPEL_R)*REPEL_PUSH; p[k]+=dx/d*f; p[k+1]+=dy/d*f; p[k+2]+=(1-d/REPEL_R)*REPEL_PUSH*1.2; }
+        }
+      }
+      points.geometry.attributes.position.needsUpdate=true;
+      autoRot+=0.012;
+      group.rotation.y=dragRotY+Math.sin(autoRot)*0.22;
+      group.rotation.x=dragRotX+Math.sin(autoRot*0.5)*0.06;
     }
     renderer.render(scene,camera);
   }
@@ -1369,7 +1391,7 @@
     titleEl.innerHTML=zh+(en?'<small>'+en+'</small>':'');
     document.querySelectorAll('audio').forEach(function(a){ if(!a.paused)a.pause(); });
     resize();
-    camDist=46; camera.position.set(0,0,camDist);
+    camDist=40; camera.position.set(0,0,camDist);
     buildFromImage(src);
     if(!raf) animate();
   }
