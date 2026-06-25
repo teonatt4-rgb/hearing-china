@@ -1,6 +1,9 @@
 # 本地预览用的辅助脚本，不需要上线
 _serve.js
 
+# 5K 原图母版（已压成 .jpg 上线，母版留本地备份、不部署）
+*.png.png
+
 # 系统文件
 .DS_Store
 Thumbs.db
