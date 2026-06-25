@@ -11,6 +11,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%239e3b2c'/><circle cx='16' cy='16' r='7' fill='none' stroke='%23b08a3e' stroke-width='2'/></svg>">
 <title>听见中国 · Hearing China</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="china.js"></script>
 <style>
   :root{ --ink:#262220; --paper:#f4efe4; --paper2:#ece4d4; --cinnabar:#9e3b2c; --gold:#b08a3e; --muted:#726b5e; --card:#fffdf9; --line:#ddd3c0;}
@@ -343,6 +344,18 @@
   footer{ position:relative; border-top:1px solid var(--gold); box-shadow:inset 0 3px 0 -1px rgba(176,138,62,.3);}
   .footer-seal{ width:62px; height:62px; margin:0 auto 18px; opacity:.92; transform:rotate(-4deg);}
   .footer-seal svg{ width:100%; height:100%;}
+  /* 立体粒子云观赏 */
+  .depth-btn{ position:absolute; left:12px; bottom:12px; z-index:4; display:inline-flex; align-items:center; gap:6px; padding:6px 13px; border:1px solid rgba(255,253,249,.7); background:rgba(38,34,32,.42); color:#fff; font-family:"Songti SC","STSong",serif; font-size:12.5px; letter-spacing:2px; cursor:pointer; backdrop-filter:blur(3px); transition:all .25s;}
+  .depth-btn:hover{ background:var(--cinnabar); border-color:var(--cinnabar);}
+  .particle-stage{ position:fixed; inset:0; z-index:80; display:none; background:radial-gradient(circle at 50% 38%, #2b2722, #14110e 82%); touch-action:none;}
+  .particle-stage.open{ display:block;}
+  .particle-stage canvas{ display:block;}
+  .ps-title{ position:absolute; top:26px; left:30px; z-index:2; color:#f6efe1; font-family:"Songti SC","STSong",serif; font-size:23px; letter-spacing:5px; pointer-events:none;}
+  .ps-title small{ display:block; font-family:Georgia,serif; font-style:italic; font-size:12px; letter-spacing:1px; color:#caa86f; margin-top:5px;}
+  .ps-close{ position:absolute; top:20px; right:22px; z-index:2; width:44px; height:44px; border:1px solid rgba(255,245,224,.5); border-radius:0; background:rgba(255,253,249,.12); color:#fff; font-size:24px; cursor:pointer;}
+  .ps-close:hover{ background:rgba(255,253,249,.24);}
+  .ps-hint{ position:absolute; bottom:26px; left:50%; transform:translateX(-50%); z-index:2; color:rgba(255,245,224,.62); font-family:"Songti SC",serif; font-size:13px; letter-spacing:3px; pointer-events:none;}
+  body.particle-open{ overflow:hidden;}
   /* ===================== /新中式 ===================== */
   @media(prefers-reduced-motion:reduce){
     *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important;}
@@ -355,6 +368,11 @@
 <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 <div class="unlock-flare" id="unlock-flare" aria-hidden="true"><span class="unlock-seal">岭南 · 启<small>Lingnan Unlocked</small></span></div>
 <div class="side-seal" aria-hidden="true"><span class="ss-mark">印</span><span class="ss-line"></span><span class="ss-title">听见中国</span></div>
+<div class="particle-stage" id="particle-stage" aria-hidden="true">
+  <div class="ps-title" id="ps-title"></div>
+  <button class="ps-close" id="ps-close" type="button" aria-label="关闭">×</button>
+  <div class="ps-hint">拖动旋转 · 滚轮缩放 · Drag to rotate</div>
+</div>
 <div class="wrap">
 <header>
   <div class="header-ink" aria-hidden="true"><svg viewBox="0 0 1200 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,220 L0,140 C120,108 260,96 380,120 C520,148 640,150 760,118 C900,80 1040,104 1200,128 L1200,220 Z" fill="#726b5e" opacity="0.10"/><path d="M0,220 L0,172 C160,150 320,176 470,182 C650,189 820,168 980,180 C1080,187 1140,184 1200,176 L1200,220 Z" fill="#9e3b2c" opacity="0.06"/></svg></div>
@@ -1255,6 +1273,114 @@
     au.addEventListener('play', function(){ pauseOtherAudio(this); var card=this.closest('.card'); if(!card) return; card.classList.add('playing'); var idx=songIndexById(card.id); if(chart&&idx>=0) chart.dispatchAction({type:'highlight',seriesIndex:0,dataIndex:idx}); });
     au.addEventListener('pause', function(){ var card=this.closest('.card'); if(!card) return; card.classList.remove('playing'); var idx=songIndexById(card.id); if(chart&&idx>=0) chart.dispatchAction({type:'downplay',seriesIndex:0,dataIndex:idx}); });
   });
+</script>
+<script>
+/* ===== 立体粒子云观赏 · Three.js ===== */
+(function(){
+  var stage=document.getElementById('particle-stage');
+  if(!stage) return;
+  var titleEl=document.getElementById('ps-title');
+  // 给每张卡片配图加“立体观赏”按钮（即便 Three.js 没加载也先挂上，点了再判断）
+  document.querySelectorAll('.card').forEach(function(card){
+    var box=card.querySelector('.imgbox'), img=box&&box.querySelector('img');
+    if(!box||!img) return;
+    var btn=document.createElement('button');
+    btn.className='depth-btn'; btn.type='button'; btn.textContent='◳ 立体观赏';
+    box.appendChild(btn);
+    var zh=(card.querySelector('h3')||{}).textContent||'';
+    var en=(card.querySelector('.en-title')||{}).textContent||'';
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      if(typeof THREE==='undefined'){ alert('立体观赏需要联网加载 3D 组件，请检查网络后重试。'); return; }
+      openStage(img.getAttribute('src'), zh, en);
+    });
+  });
+
+  if(typeof THREE==='undefined') return;
+  var renderer,scene,camera,group,points,raf;
+  var targets,assembling=false;
+  var autoRot=0,dragRotY=0,dragRotX=0,dragging=false,lastX,lastY,camDist=46;
+
+  function initThree(){
+    renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+    stage.appendChild(renderer.domElement);
+    scene=new THREE.Scene();
+    camera=new THREE.PerspectiveCamera(50,1,0.1,3000);
+    group=new THREE.Group(); scene.add(group);
+    var el=renderer.domElement;
+    el.addEventListener('pointerdown',function(e){ dragging=true; lastX=e.clientX; lastY=e.clientY; });
+    window.addEventListener('pointermove',function(e){ if(!dragging)return; dragRotY+=(e.clientX-lastX)*0.005; dragRotX+=(e.clientY-lastY)*0.005; dragRotX=Math.max(-1.1,Math.min(1.1,dragRotX)); lastX=e.clientX; lastY=e.clientY; });
+    window.addEventListener('pointerup',function(){ dragging=false; });
+    el.addEventListener('wheel',function(e){ e.preventDefault(); camDist=Math.max(18,Math.min(95,camDist+e.deltaY*0.03)); if(camera)camera.position.z=camDist; },{passive:false});
+    window.addEventListener('resize',function(){ if(stage.classList.contains('open')) resize(); });
+  }
+  function resize(){
+    var w=stage.clientWidth||window.innerWidth||800, h=stage.clientHeight||window.innerHeight||600;
+    renderer.setSize(w,h); camera.aspect=w/h; camera.updateProjectionMatrix();
+  }
+  function buildFromImage(src){
+    var img=new Image(); img.crossOrigin='anonymous';
+    img.onload=function(){
+      var cw=170, ch=Math.max(1,Math.round(cw*img.naturalHeight/img.naturalWidth));
+      var c=document.createElement('canvas'); c.width=cw; c.height=ch;
+      var cx=c.getContext('2d'); cx.drawImage(img,0,0,cw,ch);
+      var data; try{ data=cx.getImageData(0,0,cw,ch).data; }catch(err){ return; }
+      var scale=0.17, depth=7, pos=[], col=[], tgt=[];
+      for(var y=0;y<ch;y++){ for(var x=0;x<cw;x++){
+        var i=(y*cw+x)*4;
+        var r=data[i]/255, g=data[i+1]/255, b=data[i+2]/255;
+        var lum=0.299*r+0.587*g+0.114*b;
+        tgt.push((x-cw/2)*scale, -(y-ch/2)*scale, (lum-0.5)*depth);
+        var a=Math.random()*Math.PI*2, rad=40+Math.random()*45;
+        pos.push(Math.cos(a)*rad, Math.sin(a)*rad, (Math.random()-0.5)*130);
+        col.push(r,g,b);
+      }}
+      if(points){ group.remove(points); points.geometry.dispose(); points.material.dispose(); }
+      var geo=new THREE.BufferGeometry();
+      geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+      geo.setAttribute('color',new THREE.Float32BufferAttribute(col,3));
+      targets=new Float32Array(tgt);
+      var mat=new THREE.PointsMaterial({size:0.22,vertexColors:true,sizeAttenuation:true,transparent:true,opacity:0.96});
+      points=new THREE.Points(geo,mat); group.add(points);
+      assembling=true; group.rotation.set(0,0,0); dragRotY=0; dragRotX=0; autoRot=0;
+    };
+    img.src=src;
+  }
+  function animate(){
+    raf=requestAnimationFrame(animate);
+    if(points){
+      if(assembling){
+        var p=points.geometry.attributes.position.array, done=true;
+        for(var k=0;k<p.length;k++){ var d=targets[k]-p[k]; p[k]+=d*0.1; if(Math.abs(d)>0.05) done=false; }
+        points.geometry.attributes.position.needsUpdate=true;
+        if(done) assembling=false;
+      }
+      autoRot+=0.0022;
+      group.rotation.y=dragRotY+autoRot;
+      group.rotation.x=dragRotX;
+    }
+    renderer.render(scene,camera);
+  }
+  function openStage(src,zh,en){
+    if(!renderer) initThree();
+    stage.classList.add('open'); stage.setAttribute('aria-hidden','false');
+    document.body.classList.add('particle-open');
+    titleEl.innerHTML=zh+(en?'<small>'+en+'</small>':'');
+    document.querySelectorAll('audio').forEach(function(a){ if(!a.paused)a.pause(); });
+    resize();
+    camDist=46; camera.position.set(0,0,camDist);
+    buildFromImage(src);
+    if(!raf) animate();
+  }
+  function closeStage(){
+    stage.classList.remove('open'); stage.setAttribute('aria-hidden','true');
+    document.body.classList.remove('particle-open');
+    if(raf){ cancelAnimationFrame(raf); raf=null; }
+  }
+  document.getElementById('ps-close').addEventListener('click',closeStage);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&stage.classList.contains('open')) closeStage(); });
+})();
 </script>
 </body>
 </html>
