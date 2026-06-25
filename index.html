@@ -1333,7 +1333,7 @@
     var x=c.getContext('2d');
     x.fillStyle='#000'; x.fillRect(0,0,U,rows);
     x.fillStyle='#fff'; x.textAlign='center'; x.textBaseline='middle';
-    x.font='bold '+Math.floor(rows*0.96)+'px "SimHei","Songti SC","STSong",sans-serif';
+    x.font='bold '+Math.floor(rows*0.84)+'px "SimHei","Songti SC","STSong",sans-serif';
     x.fillText(chr.charAt(0), U/2, rows/2);
     var d; try{ d=x.getImageData(0,0,U,rows).data; }catch(e){ return null; }
     var onRows=[], any=false;
@@ -1350,12 +1350,12 @@
   function buildFromImage(src, sideChar){
     var img=new Image(); img.crossOrigin='anonymous';
     img.onload=function(){
-      var cw=240, ch=Math.max(1,Math.round(cw*img.naturalHeight/img.naturalWidth));
+      var cw=300, ch=Math.max(1,Math.round(cw*img.naturalHeight/img.naturalWidth));
       var c=document.createElement('canvas'); c.width=cw; c.height=ch;
       var cx=c.getContext('2d'); cx.drawImage(img,0,0,cw,ch);
       var data; try{ data=cx.getImageData(0,0,cw,ch).data; }catch(err){ return; }
-      var scale=0.14, pos=[], col=[], tgt=[];
-      var U=96, scaleZ=0.2, onRows=charMask(sideChar, U, ch);
+      var scale=0.11, pos=[], col=[], tgt=[];
+      var U=110, scaleZ=0.18, onRows=charMask(sideChar, U, ch);
       for(var y=0;y<ch;y++){
         var onc=onRows?onRows[y]:null;
         for(var x=0;x<cw;x++){
@@ -1363,7 +1363,7 @@
           var r=Math.min(1,data[i]/255*1.12), g=Math.min(1,data[i+1]/255*1.12), b=Math.min(1,data[i+2]/255*1.12);
           var X=(x-cw/2)*scale, Y=-(y-ch/2)*scale, Z;
           if(onc && onc.length){ var u=onc[Math.floor(x/cw*onc.length)]; Z=(u-U/2)*scaleZ + (Math.random()-0.5)*scaleZ; }
-          else if(onRows){ Z=(Math.random()-0.5)*3; }
+          else if(onRows){ Z=(Math.random()-0.5)*0.6; }
           else { var lum=0.299*r+0.587*g+0.114*b; Z=(lum-0.5)*15; }
           tgt.push(X, Y, Z);
           var a=Math.random()*Math.PI*2, rad=45+Math.random()*55;
@@ -1379,6 +1379,10 @@
       var mat=new THREE.PointsMaterial({size:0.5,map:sprite,vertexColors:true,sizeAttenuation:true,transparent:true,depthWrite:false,opacity:1});
       points=new THREE.Points(geo,mat); group.add(points);
       group.rotation.set(0,0,0); dragRotY=0; dragRotX=0; autoRot=0;
+      // 按屏幕与画面尺寸自动适配缩放，打开即铺满
+      var halfW=(cw/2)*scale, halfH=(ch/2)*scale;
+      var sw=stage.clientWidth||window.innerWidth||800, sh=stage.clientHeight||window.innerHeight||600;
+      viewSize=Math.max(halfH, halfW/(sw/sh))*1.22; resize();
     };
     img.src=src;
   }
@@ -1405,7 +1409,7 @@
         }
       }
       points.geometry.attributes.position.needsUpdate=true;
-      autoRot+=0.0045;
+      autoRot+=0.003;
       group.rotation.y=dragRotY+autoRot;
       group.rotation.x=dragRotX;
     }
