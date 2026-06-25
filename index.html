@@ -371,7 +371,7 @@
 <div class="particle-stage" id="particle-stage" aria-hidden="true">
   <div class="ps-title" id="ps-title"></div>
   <button class="ps-close" id="ps-close" type="button" aria-label="关闭">×</button>
-  <div class="ps-hint">移动鼠标拨动粒子 · 拖动旋转 · 滚轮缩放</div>
+  <div class="ps-hint">正面是画 · 转到侧面藏着一个字 · 拖动旋转 / 滚轮缩放</div>
 </div>
 <div class="wrap">
 <header>
@@ -1280,6 +1280,8 @@
   var stage=document.getElementById('particle-stage');
   if(!stage) return;
   var titleEl=document.getElementById('ps-title');
+  // 每首作品在“侧面”浮现的字
+  var SIDE_CHARS={ 'song-zandale':'歌','song-changbai':'松','song-kashgar':'星','song-erhai':'舟','song-fishing':'渔','song-thunder':'雷','song-rising':'高','song-kapok':'棉' };
   // 给每张卡片配图加“立体观赏”按钮（即便 Three.js 没加载也先挂上，点了再判断）
   document.querySelectorAll('.card').forEach(function(card){
     var box=card.querySelector('.imgbox'), img=box&&box.querySelector('img');
@@ -1292,14 +1294,14 @@
     btn.addEventListener('click',function(e){
       e.stopPropagation();
       if(typeof THREE==='undefined'){ alert('立体观赏需要联网加载 3D 组件，请检查网络后重试。'); return; }
-      openStage(img.getAttribute('src'), zh, en);
+      openStage(img.getAttribute('src'), zh, en, SIDE_CHARS[card.id]||((zh.trim()||'弦').charAt(0)));
     });
   });
 
   if(typeof THREE==='undefined') return;
   var renderer,scene,camera,group,points,raf,sprite;
   var targets;
-  var autoRot=0,dragRotY=0,dragRotX=0,dragging=false,lastX,lastY,camDist=40;
+  var autoRot=0,dragRotY=0,dragRotX=0,dragging=false,lastX,lastY,viewSize=14;
   var mouseNDC=new THREE.Vector2(), cursorActive=false;
   var ray=new THREE.Raycaster(), plane=new THREE.Plane(new THREE.Vector3(0,0,1),0);
   var hitV=new THREE.Vector3(), cursorLocal=new THREE.Vector3(), invM=new THREE.Matrix4();
@@ -1310,7 +1312,8 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
     stage.appendChild(renderer.domElement);
     scene=new THREE.Scene();
-    camera=new THREE.PerspectiveCamera(50,1,0.1,3000);
+    camera=new THREE.OrthographicCamera(-10,10,10,-10,-1000,1000);
+    camera.position.set(0,0,100);
     group=new THREE.Group(); scene.add(group);
     sprite=makeSprite();
     var el=renderer.domElement;
@@ -1318,32 +1321,56 @@
     window.addEventListener('pointermove',function(e){ updateNDC(e); if(dragging){ dragRotY+=(e.clientX-lastX)*0.008; dragRotX+=(e.clientY-lastY)*0.008; dragRotX=Math.max(-1.1,Math.min(1.1,dragRotX)); lastX=e.clientX; lastY=e.clientY; } });
     window.addEventListener('pointerup',function(){ dragging=false; });
     el.addEventListener('pointerleave',function(){ cursorActive=false; });
-    el.addEventListener('wheel',function(e){ e.preventDefault(); camDist=Math.max(16,Math.min(95,camDist+e.deltaY*0.03)); if(camera)camera.position.z=camDist; },{passive:false});
+    el.addEventListener('wheel',function(e){ e.preventDefault(); viewSize=Math.max(7,Math.min(34,viewSize+e.deltaY*0.012)); resize(); },{passive:false});
     window.addEventListener('resize',function(){ if(stage.classList.contains('open')) resize(); });
   }
   function updateNDC(e){ var r=stage.getBoundingClientRect(); if(!r.width)return; mouseNDC.x=((e.clientX-r.left)/r.width)*2-1; mouseNDC.y=-((e.clientY-r.top)/r.height)*2+1; cursorActive=true; }
   function makeSprite(){ var c=document.createElement('canvas'); c.width=c.height=64; var x=c.getContext('2d'); var g=x.createRadialGradient(32,32,0,32,32,32); g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.4,'rgba(255,255,255,.75)'); g.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle=g; x.fillRect(0,0,64,64); return new THREE.CanvasTexture(c); }
+  // 把一个汉字渲染成逐行的“着墨列”表，用于决定粒子在侧面的深度排布
+  function charMask(chr, U, rows){
+    if(!chr) return null;
+    var c=document.createElement('canvas'); c.width=U; c.height=rows;
+    var x=c.getContext('2d');
+    x.fillStyle='#000'; x.fillRect(0,0,U,rows);
+    x.fillStyle='#fff'; x.textAlign='center'; x.textBaseline='middle';
+    x.font='bold '+Math.floor(rows*0.96)+'px "SimHei","Songti SC","STSong",sans-serif';
+    x.fillText(chr.charAt(0), U/2, rows/2);
+    var d; try{ d=x.getImageData(0,0,U,rows).data; }catch(e){ return null; }
+    var onRows=[], any=false;
+    for(var v=0;v<rows;v++){ var arr=[]; for(var u=0;u<U;u++){ if(d[(v*U+u)*4]>128){ arr.push(u); any=true; } } onRows.push(arr); }
+    return any?onRows:null;
+  }
   function resize(){
     var w=stage.clientWidth||window.innerWidth||800, h=stage.clientHeight||window.innerHeight||600;
-    renderer.setSize(w,h); camera.aspect=w/h; camera.updateProjectionMatrix();
+    renderer.setSize(w,h);
+    var a=w/h;
+    camera.left=-viewSize*a; camera.right=viewSize*a; camera.top=viewSize; camera.bottom=-viewSize;
+    camera.updateProjectionMatrix();
   }
-  function buildFromImage(src){
+  function buildFromImage(src, sideChar){
     var img=new Image(); img.crossOrigin='anonymous';
     img.onload=function(){
-      var cw=260, ch=Math.max(1,Math.round(cw*img.naturalHeight/img.naturalWidth));
+      var cw=240, ch=Math.max(1,Math.round(cw*img.naturalHeight/img.naturalWidth));
       var c=document.createElement('canvas'); c.width=cw; c.height=ch;
       var cx=c.getContext('2d'); cx.drawImage(img,0,0,cw,ch);
       var data; try{ data=cx.getImageData(0,0,cw,ch).data; }catch(err){ return; }
-      var scale=0.14, depth=15, pos=[], col=[], tgt=[];
-      for(var y=0;y<ch;y++){ for(var x=0;x<cw;x++){
-        var i=(y*cw+x)*4;
-        var r=Math.min(1,data[i]/255*1.12), g=Math.min(1,data[i+1]/255*1.12), b=Math.min(1,data[i+2]/255*1.12);
-        var lum=0.299*r+0.587*g+0.114*b;
-        tgt.push((x-cw/2)*scale, -(y-ch/2)*scale, (lum-0.5)*depth);
-        var a=Math.random()*Math.PI*2, rad=45+Math.random()*55;
-        pos.push(Math.cos(a)*rad, Math.sin(a)*rad, (Math.random()-0.5)*160);
-        col.push(r,g,b);
-      }}
+      var scale=0.14, pos=[], col=[], tgt=[];
+      var U=96, scaleZ=0.2, onRows=charMask(sideChar, U, ch);
+      for(var y=0;y<ch;y++){
+        var onc=onRows?onRows[y]:null;
+        for(var x=0;x<cw;x++){
+          var i=(y*cw+x)*4;
+          var r=Math.min(1,data[i]/255*1.12), g=Math.min(1,data[i+1]/255*1.12), b=Math.min(1,data[i+2]/255*1.12);
+          var X=(x-cw/2)*scale, Y=-(y-ch/2)*scale, Z;
+          if(onc && onc.length){ var u=onc[Math.floor(x/cw*onc.length)]; Z=(u-U/2)*scaleZ + (Math.random()-0.5)*scaleZ; }
+          else if(onRows){ Z=(Math.random()-0.5)*3; }
+          else { var lum=0.299*r+0.587*g+0.114*b; Z=(lum-0.5)*15; }
+          tgt.push(X, Y, Z);
+          var a=Math.random()*Math.PI*2, rad=45+Math.random()*55;
+          pos.push(Math.cos(a)*rad, Math.sin(a)*rad, (Math.random()-0.5)*160);
+          col.push(r,g,b);
+        }
+      }
       if(points){ group.remove(points); points.geometry.dispose(); points.material.dispose(); }
       var geo=new THREE.BufferGeometry();
       geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
@@ -1378,21 +1405,21 @@
         }
       }
       points.geometry.attributes.position.needsUpdate=true;
-      autoRot+=0.012;
-      group.rotation.y=dragRotY+Math.sin(autoRot)*0.22;
-      group.rotation.x=dragRotX+Math.sin(autoRot*0.5)*0.06;
+      autoRot+=0.0045;
+      group.rotation.y=dragRotY+autoRot;
+      group.rotation.x=dragRotX;
     }
     renderer.render(scene,camera);
   }
-  function openStage(src,zh,en){
+  function openStage(src,zh,en,sideChar){
     if(!renderer) initThree();
     stage.classList.add('open'); stage.setAttribute('aria-hidden','false');
     document.body.classList.add('particle-open');
     titleEl.innerHTML=zh+(en?'<small>'+en+'</small>':'');
     document.querySelectorAll('audio').forEach(function(a){ if(!a.paused)a.pause(); });
-    resize();
-    camDist=40; camera.position.set(0,0,camDist);
-    buildFromImage(src);
+    viewSize=14; resize();
+    camera.position.set(0,0,100);
+    buildFromImage(src, sideChar);
     if(!raf) animate();
   }
   function closeStage(){
