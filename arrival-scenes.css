@@ -1,0 +1,57 @@
+/* Layered transport illustrations and route-specific moving scenes. */
+.transport-defs{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
+.arrival .game-title{font-size:42px;letter-spacing:5px;line-height:1.45}
+.arrival-heading-row{margin-bottom:32px}
+.arrival .game-sub{max-width:590px}
+.route-option{padding:18px 16px 15px;background:linear-gradient(150deg,#fcf8ee,#f0e8d8);box-shadow:0 4px 0 #e1d5bf,0 7px 12px #b7a68a12;overflow:hidden}
+.route-option:hover{transform:translateY(-5px);box-shadow:0 7px 0 #ddceb5,0 10px 18px #9e896322}
+.route-option[aria-pressed=true]{background:linear-gradient(150deg,#faf0df,#e9d9be);box-shadow:inset 0 3px #9e3b2c,0 4px 0 #b49b79}
+.vehicle-plinth{display:block;width:100%;height:122px;position:relative;margin:6px 0 0;perspective:600px}
+.route-option svg.vehicle-model{display:block;width:100%;height:122px;margin:0;fill:none;stroke:none;transform:rotate(-4deg);transition:transform .35s ease;overflow:visible}
+.route-option:hover svg.vehicle-model,.route-option[aria-pressed=true] svg.vehicle-model{transform:translateY(-6px) rotate(1deg)}
+.route-name{display:flex;width:100%;justify-content:space-between;align-items:center}
+.route-arrow{font:20px/1 Georgia,serif;color:#ab8d5e}
+.route-caption{font-size:11px;letter-spacing:.1px}
+.route-choice{margin-top:11px;padding-top:9px}
+.arrival-experience{grid-template-columns:1.45fr 1fr;margin-top:30px}
+.arrival-landscape{background:#ece8d9;padding-top:23px;padding-bottom:24px}
+.arrival-map{width:100%;min-height:310px;margin:12px 0 14px;overflow:hidden}
+.landscape-label{font-size:10px;letter-spacing:.7px}
+.landscape-label span:last-child{font-family:'Microsoft YaHei',sans-serif;font-size:10px}
+.landscape-caption{font-size:17px}
+.landscape-caption small{font-size:10px}
+.arrival-ticket{padding:24px}
+.arrival-ticket h3{font-size:24px;line-height:1.6;margin-top:20px}
+.arrival-progress{margin-top:16px}
+.arrival-primary{font-family:'Microsoft YaHei',sans-serif;font-size:13px}
+.arrival-secondary{flex-wrap:wrap;gap:5px 14px}
+.candidate-link{display:inline-block;color:#9e3b2c;font:11px/1.8 'Microsoft YaHei',sans-serif;margin-top:8px;text-decoration:underline;text-underline-offset:3px}
+.candidate-link:focus-visible{outline:2px solid #9e3b2c;outline-offset:4px}
+.journey-track{height:2px;background:#d4ccb5;position:absolute;left:24px;right:24px;bottom:9px}
+#journey-track-fill{display:block;width:0;height:100%;background:#9e3b2c}
+.scene-plane,.scene-rail,.scene-metro,.scene-boat{display:none}
+[data-mode=plane] .scene-plane,[data-mode=rail] .scene-rail,[data-mode=metro] .scene-metro,[data-mode=boat] .scene-boat{display:block}
+[data-mode=metro] .scene-outdoors{display:none}
+[data-mode=plane] .scene-houses,[data-mode=plane] .scene-tree,[data-mode=rail] .scene-houses,[data-mode=rail] .scene-tree,[data-mode=boat] .scene-houses,[data-mode=boat] .scene-tree{display:none}
+[data-mode=plane] .distant-hills,[data-mode=boat] .distant-hills{opacity:.2}
+[data-mode=rail] .distant-hills{opacity:.4}
+.landmark-label{font-family:'Microsoft YaHei',sans-serif;font-size:14px;letter-spacing:2px;fill:#736d59}
+.landmark-subtitle{font-family:Georgia,serif;font-size:9px;letter-spacing:2px;fill:#938772}
+[data-mode=boat] .scene-river{opacity:.35}
+[data-phase=idle] #arrival-traveller{opacity:0}
+[data-phase=selected] #arrival-traveller,[data-phase=travelling] #arrival-traveller,[data-phase=arrived] #arrival-traveller{opacity:1}
+[data-mode=metro] .arrival-destination{opacity:.9}
+[data-phase=travelling] .scene-clouds{animation:cloud-drift 4.8s linear both}
+[data-phase=travelling] .distant-hills{animation:hill-drift 4.8s linear both}
+[data-phase=travelling] .scene-ripples{animation:river-flow 2.4s linear 2}
+[data-phase=travelling] .tunnel-ribs{animation:tunnel-flow 4.8s ease-out both}
+[data-phase=arrived] .arrival-destination{animation:destination-glow .8s ease-out}
+@keyframes cloud-drift{to{transform:translateX(-65px)}}
+@keyframes hill-drift{to{transform:translateX(-24px)}}
+@keyframes river-flow{to{transform:translateX(45px)}}
+@keyframes tunnel-flow{to{transform:translateX(-120px)}}
+@keyframes destination-glow{0%{opacity:.3}100%{opacity:1}}
+@media(max-width:960px){.arrival-experience{grid-template-columns:1.18fr 1fr}.arrival-ticket{padding:21px}.vehicle-plinth,.route-option svg.vehicle-model{height:110px}.arrival-ticket h3{font-size:21px}.landscape-label{gap:8px;padding:0 18px}.landscape-label span:last-child{font-size:9px}}
+@media(max-width:760px){.arrival .game-title{font-size:34px;letter-spacing:3px}.arrival-experience{grid-template-columns:1fr}.arrival-map{max-height:none;min-height:0;margin:16px 0 14px}.vehicle-plinth,.route-option svg.vehicle-model{height:116px}.arrival-ticket{padding:24px}.arrival-ticket h3{font-size:24px}.arrival-landscape{padding-top:20px;padding-bottom:25px}.landscape-caption{font-size:16px}.landscape-label span:last-child{font-size:10px}.route-options{gap:14px 12px}.route-option{padding:16px 14px}.route-caption{font-size:10px}}
+@media(max-width:420px){.arrival .game-title{font-size:32px}.vehicle-plinth,.route-option svg.vehicle-model{height:97px}.route-number{font-size:9px;letter-spacing:.6px}.route-caption{font-size:10px;letter-spacing:0}.route-option{padding:13px 11px}.route-option strong{font-size:22px}.arrival-ticket h3{font-size:22px}}
+@media(prefers-reduced-motion:reduce){.arrival *{animation:none!important;transition:none!important}.route-option:hover,.route-option:hover svg.vehicle-model,.route-option[aria-pressed=true] svg.vehicle-model{transform:none}}

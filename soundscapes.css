@@ -1,0 +1,27 @@
+/* Silent eight-second listening impressions: line, light and movement, never substitute audio. */
+.layered-ready .quiet-art{display:none;position:absolute;inset:0;overflow:hidden;align-items:stretch;justify-content:stretch;text-align:left;background:radial-gradient(circle at 69% 31%,color-mix(in srgb,var(--scene-accent) 23%,transparent),transparent 39%),linear-gradient(155deg,var(--scene-top),var(--scene-bottom));color:#f6efe1}
+.layered-ready .quiet-art::before{display:none}
+.layered-ready .sound-focused .quiet-art{display:block}
+.scene-visual{position:absolute;inset:0;width:100%;height:100%;opacity:.94}
+.scene-caption{position:absolute;z-index:2;top:26px;left:29px;right:22px;text-shadow:0 1px 8px #101b22a8}
+.scene-caption small{font:10px/1.6 sans-serif;letter-spacing:2px;color:#f4e7d0d9}
+.scene-caption p{font:30px/1.45 'Songti SC',serif;letter-spacing:4px;color:#fff8e9;margin:9px 0 6px}
+.scene-caption span{font:11px/1.6 sans-serif;color:#e8e3d4ba}
+.scene-halo{animation:sceneHalo 8s ease-in-out infinite alternate}
+.scene-string,.scene-flow{animation:sceneDrift 8s ease-in-out infinite alternate}
+.scene-float,.scene-sway{animation:sceneFloat 8s ease-in-out infinite alternate;transform-origin:center}
+.scene-fall,.scene-rain{animation:sceneFall 8s ease-in-out infinite;transform-origin:center}
+.scene-rise{animation:sceneRise 8s ease-in-out infinite alternate}
+.scene-pulse{animation:scenePulse 8s ease-in-out infinite alternate;transform-origin:center}
+.scene-shimmer{animation:sceneShimmer 8s ease-in-out infinite alternate}
+.scene-flash{animation:sceneFlash 8s ease-in-out infinite}
+@keyframes sceneHalo{from{opacity:.04;transform:scale(.88)}to{opacity:.15;transform:scale(1.09)}}
+@keyframes sceneDrift{from{transform:translateX(-13px)}to{transform:translateX(15px)}}
+@keyframes sceneFloat{from{transform:translate(-5px,5px) rotate(-1deg)}to{transform:translate(7px,-8px) rotate(1deg)}}
+@keyframes sceneFall{0%{transform:translateY(-24px);opacity:.3}30%,78%{opacity:.8}100%{transform:translateY(28px);opacity:.2}}
+@keyframes sceneRise{from{transform:translate(-8px,11px);opacity:.58}to{transform:translate(8px,-12px);opacity:1}}
+@keyframes scenePulse{from{transform:scale(.94);opacity:.56}to{transform:scale(1.07);opacity:.95}}
+@keyframes sceneShimmer{from{opacity:.43}to{opacity:.89}}
+@keyframes sceneFlash{0%,42%,51%,100%{opacity:.24}46%,48%{opacity:.86}}
+@media(max-width:700px){.scene-caption{top:18px;left:20px;right:18px;isolation:isolate}.scene-caption::before{content:"";position:absolute;z-index:-1;inset:-12px -9px -17px -12px;border-radius:8px;background:linear-gradient(100deg,rgba(12,29,32,.64),rgba(12,29,32,.2) 70%,transparent)}.scene-caption p{font-size:23px;margin-top:5px}.scene-caption span{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.scene-visual *{animation:none!important}}

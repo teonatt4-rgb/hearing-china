@@ -1,0 +1,40 @@
+/* Curation structure: inherit the existing paper, cinnabar and ink palette. */
+.curation-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px 22px;margin:24px 0 10px;position:relative;z-index:2}
+.curation-actions a,.curation-actions button{font:13px/1.7 'Microsoft YaHei',sans-serif;color:var(--cinnabar);text-decoration:none;padding:10px 15px;border:1px solid var(--line);background:transparent;cursor:pointer}
+.curation-actions .curation-primary{color:var(--paper);background:var(--cinnabar);border-color:var(--cinnabar)}
+.curation-actions a:hover,.curation-actions button:hover{box-shadow:0 3px 0 #b08a3e55}
+.map-key{display:flex;justify-content:center;gap:12px 24px;flex-wrap:wrap;font:12px/1.8 'Microsoft YaHei',sans-serif;color:var(--muted);margin-top:12px}
+.map-key i{display:inline-block;width:9px;height:9px;margin-right:7px;background:var(--cinnabar);border-radius:50%}
+.map-key .map-key-guest{border-radius:0;background:#7a8870;transform:rotate(45deg)}
+.map-scope{font:12px/1.9 'Microsoft YaHei',sans-serif;color:var(--muted);text-align:center;max-width:700px;margin:12px auto 0}
+.listening-route{max-width:952px;margin:35px auto 0;display:grid;grid-template-columns:repeat(4,1fr);border-block:1px solid var(--line);position:relative}
+.listening-route a,.listening-route button{font:15px/1.8 'Songti SC',serif;text-decoration:none;color:var(--ink);border:0;background:transparent;text-align:left;padding:17px 20px;cursor:pointer;position:relative}
+.listening-route a:not(:last-child)::after,.listening-route button::after{content:'→';position:absolute;right:7px;top:32px;color:var(--gold)}
+.listening-route small{display:block;font:10px/1.9 Georgia,'Microsoft YaHei',serif;letter-spacing:1.5px;color:var(--cinnabar);margin-bottom:5px}
+.curation-section{max-width:952px;margin:65px auto;padding:32px 0;scroll-margin-top:24px}
+.curation-kicker{font:11px/1.8 Georgia,'Microsoft YaHei',serif;letter-spacing:2px;color:var(--cinnabar);margin-bottom:15px}
+.curation-section h2{font-weight:400;font-size:30px;letter-spacing:2px;line-height:1.5;margin-bottom:24px}
+.curation-section h3{font-size:18px;font-weight:400;margin-bottom:10px;color:var(--cinnabar)}
+.curation-section p{font:14px/2 'Microsoft YaHei',sans-serif;color:#625e53;max-width:780px}
+.origin-columns{display:grid;grid-template-columns:1fr 1fr;gap:36px}
+.curation-section .curation-english{font:13px/1.9 Georgia,serif;color:var(--muted);margin-top:20px;max-width:780px}
+.curation-text-link{display:inline-block;margin-top:18px;color:var(--cinnabar);font:13px/1.8 'Microsoft YaHei',sans-serif;text-decoration:underline;text-underline-offset:5px}
+.visit-ending .curation-text-link{display:block}
+.contribute-section{border-block:1px solid var(--gold);padding:38px 30px;background:linear-gradient(120deg,#ebe1cb66,transparent)}
+.contribution-steps{display:grid;grid-template-columns:repeat(4,1fr);list-style:none;counter-reset:steps;padding:0;margin:28px 0;gap:18px}
+.contribution-steps li{counter-increment:steps;border-top:1px solid var(--line);padding-top:14px}
+.contribution-steps li::before{content:'0' counter(steps);display:block;color:var(--gold);font:20px/1.8 Georgia,serif}
+.contribution-steps strong{font-size:15px;font-weight:400;display:block}.contribution-steps span{font:11px/1.8 'Microsoft YaHei',sans-serif;color:var(--muted)}
+.curation-details{border-top:1px solid var(--line);margin-top:25px;padding-top:18px}.curation-details summary{cursor:pointer;color:var(--cinnabar);font-size:16px;padding:4px 0 10px}.curation-details[open] summary{margin-bottom:14px}
+.curation-section .prototype-notice{font-size:12px;color:var(--muted);border-left:2px solid var(--gold);padding-left:14px;margin-bottom:24px}
+.contribution-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}
+#contribution-form label{display:block;font:13px/1.8 'Microsoft YaHei',sans-serif;color:var(--ink);margin-bottom:18px}
+#contribution-form input,#contribution-form textarea{display:block;box-sizing:border-box;width:100%;border:1px solid #c7baa2;background:#fffdf780;color:var(--ink);padding:12px;font:13px/1.8 'Microsoft YaHei',sans-serif;margin-top:7px;border-radius:0}
+#contribution-form textarea{min-height:90px;resize:vertical}#contribution-form .curation-actions{justify-content:flex-start}
+#contribution-result{padding:22px;background:#fffdf780;border:1px solid var(--line);margin-top:25px;overflow-wrap:anywhere}
+#contribution-preview{font:13px/1.9 'Microsoft YaHei',sans-serif;display:grid;grid-template-columns:125px 1fr;gap:8px 15px;margin-top:18px}#contribution-preview dt{color:var(--muted)}#contribution-preview dd{margin:0;white-space:pre-wrap}
+.authorship-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:25px}.authorship-grid>div{border-top:2px solid var(--line);padding-top:17px}.authorship-grid small{font:11px/1.8 'Microsoft YaHei',sans-serif;color:var(--muted)}.authorship-grid h3{margin:9px 0}.authorship-grid p{font-size:13px}
+.process-log{padding-left:22px}.process-log li{padding:8px 0 15px 10px}.process-log strong{font-weight:400;color:var(--cinnabar)}.process-log p{font-size:13px;margin-top:5px}
+.curation-section :focus-visible,.listening-route :focus-visible,.curation-actions :focus-visible{outline:2px solid var(--cinnabar);outline-offset:4px}
+@media(max-width:1000px){.curation-section,.listening-route{margin-left:24px;margin-right:24px}}
+@media(max-width:650px){.curation-section{margin:38px 20px;padding-top:24px;padding-bottom:24px}.curation-section h2{font-size:25px}.origin-columns,.authorship-grid,.contribution-grid{grid-template-columns:1fr;gap:22px}.contribution-grid{gap:0}.listening-route{grid-template-columns:1fr 1fr;margin:25px 20px}.listening-route a,.listening-route button{padding:15px}.listening-route button:nth-child(2)::after{display:none}.contribute-section{padding:26px 20px}.contribution-steps{grid-template-columns:1fr 1fr;gap:18px}.map-key{justify-content:flex-start;gap:9px 20px}.map-scope{text-align:left}.curation-actions{gap:10px}.curation-actions a,.curation-actions button{font-size:12px}#contribution-preview{grid-template-columns:1fr;gap:3px}#contribution-preview dd{margin-bottom:12px}}

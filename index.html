@@ -364,6 +364,24 @@
     .scroll-progress{ display:none;}
   }
 </style>
+<link rel="stylesheet" href="arrival.css">
+<link rel="stylesheet" href="arrival-scenes.css">
+<link rel="stylesheet" href="curation.css">
+<link rel="stylesheet" href="gallery.css">
+<script src="locale-data.js" defer></script>
+<script src="traditional-data.js" defer></script>
+<script src="exhibition-locales.js" defer></script>
+<script src="map-first-locales.js" defer></script>
+<script src="layers-locales.js" defer></script>
+<script src="locale.js" defer></script>
+<script src="curation.js" defer></script>
+<link rel="stylesheet" href="exhibition.css">
+<link rel="stylesheet" href="map-first.css">
+<link rel="stylesheet" href="layers.css">
+<link rel="stylesheet" href="soundscapes.css">
+<script src="exhibition.js" defer></script>
+<script src="soundscapes.js" defer></script>
+<script src="layers.js" defer></script>
 </head>
 <body>
 <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
@@ -375,20 +393,32 @@
   <div class="ps-hint">正面是画 · 转到侧面藏着一个字 · 拖动旋转 / 滚轮缩放</div>
 </div>
 <div class="wrap">
+<div class="language-bar"><a href="#map-section" class="brand-link">听见中国</a><label for="site-language">语言</label><select id="site-language" aria-label="选择网站语言"><option value="zh-Hans">简体中文</option><option value="zh-Hant">繁體中文</option><option value="en">English</option></select></div>
 <header>
   <div class="header-ink" aria-hidden="true"><svg viewBox="0 0 1200 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,220 L0,140 C120,108 260,96 380,120 C520,148 640,150 760,118 C900,80 1040,104 1200,128 L1200,220 Z" fill="#726b5e" opacity="0.10"/><path d="M0,220 L0,172 C160,150 320,176 470,182 C650,189 820,168 980,180 C1080,187 1140,184 1200,176 L1200,220 Z" fill="#9e3b2c" opacity="0.06"/></svg></div>
   <div class="header-seal" aria-hidden="true"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="96" height="96" rx="5" fill="#9e3b2c"/><rect x="9" y="9" width="82" height="82" rx="2" fill="none" stroke="#f4efe4" stroke-width="2.4" opacity="0.9"/><g fill="#f6efe1" font-family="'Songti SC','STSong',serif" font-size="30" text-anchor="middle"><text x="68" y="41">听</text><text x="68" y="80">见</text><text x="32" y="41">中</text><text x="32" y="80">国</text></g></svg></div>
-  <div class="seal">数字声音档案 · DIGITAL SOUND ARCHIVE</div>
+  <div class="seal">从岭南出发 · 一张生长中的声音地图</div>
   <h1><span class="vio">弦</span>· 听见中国</h1>
-  <div class="en">HEARING CHINA &nbsp;&middot;&nbsp; A Digital Sound Archive of Chinese Ethnic Music</div>
+  <div class="en">HEARING CHINA &nbsp;&middot;&nbsp; A Sound Map of Chinese Violin Repertoire</div>
   <div class="byline">策展 · 演奏<span class="b-seal"></span>梁珏童<span class="byline-en">Curated &amp; performed by Liang Juetong</span></div>
-  <p class="intro">一个以小提琴串联中国民族音乐的数字声音档案。从东北到西南，从西北边疆到岭南海岸，每一首作品都是一个地域、一段文化的声音切片。本项目由广府本土小提琴演奏者梁珏童策划与制作。
-  <span class="en-intro">A digital sound archive that threads China's ethnic music together through the violin. From the Northeast to the Southwest, from the western frontier to the Lingnan coast, each work is a sonic slice of a region and its culture — curated and produced by Liang Juetong, a Cantonese violinist.</span></p>
+  <p class="intro">从我演奏的岭南作品出发，让中国小提琴音乐在地图上被听见。这是一个数字音乐策展项目：选择一条路线、聆听作品、读一段演奏者的笔记，再带走你的声音明信片。
+  <span class="en-intro">A digital curation project beginning with my performances of Lingnan repertoire. Choose a route, listen to a piece, read a performer's note, and take a sound postcard with you.</span></p>
+  <nav class="curation-actions" aria-label="开始参观"><a class="curation-primary" href="#city-game">从岭南出发 →</a><a href="#project-origin">为什么从这里开始</a><a href="#contribute">共同点亮地图</a></nav>
   <div class="divider"><i></i></div>
 </header>
 <section id="map-section">
   <div class="map-hint">&#127931; 点击地图上的亮点，跳到对应的曲目　Click a glowing point to jump to the piece</div>
   <div id="china-map"></div>
+  <div class="map-key" aria-label="地图图例"><span><i class="map-key-own"></i>圆点 · 我的岭南演奏</span><span><i class="map-key-guest"></i>菱形 · 华弦集授权收录</span><span>其余地区 · 待拓展，不代表没有当地作品</span></div>
+  <p class="map-scope">当前收录 8 首：我的岭南演奏 4 首，老师《华弦集》授权作品 4 首。标记对应作品的地域联系，并非录音地点；地图正在逐步生长。</p>
+</section>
+<nav class="listening-route" aria-label="展览参观路线"><a href="#city-game"><small>01 / 抵达</small>选择交通方式</a><button type="button" data-open-chapter><small>02 / 聆听</small>走进岭南作品</button><button type="button" data-open-postcard><small>03 / 留念</small>带走声音明信片</button><a href="#contribute"><small>04 / 继续</small>共同点亮地图</a></nav>
+<section class="curation-section" id="project-origin" aria-labelledby="origin-heading">
+  <div class="curation-kicker">CURATOR'S NOTE / 项目源起</div>
+  <h2 id="origin-heading">我从熟悉的声音出发。</h2>
+  <div class="origin-columns"><div><h3>为什么是岭南？</h3><p>我是来自岭南的广府小提琴演奏者。与其一开始就替全国的声音作总结，我选择从自己演奏过、生活中熟悉的作品出发，把音乐里的地域记忆讲清楚。岭南是第一章，不是整个中国的缩影。</p></div><div><h3>从《华弦集》得到的启发</h3><p>老师李泽熙的《华弦集》启发我：不同地域的音乐，可以通过小提琴被重新认识。因此，我把自己的演奏与老师授权收录的作品放在同一张地图上，同时清楚区分作曲者、演奏者与策展者。</p></div></div>
+  <p class="curation-english">Lingnan is my starting point, not a stand-in for all of China. Inspired by my teacher's Hua Xian Ji collection, this project brings my performances and her authorised recordings into a shared, growing map.</p>
+  <a class="curation-text-link" href="#process-authorship">查看项目分工与制作记录 ↗</a>
 </section>
 <div class="filter-bar">
   <button class="filter-btn active" data-region="all">全部 All</button>
@@ -397,7 +427,253 @@
   <button class="filter-btn" data-region="西南">西南 Southwest</button>
   <button class="filter-btn" data-region="岭南">岭南 Lingnan</button>
 </div>
-<div class="section-block" data-regions="东北,西北,西南">
+<section class="city-game arrival" id="city-game" aria-labelledby="arrival-heading">
+<svg class="transport-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+<linearGradient id="ivory-body" x1="0" y1="0" x2=".6" y2="1"><stop stop-color="#fffdf3"/><stop offset=".5" stop-color="#e8dcc8"/><stop offset="1" stop-color="#bba889"/></linearGradient>
+<linearGradient id="red-body" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c77655"/><stop offset="1" stop-color="#873c30"/></linearGradient>
+<linearGradient id="green-body" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a5bbb2"/><stop offset="1" stop-color="#4d6d64"/></linearGradient>
+<linearGradient id="window-glass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#355a5c"/><stop offset="1" stop-color="#87aaac"/></linearGradient>
+<filter id="vehicle-shadow" x="-40%" y="-40%" width="190%" height="200%"><feDropShadow dx="0" dy="5" stdDeviation="3" flood-color="#75634b" flood-opacity=".23"/></filter>
+<symbol id="vehicle-plane" viewBox="0 0 180 125">
+<ellipse cx="88" cy="104" rx="60" ry="9" fill="#887961" opacity=".14"/>
+<g filter="url(#vehicle-shadow)" stroke-linejoin="round">
+<path d="M31 54 12 24 26 23 56 47 114 26 133 31 87 57 132 83 125 91 70 72Z" fill="#b6a98e"/>
+<path d="M32 49 15 19 29 18 59 43 117 22 136 27 88 54 135 79 128 87 71 68Z" fill="url(#ivory-body)" stroke="#b6a88b" stroke-width=".7"/>
+<path d="M28 59Q25 52 35 50L132 53Q158 54 167 66 156 75 131 76L43 66Z" fill="#b8a88e"/>
+<path d="M28 54Q28 47 39 46L132 48Q155 49 168 61 151 70 129 69L43 61Z" fill="url(#ivory-body)" stroke="#b5a78d" stroke-width=".7"/>
+<path d="M32 51 21 25 34 27 53 52Z" fill="url(#red-body)"/>
+<path d="M139 52 151 55 157 61 142 60Z" fill="url(#window-glass)"/>
+<path d="M59 54H64M71 55H76M83 55H88M95 56H100M107 57H112M119 57H124" stroke="#527475" stroke-width="3" stroke-linecap="round"/>
+<path d="M78 63 103 99 88 101 56 66Z" fill="url(#ivory-body)" stroke="#b5a78d" stroke-width=".7"/>
+<path d="M97 91 105 96 89 99 84 95Z" fill="#a75942"/>
+</g></symbol>
+<symbol id="vehicle-rail" viewBox="0 0 180 125">
+<ellipse cx="92" cy="104" rx="71" ry="8" fill="#887961" opacity=".17"/>
+<path d="M10 101H174M7 108H178M27 99 20 110M51 99 44 110M75 99 68 110M99 99 92 110M123 99 116 110M147 99 140 110" fill="none" stroke="#ae9a7d" stroke-width="2"/>
+<g filter="url(#vehicle-shadow)">
+<path d="M16 48 126 44Q144 45 159 65L173 84 158 96 25 91 16 81Z" fill="#c6b89f"/>
+<path d="M16 44 123 40Q142 42 155 61L172 78 153 86 17 79Z" fill="url(#ivory-body)" stroke="#ac9a7f" stroke-width=".7"/>
+<path d="M17 79 154 86 173 78 166 89 153 97 25 90 17 86Z" fill="#aa5641"/>
+<path d="M123 47Q135 46 146 59L155 70 131 68Z" fill="url(#window-glass)"/>
+<path d="M26 52H112V66L26 64Z" fill="#4f7071"/>
+<path d="M42 51V66M63 51V66M84 51V66M105 51V66" stroke="#d9d0bf" stroke-width="3"/>
+<path d="M21 72 122 76" stroke="#c99a60" stroke-width="2"/>
+<ellipse cx="42" cy="93" rx="9" ry="4" fill="#504c44"/><ellipse cx="119" cy="97" rx="9" ry="4" fill="#504c44"/>
+<path d="M151 78 162 76" stroke="#fff5cc" stroke-width="3"/>
+</g></symbol>
+<symbol id="vehicle-metro" viewBox="0 0 180 125">
+<ellipse cx="92" cy="109" rx="62" ry="8" fill="#887961" opacity=".16"/>
+<path d="M13 104H169M9 112H175" stroke="#ae9a7d" stroke-width="2"/>
+<g filter="url(#vehicle-shadow)">
+<path d="M25 27 132 22 156 40 156 92 137 103 25 94Z" fill="#8c9c8e"/>
+<path d="M25 27 131 22 136 38 25 44Z" fill="#e9e4d5"/>
+<path d="M25 44 136 38V103L25 94Z" fill="url(#ivory-body)"/>
+<path d="M136 38 156 40V92L136 103Z" fill="url(#green-body)"/>
+<path d="M25 74 136 80V90L25 84Z" fill="#729789"/>
+<path d="M34 49 53 48V66L34 65ZM67 47 91 46V68L67 67ZM103 45 123 44V71L103 69Z" fill="url(#window-glass)"/>
+<path d="M63 43V86M95 42V89M79 47V83" stroke="#a79e8d" stroke-width="1.3"/>
+<path d="M139 49 152 49V73L139 78Z" fill="#304e50"/>
+<path d="M140 42 151 43" stroke="#f8d88c" stroke-width="2"/>
+<circle cx="143" cy="87" r="2" fill="#f9e9b4"/><circle cx="152" cy="84" r="2" fill="#f9e9b4"/>
+<ellipse cx="45" cy="98" rx="9" ry="4" fill="#504c44"/><ellipse cx="118" cy="104" rx="9" ry="4" fill="#504c44"/>
+</g></symbol>
+<symbol id="vehicle-boat" viewBox="0 0 180 125">
+<ellipse cx="89" cy="111" rx="70" ry="7" fill="#65877d" opacity=".19"/>
+<g filter="url(#vehicle-shadow)">
+<path d="M20 80 72 91 166 71 147 96 70 114 36 103Z" fill="url(#red-body)"/>
+<path d="M20 76 72 85 166 67 162 77 72 97 27 86Z" fill="url(#ivory-body)"/>
+<path d="M42 44 114 31 142 42 69 57Z" fill="#f9f2df"/>
+<path d="M42 44 69 57V84L42 77Z" fill="#c1b49d"/>
+<path d="M69 57 142 42V70L69 84Z" fill="#e8dbc0"/>
+<path d="M76 59 87 57V69L76 72ZM94 55 106 53V65L94 68ZM113 51 124 49V61L113 64ZM130 47 137 46V57L130 59Z" fill="url(#window-glass)"/>
+<path d="M47 51 62 58V70L47 65Z" fill="#4f7071"/>
+<path d="M49 41 114 28 144 39 144 43 70 58 40 47Z" fill="url(#green-body)"/>
+<path d="M90 32V13M90 14 112 18 90 25Z" fill="#b65e45" stroke="#9e6449" stroke-width="1"/>
+<path d="M34 91 70 101 153 82" fill="none" stroke="#edc9a1" stroke-width="1.5"/>
+</g><path d="M17 115Q39 107 63 116M99 118Q126 109 162 111" fill="none" stroke="#74958a" stroke-width="2" opacity=".55"/>
+</symbol>
+</defs></svg>
+<div class="arrival-eyebrow">HEARING CHINA / CHAPTER 01 · 听见中国 · 岭南篇</div>
+<div class="arrival-heading-row"><div><h2 class="game-title" id="arrival-heading">下一站，岭南。</h2><p class="game-sub">选择一种出发方式，循着交通的声音，走进我的音乐故乡。<br><span>Choose a way to arrive. Discover Lingnan through sound.</span></p></div><span class="arrival-seal" aria-hidden="true">循声<br>而来</span></div>
+<div class="route-options" role="group" aria-label="选择走进岭南的交通方式">
+<button type="button" class="route-option" data-route="plane" aria-pressed="false"><span class="route-number">01 / BY AIR</span><span class="vehicle-plinth"><svg class="vehicle-model" viewBox="0 0 180 125" aria-hidden="true"><use href="#vehicle-plane"/></svg></span><span class="route-name"><strong>飞机</strong><span class="route-arrow" aria-hidden="true">↗</span></span><span class="route-caption">穿过云海，向南而来</span><span class="route-choice">选择这段旅程</span></button>
+<button type="button" class="route-option" data-route="rail" aria-pressed="false"><span class="route-number">02 / BY RAIL</span><span class="vehicle-plinth"><svg class="vehicle-model" viewBox="0 0 180 125" aria-hidden="true"><use href="#vehicle-rail"/></svg></span><span class="route-name"><strong>高铁</strong><span class="route-arrow" aria-hidden="true">↗</span></span><span class="route-caption">越过山水，循轨入岭南</span><span class="route-choice">选择这段旅程</span></button>
+<button type="button" class="route-option" data-route="metro" aria-pressed="false"><span class="route-number">03 / BY METRO</span><span class="vehicle-plinth"><svg class="vehicle-model" viewBox="0 0 180 125" aria-hidden="true"><use href="#vehicle-metro"/></svg></span><span class="route-name"><strong>地铁</strong><span class="route-arrow" aria-hidden="true">↗</span></span><span class="route-caption">穿行街巷，走进日常</span><span class="route-choice">选择这段旅程</span></button>
+<button type="button" class="route-option" data-route="boat" aria-pressed="false"><span class="route-number">04 / BY WATER</span><span class="vehicle-plinth"><svg class="vehicle-model" viewBox="0 0 180 125" aria-hidden="true"><use href="#vehicle-boat"/></svg></span><span class="route-name"><strong>船</strong><span class="route-arrow" aria-hidden="true">↗</span></span><span class="route-caption">沿着水路，慢慢靠岸</span><span class="route-choice">选择这段旅程</span></button>
+</div>
+<div class="arrival-experience" data-mode="idle" data-phase="idle">
+<div class="arrival-landscape">
+<div class="landscape-label"><span>岭南 · LINGNAN</span><span id="scene-location">山水之间，声音将至</span></div>
+<svg class="arrival-map" viewBox="0 0 760 450" role="img" aria-label="交通工具穿过岭南山水、城市和水岸的动态意象">
+<defs>
+ <linearGradient id="sky-wash" x2="0" y2="1"><stop stop-color="#e9e6d5"/><stop offset="1" stop-color="#f8f0df"/></linearGradient>
+ <linearGradient id="water-wash" x2="0" y2="1"><stop stop-color="#98b4a8"/><stop offset="1" stop-color="#dae0cd"/></linearGradient>
+ <linearGradient id="tunnel-wash" x2="0" y2="1"><stop stop-color="#49625b"/><stop offset="1" stop-color="#233e3b"/></linearGradient>
+ <pattern id="sleepers" width="30" height="16" patternUnits="userSpaceOnUse"><path d="M9 0 3 16" stroke="#ac9a7d" stroke-width="3"/></pattern>
+</defs>
+<rect width="760" height="450" fill="url(#sky-wash)"/>
+<circle cx="600" cy="80" r="35" fill="#c5a06f" opacity=".45"/>
+<g class="scene-outdoors">
+<g class="distant-hills"><path d="M-120 216Q-25 110 68 178Q163 58 262 184Q364 93 443 177Q561 84 669 174Q746 94 880 181V330H-120Z" fill="#bdc7b4"/><path d="M-100 250Q23 139 143 216Q241 148 326 226Q440 151 555 222Q668 131 900 249V350H-100Z" fill="#a6b9a5" opacity=".76"/></g>
+<path d="M0 304Q165 218 347 284T760 267V450H0Z" fill="#d9d6af"/>
+<g class="scene-clouds" fill="#fffcf1" opacity=".85"><path d="M71 102q8-24 26-12q11-27 33-12q19-9 28 15q17 1 22 12H65Z"/><path d="M362 64q7-24 30-13q17-25 36-5q25-8 31 18Z"/><path d="M563 161q9-23 27-12q18-29 42-4q16-5 25 16Z"/></g>
+<path class="scene-river" d="M0 370Q120 295 262 337T485 310Q644 262 760 312V450H0Z" fill="url(#water-wash)"/>
+<g class="scene-ripples" stroke="#f6f0de" stroke-width="2" fill="none" opacity=".7"><path d="M-80 391Q48 365 147 391T365 376T590 378T820 356M-60 419Q51 395 188 414T411 402T651 399T900 410M22 355Q81 342 130 353M456 345Q519 327 580 334"/></g>
+<g class="scene-houses">
+<path d="M465 241 566 224 627 246 525 266Z" fill="#91836d"/>
+<path d="M471 242 525 261V331L471 311Z" fill="#c5b89b"/><path d="M525 261 622 243V312L525 331Z" fill="#e8dabd"/>
+<path d="M462 241 517 253 565 232 627 245 626 239 569 216 514 237 463 233Z" fill="#7f8371"/>
+<g fill="#718b7c"><path d="M539 282q10-17 20-3v38l-20 4ZM570 276q10-17 20-3v38l-20 4ZM601 270q8-15 15-3v38l-15 3Z"/><path d="M482 265 493 269V284L482 280ZM504 273 515 277V292L504 288Z"/></g>
+<path d="M533 273 616 257" stroke="#c59760" stroke-width="3"/>
+</g>
+<g class="scene-tree"><path d="M671 252 667 333M668 285 642 267M671 276 695 258" stroke="#927b57" stroke-width="5" fill="none"/><g fill="#819978"><ellipse cx="652" cy="259" rx="24" ry="20"/><ellipse cx="681" cy="244" rx="30" ry="24"/><ellipse cx="697" cy="270" rx="22" ry="19"/></g><g fill="#b66044"><circle cx="653" cy="245" r="6"/><circle cx="679" cy="258" r="6"/><circle cx="697" cy="240" r="6"/></g></g>
+</g>
+<g class="scene-plane">
+<title>广州塔与珠江城市天际线的艺术化意象</title>
+<path d="M0 307V270H38V239H63V273H85V211H111V267H133V248H160V281H186V236H212V274H246V256H273V299H760V321H0Z" fill="#b2bca9"/>
+<g fill="#98aa98"><path d="M53 306V202L68 191 83 202V306ZM128 306V185L142 177 157 185V306ZM212 306V214H236V306ZM324 306V247H356V306ZM374 306V213H400V306Z"/></g>
+<g transform="translate(245 23)">
+<path d="M18 280Q52 174 28 89L56 83Q39 170 78 280Z" fill="#d8c6a1" stroke="#ac8e62" stroke-width="2"/>
+<g fill="none" stroke="#9d865f" stroke-width="1.4"><path d="M18 280Q68 177 56 83M31 280Q63 169 48 85M47 280Q48 166 39 87M62 280Q31 169 28 89M78 280Q22 175 34 88"/><path d="M27 248H67M34 219H60M39 189H54M40 159H50M37 129H51M31 101 53 98"/></g>
+<path d="M41 85V26M45 85V43" stroke="#987f59" stroke-width="3"/><ellipse cx="42" cy="87" rx="17" ry="5" fill="#b49b73"/>
+</g>
+<path d="M0 323Q170 296 352 321T760 315" fill="none" stroke="#ede1be" stroke-width="8"/>
+<path d="M393 322Q506 296 647 318T800 309" fill="none" stroke="#bdc9ac" stroke-width="12"/>
+<text class="landmark-label" x="35" y="390">广州 · 广州塔</text><text class="landmark-subtitle" x="35" y="409">GUANGZHOU / CANTON TOWER</text>
+</g>
+<g class="scene-rail">
+<title>韶关丹霞山赤壁丹崖的艺术化意象，非实际铁路线</title>
+<path d="M0 281 29 225 52 218 66 133 86 116 157 115 177 138 186 211 222 239 241 186 263 170 313 171 331 190 344 263 378 288Z" fill="#b87c59"/>
+<path d="M74 139 96 127 150 128 165 147 173 237 190 272H64Z" fill="#cb9970"/>
+<path d="M280 278 300 233 326 222 344 99 365 79 429 82 451 104 466 232 491 257 519 172 537 153 577 154 600 177 614 251 645 267 659 213 679 199 722 203 748 239 760 279V309H280Z" fill="#a9654b"/>
+<path d="M355 111 373 93 421 95 438 112 451 254 432 273H342Z" fill="#c18c64"/>
+<path d="M537 181 553 168H575L588 187 600 257 535 269Z" fill="#ca956b"/>
+<g stroke="#e6ba8d" stroke-width="3" opacity=".6" fill="none"><path d="M77 163 161 164M73 183 165 187M70 213 168 208M353 136 441 139M350 164 444 168M348 201 447 207M346 234 450 239M541 210 591 207M538 231 594 236"/></g>
+<g fill="#778c66"><path d="M63 134 80 110 155 108 178 137 147 127 92 128ZM340 102 365 72 430 75 454 106 417 96 368 95ZM516 176 539 148 579 150 601 177 570 165 541 168Z"/><path d="M0 287Q74 251 151 277T306 279T461 285T616 281T800 275V310H0Z"/></g>
+<path d="M-60 306H792V333H-60Z" fill="#d7c8a9"/><path d="M-60 330H792V340H-60Z" fill="#a1927d"/><path d="M38 339V422M182 339V397M325 339V416M469 339V391M611 339V418" stroke="#b6a88f" stroke-width="12"/><path d="M-40 314H800M-40 326H800" stroke="#867d6c" stroke-width="2"/><path d="M-40 310H800V327H-40Z" fill="url(#sleepers)"/>
+<text class="landmark-label" x="35" y="58">韶关 · 丹霞山</text><text class="landmark-subtitle" x="35" y="77">SHAOGUAN / DANXIA MOUNTAIN</text>
+</g>
+<g class="scene-metro">
+<rect width="760" height="450" fill="url(#tunnel-wash)"/>
+<g class="tunnel-ribs" fill="none" stroke="#769084" stroke-width="14" opacity=".34"><path d="M25 347V152Q25 15 156 15T287 152V347M336 347V152Q336 15 467 15T598 152V347M647 347V152Q647 15 778 15T909 152V347"/></g>
+<path d="M0 337H760V450H0Z" fill="#677d6b"/><path d="M0 348H760V373H0Z" fill="#a9b39c"/><path d="M0 376H760M0 399H760" stroke="#ded9b4" stroke-width="4"/><path d="M0 376H760V400H0Z" fill="url(#sleepers)"/>
+<path d="M438 222H731V338H438Z" fill="#9baa91"/><path d="M448 230H721V336H448Z" fill="#b6c1a6"/><path d="M470 236V336M530 236V336M590 236V336M650 236V336" stroke="#819882" stroke-width="3"/>
+<rect x="464" y="173" width="235" height="34" rx="3" fill="#ebe4c8"/><circle cx="484" cy="190" r="5" fill="#9e3b2c"/><text x="501" y="195" font-family="serif" font-size="15" fill="#526b5c">走进岭南 · 城市日常</text>
+</g>
+<g class="scene-boat">
+<title>珠海日月贝与海岸的艺术化意象，非实际航线</title>
+<path d="M0 255Q185 245 385 258T760 247V450H0Z" fill="url(#water-wash)"/>
+<path d="M255 283Q341 248 470 250T760 268V294Q558 274 405 292Z" fill="#a6b799"/>
+<path d="M339 268Q278 183 344 130Q405 173 370 268Z" fill="#f5efd9" stroke="#c4bda5" stroke-width="2"/>
+<path d="M343 137Q354 205 343 263M343 145Q308 197 333 265M346 148Q390 206 361 265" fill="none" stroke="#d6ceb5" stroke-width="2"/>
+<path d="M444 267Q349 142 448 62Q556 150 491 267Z" fill="#fbf7e8" stroke="#c4bda5" stroke-width="2"/>
+<path d="M448 70Q462 160 448 262M446 79Q382 164 433 264M448 80Q416 168 441 263M452 82Q513 160 480 262M452 80Q488 166 463 262" fill="none" stroke="#d8d0b9" stroke-width="2"/>
+<path d="M313 267Q397 249 507 264L521 279H309Z" fill="#ded2b7"/><path d="M329 267H491V279H329Z" fill="#9da995"/>
+<g class="scene-ripples" stroke="#f1f0d8" stroke-width="2" opacity=".65" fill="none"><path d="M-40 321Q55 308 146 321T330 316M188 389Q320 370 445 388T785 381M-60 424Q110 406 264 422T639 419M551 306H729"/></g>
+<path d="M572 355 718 327 748 342 603 373Z" fill="#d9c7a5"/><path d="M603 373 748 342V353L603 384Z" fill="#b29d7e"/><path d="M621 380V423M704 363V405" stroke="#96886c" stroke-width="8"/>
+<text class="landmark-label" x="35" y="58">珠海 · 日月贝</text><text class="landmark-subtitle" x="35" y="77">ZHUHAI / OPERA HOUSE</text>
+</g>
+<path id="arrival-path" d="M100 143C275 54 398 123 590 263" fill="none" stroke="none"/>
+<g id="arrival-traveller" transform="translate(100 143)"><g id="arrival-vehicle-body"><use id="arrival-vehicle-use" href="#vehicle-plane" x="-99" y="-69" width="198" height="138"/></g></g>
+<g class="arrival-destination"><circle cx="702" cy="83" r="31" fill="#fff5dc" opacity=".9"/><text x="702" y="79" text-anchor="middle" font-family="serif" font-size="14" fill="#9e3b2c">岭南</text><text x="702" y="95" text-anchor="middle" font-family="serif" font-size="9" fill="#a18555">LINGNAN</text></g>
+</svg>
+<div class="landscape-caption"><span id="landscape-message">四种出发方式，同一份岭南回响。</span><small id="scene-caption">山水、城市与水岸的艺术化意象 · 非实际交通线路</small></div>
+<div class="journey-track" aria-hidden="true"><span id="journey-track-fill"></span></div>
+</div>
+<div class="arrival-ticket">
+<div class="ticket-top"><span>循声入岭南 / A SONIC ARRIVAL</span><span id="ticket-number">— / 04</span></div>
+<h3 id="route-title">旅程，从这里开始。</h3>
+<p id="route-description">岭南的故事，从一次抵达展开。选择你喜欢的交通方式，让山水、街巷和水岸把你带到音乐之中。</p>
+<div class="broadcast-box"><span class="broadcast-label">真实交通广播 / FIELD ANNOUNCEMENT</span><p id="broadcast-status" role="status">广播暂留空，当前可以先体验无声旅程。</p><audio id="arrival-audio" controls preload="none" hidden></audio><p id="broadcast-source" hidden></p><details id="broadcast-transcript" hidden><summary>广播文字 / Transcript</summary><p></p></details><a id="broadcast-candidate" class="candidate-link" target="_blank" rel="noopener noreferrer" hidden>查看候选原录音 ↗</a></div>
+<p class="arrival-progress" id="arrival-progress" role="status">选择方式 → 循声抵达 → 进入岭南篇</p>
+<button type="button" class="arrival-primary" id="start-arrival" disabled>选择一种出发方式</button>
+<button type="button" class="arrival-primary" id="enter-lingnan" hidden>进入岭南篇 · 开始聆听 →</button>
+<div class="arrival-secondary"><button type="button" id="skip-arrival">跳过旅程，直接聆听 ↗</button><button type="button" id="replay-arrival" hidden>再看一次</button><button type="button" id="reset-sound-walk">重新选择</button></div>
+</div>
+</div>
+<p class="arrival-preview-note">广州的城市轮廓、韶关的丹霞山色、珠海的海岸风景——从广东的不同窗口，走进岭南。画面为地标意象，非实际交通线路；广播暂留空。</p>
+</section>
+
+<div class="section-block lingnan-locked" id="lingnan-section" data-regions="岭南">
+<div class="section-title">岭南 · 我的根</div>
+<div class="section-sub">演奏・策展：梁珏童（广府本土）<br><span style="font-family:Georgia,serif;font-size:12px;color:#9a9080;">Lingnan · My Roots — performed &amp; curated by Liang Juetong, a Cantonese native</span></div>
+<div class="grid">
+  <div class="card" id="song-fishing" data-region="岭南">
+    <div class="imgbox"><img loading="lazy" decoding="async" src="5-fishing.jpg" alt="丰收渔歌"></div>
+    <div class="body"><div class="work-index">岭南聆听 · 01</div>
+      <span class="region">汕尾 · 广东</span>
+      <h3>丰收渔歌</h3><div class="en-title">Harvest Fishing Song</div>
+      <p class="zh">我从《丰收渔歌》开始，因为它连接了我的演奏与对岭南地方音乐的关注。先听，再读我留下的笔记。</p>
+      <p class="en">I begin with Harvest Fishing Song because it connects my performance with an interest in Lingnan's regional music. Listen first, then read my note.</p>
+      <div class="listening-cue"><span>聆听线索</span><p data-en="Listen for the contrast between singing phrases and rapid figures.">听一听，旋律的歌唱性与快速音型如何交替。</p></div><p class="work-credit">演奏：梁珏童</p><audio controls preload="none" src="5-fishing.mp3"></audio>
+      <button type="button" class="culture-toggle" data-label="打开策展笔记">＋ 打开策展笔记</button>
+      <div class="culture-box"><div class="culture-inner">
+        <span class="clabel">作品与我的聆听</span>
+        <p class="cul-zh">《丰收渔歌》由李自立创作。对我而言，这首作品连接着演奏与研究：如何在小提琴上理解歌唱性的旋律，又如何让快速音型不失去音乐的方向？这是我希望带进这次聆听的问题。</p>
+        <p class="cul-en">Composed by Li Zili, Harvest Fishing Song connects performance with research for me. How can the violin convey a singing melody, and how can rapid figures retain a sense of musical direction? These are the questions I bring to this listening experience.</p>
+      </div></div>
+    </div>
+  </div>
+  <div class="card" id="song-thunder" data-region="岭南">
+    <div class="imgbox"><img loading="lazy" decoding="async" src="6-thunder.jpg" alt="旱天雷"></div>
+    <div class="body"><div class="work-index">岭南聆听 · 02</div>
+      <span class="region">广府</span>
+      <h3>旱天雷</h3><div class="en-title">Thunder in a Dry Sky</div>
+      <p class="zh">《旱天雷》是我选入岭南篇的一首广东音乐。熟悉的旋律换成小提琴后，你会先注意到什么？</p>
+      <p class="en">Thunder in a Dry Sky is a Cantonese work I chose for this chapter. What catches your ear first when you hear it on the violin?</p>
+      <div class="listening-cue"><span>聆听线索</span><p data-en="Listen to how short phrases give the rhythm its buoyancy.">听一听，短小的乐句怎样带出明快的节奏。</p></div><p class="work-credit">演奏：梁珏童</p><audio controls preload="none" src="6-thunder.mp3"></audio>
+      <button type="button" class="culture-toggle" data-label="打开策展笔记">＋ 打开策展笔记</button>
+      <div class="culture-box"><div class="culture-inner">
+        <span class="clabel">作品与我的聆听</span>
+        <p class="cul-zh">我把这首作品放在岭南篇，是希望观众不只把它当作一段熟悉的旋律，也能留意小提琴怎样组织句子、声音怎样起落。先跟着节奏听一遍，再回到那些短小的乐句。</p>
+        <p class="cul-en">I included this piece to invite attention beyond a familiar tune: how the violin shapes phrases and how the sound rises and falls. Follow the rhythm once, then return to the short musical phrases.</p>
+      </div></div>
+    </div>
+  </div>
+  <div class="card" id="song-rising" data-region="岭南">
+    <div class="imgbox"><img loading="lazy" decoding="async" src="7-rising.jpg" alt="步步高"></div>
+    <div class="body"><div class="work-index">岭南聆听 · 03</div>
+      <span class="region">广府</span>
+      <h3>步步高</h3><div class="en-title">Rising Step by Step</div>
+      <p class="zh">《步步高》是我记忆里带着“好意头”的声音。这一次，请先凭直觉听，再回到那些熟悉的旋律。</p>
+      <p class="en">Rising Step by Step is a sound I associate with good fortune. Listen once on instinct, then return to its familiar melody.</p>
+      <div class="listening-cue"><span>聆听线索</span><p data-en="Listen to how ascending phrases build anticipation.">听一听，上行的旋律如何积累期待。</p></div><p class="work-credit">演奏：梁珏童</p><audio controls preload="none" src="7-rising.mp3"></audio>
+      <button type="button" class="culture-toggle" data-label="打开策展笔记">＋ 打开策展笔记</button>
+      <div class="culture-box"><div class="culture-inner">
+        <span class="clabel">作品与我的聆听</span>
+        <p class="cul-zh">这次我希望观众带着一个简单的问题来听：相似的旋律再次出现时，期待有没有变化？作品的地方记忆，可以从这样的听觉体验开始，而不必先读完一大段介绍。</p>
+        <p class="cul-en">I invite you to listen with a simple question: when a similar phrase returns, has the sense of anticipation changed? A connection with regional memory can begin with listening, without a long introduction.</p>
+      </div></div>
+    </div>
+  </div>
+  <div class="card" id="song-kapok" data-region="岭南">
+    <div class="imgbox"><img loading="lazy" decoding="async" src="8-kapok.jpg" alt="木棉盛开时"></div>
+    <div class="body"><div class="work-index">岭南聆听 · 04</div>
+      <span class="region">当代广府</span>
+      <h3>木棉盛开时</h3><div class="en-title">When the Kapok Blooms</div>
+      <p class="zh">老师李泽熙写下这首作品，我通过演奏把它带到这张地图上。它让师生之间的音乐关系，成为岭南篇的一部分。</p>
+      <p class="en">My teacher Li Zexi composed this work; I brought it to the map through my performance. It places our musical relationship within the Lingnan chapter.</p>
+      <div class="listening-cue"><span>聆听线索</span><p data-en="Listen to how the melody unfolds and where it comes to rest.">听一听，旋律如何展开，又在哪里收住。</p></div><p class="work-credit">演奏：梁珏童</p><audio controls preload="none" src="8-kapok.mp3"></audio>
+      <button type="button" class="culture-toggle" data-label="打开策展笔记">＋ 打开策展笔记</button>
+      <div class="culture-box"><div class="culture-inner">
+        <span class="clabel">作品与我的聆听</span>
+        <p class="cul-zh">对我来说，老师的作品不只是学习材料。把它演奏出来、放进这张地图，也是在参与一段仍在继续的音乐关系：她写下作品，我通过自己的演奏与听众分享。</p>
+        <p class="cul-en">My teacher's work is more than study material to me. Performing it and placing it on this map continues a musical relationship: she composes, and I share the work with listeners through my own performance.</p>
+      </div></div>
+    </div>
+  </div></div>
+  <div class="visit-ending">
+    <div class="ending-kicker">The Last Resonance</div>
+    <h3>当最后一个音符落下</h3>
+    <p>你可以留下一张声音手信，也可以轻轻挥手，与这次展览告别。</p>
+    <button type="button" id="finish-visit">结束参观</button>
+    <a class="curation-text-link" href="#contribute">或继续看看：下一处亮点，从谁的琴声开始？ →</a>
+  </div>
+</div>
+
+<details class="collection-drawer" id="collection-drawer">
+<summary><span class="collection-overline">特邀单元 · 授权收录</span><span class="collection-title">华弦集：从岭南，听向更远的地方</span><span class="collection-open">展开四首作品 ↗</span></summary>
+<div class="section-block" id="featured-collection" data-regions="东北,西北,西南">
 <div class="section-title">华弦集 · 中国民族化小提琴作品</div>
 <div class="section-sub">作曲・演奏：李泽熙（选自《华弦集》，经作曲家授权使用）　｜　策展：梁珏童<br><span style="font-family:Georgia,serif;font-size:12px;color:#9a9080;">Hua Xian Ji · Sinicised Violin Works — composed &amp; performed by Li Zexi (used with permission), curated by Liang Juetong</span></div>
 <div class="grid">
@@ -406,8 +682,8 @@
     <div class="body">
       <span class="region">达斡尔族 · 东北</span>
       <h3>扎恩达勒</h3><div class="en-title">Zandale</div>
-      <p class="zh">“扎恩达勒”在达斡尔语里意为“民歌”，是国家级非物质文化遗产。作曲家深入达斡尔族聚居地采集原生态曲调，用小提琴的双音、和弦与泛音重新谱写，呈现达斡尔民歌悠长而奔放的美，也拉出“落日万山寒，萧萧猎马还”的苍茫画面。</p>
-      <p class="en">In the Daur language, “Zandale” means “folk song,” a tradition recognised as national intangible cultural heritage. The composer collected original melodies in Daur communities, then rewrote them for violin using double stops, chords and harmonics — capturing both the soaring lines of Daur folk song and the vast image of hunters riding home against a cold mountain sunset.</p>
+      <p class="zh">《扎恩达勒》把地图带到东北。先听李泽熙的演奏，留意旋律和音色在这首作品里怎样变化。</p>
+      <p class="en">Zandale takes the map to Northeast China. Listen to Li Zexi's performance and notice how the melody and tone change.</p>
       <audio controls preload="none" src="1-zandale.mp3.mp3"></audio>
       <span class="culture-toggle" data-label="走进达斡尔 · 一个音乐人的听觉笔记">&#43; 走进达斡尔 · 一个音乐人的听觉笔记</span>
       <div class="culture-box"><div class="culture-inner">
@@ -422,8 +698,8 @@
     <div class="body">
       <span class="region">朝鲜族 · 东北</span>
       <h3>长白松</h3><div class="en-title">Changbai Pine</div>
-      <p class="zh">《长白松》取材朝鲜族传统民歌，借用其特有的“长短”节奏。小提琴运用连跳弓、拨弦等技巧，音符清亮，描摹长白山“美人松”的优雅——它在严寒中依然挺拔，正是朝鲜族坚韧品格的写照。</p>
-      <p class="en">“Changbai Pine” draws on traditional Korean-Chinese folk music, borrowing its distinctive jangdan rhythmic patterns. Through spiccato and pizzicato, the violin renders bright tones portraying the elegance of the “Beauty Pine” of Changbai Mountain — a mirror of the resilience of the Korean ethnic people.</p>
+      <p class="zh">《长白松》也是《华弦集》的一首。与《扎恩达勒》放在一起听，你会怎样描述两首作品的节奏与音色？</p>
+      <p class="en">Changbai Pine is another work from Hua Xian Ji. Heard alongside Zandale, how would you describe their different rhythms and tones?</p>
       <audio controls preload="none" src="2-changbai.mp3.mp3"></audio>
       <span class="culture-toggle" data-label="走进长白山 · 一个音乐人的听觉笔记">&#43; 走进长白山 · 一个音乐人的听觉笔记</span>
       <div class="culture-box"><div class="culture-inner">
@@ -438,8 +714,8 @@
     <div class="body">
       <span class="region">维吾尔族 · 南疆</span>
       <h3>喀什噶尔星空</h3><div class="en-title">Kashgar Starry Sky</div>
-      <p class="zh">《喀什噶尔星空》写的是南疆。喀什噶尔是古丝绸之路上一片绵延千年的古老绿洲，作曲家融入爵士乐的“切弓”（chopping）弓法，让节奏由慢到快、音色明暗交织，描绘一幅穿越千年的璀璨星河。</p>
-      <p class="en">“Kashgar Starry Sky” depicts southern Xinjiang, an ancient Silk Road oasis. The composer incorporates the jazz “chopping” bowing technique, building rhythm from slow to fast to paint a brilliant galaxy across a thousand years of history.</p>
+      <p class="zh">《喀什噶尔星空》把地图引向西北。先听李泽熙的演奏，再留意音乐的节奏从哪里开始变得鲜明。</p>
+      <p class="en">Kashgar Starry Sky takes the map to Northwest China. Listen to Li Zexi's performance, then notice where the rhythm becomes more pronounced.</p>
       <audio controls preload="none" src="3-kashgar.mp3.mp3"></audio>
       <span class="culture-toggle" data-label="走进喀什噶尔 · 一个音乐人的听觉笔记">&#43; 走进喀什噶尔 · 一个音乐人的听觉笔记</span>
       <div class="culture-box"><div class="culture-inner">
@@ -454,8 +730,8 @@
     <div class="body">
       <span class="region">白族 · 云南</span>
       <h3>洱海泛舟</h3><div class="en-title">Boating on Erhai Lake</div>
-      <p class="zh">《洱海泛舟》以白族文化为底色，描绘洱海山水与人和谐相依的意境。旋律舒缓清澈，如轻舟荡漾于湖光山色之间，呈现苍山洱海间宁静、灵秀的南国气韵。</p>
-      <p class="en">“Boating on Erhai Lake” is grounded in Bai ethnic culture, evoking the harmony between people and the landscape of Erhai Lake, with flowing, limpid melodies conveying the serene, graceful spirit of the South.</p>
+      <p class="zh">最后一首以洱海为题。听完再回看标题：你听见的是水面、行舟，还是别的画面？</p>
+      <p class="en">The final work takes its title from Erhai Lake. After listening, return to the title: did you hear water, a boat, or something else?</p>
       <audio controls preload="none" src="4-erhai.mp3.mp3"></audio>
       <span class="culture-toggle" data-label="走进洱海 · 一个音乐人的听觉笔记">&#43; 走进洱海 · 一个音乐人的听觉笔记</span>
       <div class="culture-box"><div class="culture-inner">
@@ -466,145 +742,12 @@
     </div>
   </div></div>
 </div>
-<section class="city-game" id="city-game">
-  <div class="game-kicker">Lingnan Sound Walk</div>
-  <div class="game-title">城市声音漫游</div>
-  <p class="game-sub">把岭南城市文化做成一个轻量小游戏：点击城市地点，收集五枚声音印记，最后进入岭南作品。<br><span style="font-family:Georgia,serif;font-size:12px;">Click the city spots, collect five sound stamps, and enter the Lingnan works.</span></p>
-  <div class="game-shell">
-    <div class="city-board" aria-label="岭南城市声音地图">
-      <div class="hills"></div>
-      <div class="city-river"></div>
-      <div class="city-silhouette sil-qilou"></div>
-      <div class="city-silhouette sil-tea"></div>
-      <div class="city-silhouette sil-metro"></div>
-      <div class="city-silhouette sil-river"></div>
-      <div class="city-silhouette sil-kapok"></div>
-      <button class="sound-node node-qilou" data-sound="qilou" type="button"><span class="node-thumb" style="background-image:url('visual-qilou.png')"></span><span>骑楼街</span></button>
-      <button class="sound-node node-tea" data-sound="tea" type="button"><span class="node-thumb" style="background-image:url('visual-tea.png')"></span><span>茶楼</span></button>
-      <button class="sound-node node-metro" data-sound="metro" type="button"><span class="node-thumb" style="background-image:url('visual-metro.png')"></span><span>地铁站</span></button>
-      <button class="sound-node node-sea" data-sound="river" type="button"><span class="node-thumb" style="background-image:url('visual-river.png')"></span><span>江边</span></button>
-      <button class="sound-node node-kapok" data-sound="kapok" type="button"><span class="node-thumb" style="background-image:url('visual-kapok.png')"></span><span>木棉树</span></button>
-    </div>
-    <aside class="game-panel">
-      <span class="game-label">SOUND STAMPS · 声音印记</span>
-      <h3>收集城市声音印记</h3>
-      <p>岭南不是抽象的地理标签，而是茶楼、街巷、江风、地铁提示音与木棉花一起构成的听觉记忆。<br><span style="font-family:Georgia,serif;font-size:11.5px;color:#9a9080;">Lingnan is not an abstract label, but a sonic memory woven from teahouses, alleys, river breeze, metro chimes and kapok blossoms.</span></p>
-      <div class="stamp-row" aria-label="声音印记收集进度">
-        <span class="stamp" data-stamp="qilou">骑楼</span>
-        <span class="stamp" data-stamp="tea">茶楼</span>
-        <span class="stamp" data-stamp="metro">地铁</span>
-        <span class="stamp" data-stamp="river">江风</span>
-        <span class="stamp" data-stamp="kapok">木棉</span>
-      </div>
-      <div class="game-story" id="game-story">点击城市地图上的地点，开始收集第一枚声音印记。<br><span style="font-family:Georgia,serif;font-size:11.5px;color:#9a9080;">Click a spot on the city map to collect your first sound stamp.</span></div>
-      <div class="game-progress" aria-hidden="true"><span id="game-progress-fill"></span></div>
-      <div class="game-actions">
-        <button type="button" id="reset-sound-walk">重置 Reset</button>
-        <button type="button" class="primary" id="enter-lingnan" disabled>进入岭南作品 Enter</button>
-      </div>
-    </aside>
-  </div>
-</section>
-
-<div class="archive-layer" id="archive-layer" role="dialog" aria-modal="true" aria-labelledby="archive-title">
-  <article class="archive-window" id="archive-window">
-    <button class="archive-close" id="archive-close" type="button" aria-label="关闭">×</button>
-    <div class="archive-kicker">城市声音档案</div>
-    <h2 class="archive-title" id="archive-title">江边</h2>
-    <div class="archive-en" id="archive-en">Pearl River Sound Stamp</div>
-    <p class="archive-text" id="archive-text"></p>
-    <div class="archive-wave" id="archive-wave" aria-hidden="true">
-      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-    </div>
-    <audio id="stamp-audio-player" class="stamp-audio-player" controls preload="auto"></audio>
-    <div class="archive-actions">
-      <button type="button" class="primary" id="archive-collect">播放并采集声音</button>
-    </div>
-    <div class="archive-mark">已采集</div>
-  </article>
-</div>
-
-<div class="section-block lingnan-locked" id="lingnan-section" data-regions="岭南">
-<div class="section-title">岭南 · 我的根</div>
-<div class="section-sub">演奏・策展：梁珏童（广府本土）<br><span style="font-family:Georgia,serif;font-size:12px;color:#9a9080;">Lingnan · My Roots — performed &amp; curated by Liang Juetong, a Cantonese native</span></div>
-<div class="grid">
-  <div class="card" id="song-fishing" data-region="岭南">
-    <div class="imgbox"><img loading="lazy" decoding="async" src="5-fishing.jpg" alt="丰收渔歌"></div>
-    <div class="body">
-      <span class="region">潮汕 · 粤东</span>
-      <h3>丰收渔歌</h3><div class="en-title">Harvest Fishing Song</div>
-      <p class="zh">《丰收渔歌》由李自立创作，取材广东汕尾的渔歌，借鉴古筝琶音技法，把渔民出海归来的丰收喜悦写进小提琴。这首曲子我小学就拉过，却是到大学为它写下并发表英文论文，才真正读懂它——从把音拉对，到读懂它背后的潮汕海洋文化。它是我作为演奏者，也作为研究者，最珍视的一首岭南作品。</p>
-      <p class="en">Composed by Li Zili, drawing on the fishing songs of Shanwei. I first played it as a child, but only understood it at university when I published an English research paper on it. As both performer and researcher, it is the Lingnan work I treasure most.</p>
-      <audio controls preload="none" src="5-fishing.mp3"></audio>
-      <span class="culture-toggle" data-label="走进潮汕 · 一个演奏者与研究者的笔记">&#43; 走进潮汕 · 一个演奏者与研究者的笔记</span>
-      <div class="culture-box"><div class="culture-inner">
-        <span class="clabel">走进潮汕 · 一个演奏者与研究者的笔记 ｜ Into Chaoshan · Notes of a Performer and Researcher</span>
-        <p class="cul-zh">丰收渔歌由李自立创作，取材广东汕尾的渔歌，借古筝琶音的技法，把渔民出海归来的喜悦写进小提琴。我小学就拉过它，却是到大学为它写下英文论文，才真正读懂它。潮汕是著名侨乡：工夫茶的精致、潮剧的婉转、牛肉丸的弹牙、潮州音乐的古朴典雅——这片向海而生的土地，把对丰收的盼望、对海洋的敬畏，都唱进了渔歌里。当琴弓模仿出收网时那串明亮的琶音，听见的是一整片海岸的生计与欢腾。</p>
-        <p class="cul-en">Harvest Fishing Song, composed by Li Zili, draws on the fishing songs of Shanwei in eastern Guangdong, bringing the joy of a returning catch onto the violin through guzheng-like arpeggios. I first played it as a child, but only understood it at university when I wrote an English research paper on it. Chaoshan is a famous homeland of overseas Chinese: the refinement of gongfu tea, the lilt of Chaoju opera, the bounce of handmade beef balls, the antique elegance of Chaozhou music — this seaward land sings its hope for harvest and reverence for the ocean into its fishing songs. As the bow imitates that bright cascade of arpeggios pulling in the nets, we hear the livelihood and jubilation of an entire coast.</p>
-      </div></div>
-    </div>
-  </div>
-  <div class="card" id="song-thunder" data-region="岭南">
-    <div class="imgbox"><img loading="lazy" decoding="async" src="6-thunder.jpg" alt="旱天雷"></div>
-    <div class="body">
-      <span class="region">广府</span>
-      <h3>旱天雷</h3><div class="en-title">Thunder in a Dry Sky</div>
-      <p class="zh">《旱天雷》是广东音乐的经典，旋律明快灵动，模拟旱天惊雷的清脆与生机。对很多广府人来说，它是一段不用刻意记、却早已刻进生活的旋律——就连在广州地铁里，都能听到它的变奏。它是我这一代广州人共同的听觉记忆。</p>
-      <p class="en">A classic of Cantonese music, bright and nimble, imitating thunder in a dry season. You can even hear its variations in the Guangzhou metro — part of the shared sonic memory of my generation.</p>
-      <audio controls preload="none" src="6-thunder.mp3"></audio>
-      <span class="culture-toggle" data-label="走进广府 · 一个广府人的听觉记忆">&#43; 走进广府 · 一个广府人的听觉记忆</span>
-      <div class="culture-box"><div class="culture-inner">
-        <span class="clabel">走进广府 · 一个广府人的听觉记忆 ｜ Into the Cantonese World · A Native's Sonic Memory</span>
-        <p class="cul-zh">旱天雷是广东音乐的经典，旋律明快灵动，模拟旱天惊雷的清脆生机。对广府人来说，它是不用刻意记、却早已刻进生活的旋律——连广州地铁里都能听到它的变奏。广东音乐以高胡、扬琴、秦琴主奏，曲调清新流畅、装饰繁密；它生长在早茶的喧腾、骑楼的市声、凉茶铺的苦香之间。这是一座把生活过得很有声音的城市——当琴音跳跃如雷，听见的是广府人骨子里那股鲜活、机灵又乐天的劲。</p>
-        <p class="cul-en">Thunder in a Dry Sky is a classic of Cantonese music, bright and nimble, imitating the crisp vitality of thunder in a dry season. For Cantonese people, it is a melody never deliberately memorised yet long woven into daily life — you can even hear its variations in the Guangzhou metro. Cantonese music, led by gaohu, yangqin and qinqin, is fresh, fluid and densely ornamented; it grows amid the bustle of morning tea, the street noise beneath the arcades, the bitter fragrance of herbal-tea shops. This is a city that lives out loud — as the music leaps like thunder, we hear the lively, quick-witted, optimistic spirit in the Cantonese bones.</p>
-      </div></div>
-    </div>
-  </div>
-  <div class="card" id="song-rising" data-region="岭南">
-    <div class="imgbox"><img loading="lazy" decoding="async" src="7-rising.jpg" alt="步步高"></div>
-    <div class="body">
-      <span class="region">广府</span>
-      <h3>步步高</h3><div class="en-title">Rising Step by Step</div>
-      <p class="zh">《步步高》是广东音乐中最喜庆、最广为流传的曲目之一，旋律层层递进、节节攀升，寓意生活越过越好。小时候看广东卫视，逢年过节几乎都能听到它。对广府人来说，它就是“好意头”和节庆气氛本身。</p>
-      <p class="en">One of the most festive Cantonese pieces, its melody climbs ever higher, symbolising a life that keeps getting better. For Cantonese people, it is the very sound of good fortune.</p>
-      <audio controls preload="none" src="7-rising.mp3"></audio>
-      <span class="culture-toggle" data-label="走进广府节庆 · 一个广府人的听觉记忆">&#43; 走进广府节庆 · 一个广府人的听觉记忆</span>
-      <div class="culture-box"><div class="culture-inner">
-        <span class="clabel">走进广府节庆 · 一个广府人的听觉记忆 ｜ Into Cantonese Festivities · A Native's Sonic Memory</span>
-        <p class="cul-zh">步步高旋律层层递进、节节攀升，寓意生活越过越好。小时候看广东卫视，逢年过节几乎都能听到它。在广府，音乐与节庆密不可分：春节的醒狮腾跃、行花街的人潮、开业时的锣鼓——步步高因步步高升的好意头，成了这些喜庆时刻最常响起的曲子。它不只是一首乐曲，更是广府人对美好生活的集体祝愿。当琴音一节节往上攀，听见的是一座城市对明天会更好的笃定相信。</p>
-        <p class="cul-en">Rising Step by Step climbs ever higher, symbolising a life that keeps getting better. Growing up watching Guangdong TV, I heard it during nearly every festival. In the Cantonese world, music and celebration are inseparable: the leaping lion dances of New Year, the crowds at the flower markets, the gongs and drums at shop openings — with its auspicious meaning of rising higher, this piece became the sound of these joyful moments. It is more than a melody; it is the Cantonese people's collective wish for a good life. As the music climbs note by note, we hear a city's firm belief that tomorrow will be better.</p>
-      </div></div>
-    </div>
-  </div>
-  <div class="card" id="song-kapok" data-region="岭南">
-    <div class="imgbox"><img loading="lazy" decoding="async" src="8-kapok.jpg" alt="木棉盛开时"></div>
-    <div class="body">
-      <span class="region">当代广府</span>
-      <h3>木棉盛开时</h3><div class="en-title">When the Kapok Blooms</div>
-      <p class="zh">《木棉盛开时》是我的老师李泽熙创作的作品。木棉是广州的市花，被称为“英雄花”。这首曲子让我看到，岭南音乐不只是旧的传统，它仍在生长——我的老师正在写它的当下，而我作为她的学生，也成了这条传承里的一环。</p>
-      <p class="en">Composed by my teacher, Li Zexi. The kapok is the city flower of Guangzhou, the “hero flower.” This piece shows me that Lingnan music is still growing — and as her student, I have become part of this living lineage.</p>
-      <audio controls preload="none" src="8-kapok.mp3"></audio>
-      <span class="culture-toggle" data-label="走进当代广州 · 传统仍在生长">&#43; 走进当代广州 · 传统仍在生长</span>
-      <div class="culture-box"><div class="culture-inner">
-        <span class="clabel">走进当代广州 · 传统仍在生长 ｜ Into Contemporary Guangzhou · A Tradition Still Growing</span>
-        <p class="cul-zh">木棉盛开时是我的老师李泽熙创作的作品。木棉是广州市花，每年早春先花后叶、满树火红，被称为英雄花，象征着这座城市热烈向上的性格。在传统广东音乐之外，当代作曲家持续以岭南为题材进行新的创作——这首曲子正是这种传统仍在生长的当代回声。从骑楼到珠江新城的天际线，广州始终在新旧之间生长。当琴音明亮地绽放，听见的是岭南音乐没有停在过去，而是被我们这一代继续书写下去。</p>
-        <p class="cul-en">When the Kapok Blooms was composed by my teacher Li Zexi. The kapok is Guangzhou's city flower, blossoming fiery red across bare branches each early spring — the hero flower, emblem of this city's ardent, upward spirit. Beyond traditional Cantonese music, contemporary composers keep creating new works rooted in Lingnan — and this piece is the present-day echo of a tradition still growing. From the old arcades to the skyline of Zhujiang New Town, Guangzhou keeps growing between old and new. As the music blooms bright, we hear that Lingnan music has not stayed in the past, but is being written onward by our generation.</p>
-      </div></div>
-    </div>
-  </div></div>
-  <div class="visit-ending">
-    <div class="ending-kicker">The Last Resonance</div>
-    <h3>当最后一个音符落下</h3>
-    <p>你可以留下一张声音手信，也可以轻轻挥手，与这次展览告别。</p>
-    <button type="button" id="finish-visit">结束参观</button>
-  </div>
-</div>
+</details>
 
 <section class="echo-postcard lingnan-locked" id="echo-postcard">
   <div class="echo-kicker">After Listening Echo</div>
   <div class="echo-title">听后回声 · 广东手信明信片</div>
-  <p class="echo-sub">观众完成声音印记或看完作品后，可以留下一句听后回声，并生成一张带有广东手信印章的纪念明信片。</p>
+  <p class="echo-sub">抵达、聆听，然后带走一段回响。留下一句听后感受，生成属于你的广东手信明信片。</p>
   <div class="echo-shell">
     <form class="echo-form" id="echo-form">
       <h3>生成我的声音手信</h3>
@@ -632,7 +775,7 @@
       </div>
       <div class="echo-field">
         <label for="echo-message">留下一句回声</label>
-        <textarea id="echo-message" maxlength="82" placeholder="例如：我在江风和小提琴之间，听见了广州的记忆。">我在江风和小提琴之间，听见了广州的记忆。</textarea>
+        <textarea id="echo-message" maxlength="82" placeholder="例如：我在江风和小提琴之间，听见了广州的记忆。"></textarea>
       </div>
       <div class="echo-field">
         <label for="echo-name">署名</label>
@@ -659,7 +802,7 @@
         <a id="postcard-download" download="hearing-china-guangdong-souvenir-card.png" href="#">下载明信片</a>
         <button type="button" id="postcard-finish">完成参观</button>
       </div>
-      <p class="postcard-note">这个模块适合放在展览最后，作为“声音印记”之后的观众回响。</p>
+      <p class="postcard-note">把此刻听见的岭南，留在一张可以带走的明信片里。</p>
     </aside>
   </div>
 </section>
@@ -717,12 +860,48 @@
   <div class="final-credit"><span>听见中国 · 数字音乐策展　｜　策展人：梁珏童</span><span>Hearing China · Curated by Liang Juetong</span></div>
 </section>
 
+<section class="curation-section contribute-section" id="contribute" aria-labelledby="contribute-heading">
+  <div class="curation-kicker">THE NEXT CHAPTER / 共同点亮</div>
+  <h2 id="contribute-heading">下一处亮点，从谁的琴声开始？</h2>
+  <p class="curation-lead">我希望未来有更多演奏者带着自己演奏过的中国作品加入。每一个新亮点，都不只是一份音频，而是一位演奏者、一首作品和它与地方文化的联系。</p>
+  <p class="curation-english">A growing map, shaped by performers. Each new point would connect a recording, a musician and the story of a place.</p>
+  <ol class="contribution-steps"><li><strong>准备声音</strong><span>作品、演奏者与录音</span></li><li><strong>核对来源</strong><span>地域联系、署名与许可</span></li><li><strong>策展收录</strong><span>整理聆听笔记与作品卡</span></li><li><strong>点亮地图</strong><span>审核通过后公开展示</span></li></ol>
+  <details class="curation-details" id="contribution-prototype"><summary>体验投稿草稿 · 本地原型，不会上传</summary>
+    <p class="prototype-notice">这不是已经上线的公共投稿平台。你可以填写并下载一份投稿草稿；内容只在当前页面处理，不发送服务器，不会自动点亮地图。刷新后填写内容不保留。</p>
+    <form id="contribution-form">
+      <div class="contribution-grid">
+        <label>作品名称<input name="piece" required maxlength="100" placeholder="你希望分享的中国作品"></label>
+        <label>作曲／改编署名<input name="credits" required maxlength="160" placeholder="请分别注明；不详可写待核实"></label>
+        <label>演奏者署名<input name="performer" required maxlength="80" placeholder="公开展示用的姓名或艺名"></label>
+        <label>作品关联地区<input name="region" required maxlength="100" placeholder="例如：广东汕尾；不是自动定位"></label>
+      </div>
+      <label>这首作品为什么与这里有关？<textarea name="context" required maxlength="800" placeholder="可以写曲调来源、创作背景或你的演奏经验；请区分资料与个人理解。"></textarea></label>
+      <label>录音／视频文件（可选，仅记录文件名）<input name="recording" type="file" accept="audio/*,video/*"></label>
+      <label>来源与使用许可说明<textarea name="permission" required maxlength="800" placeholder="例如：本人演奏及录制；作曲、改编与伴奏的使用许可待核实。草稿不代表已获授权。"></textarea></label>
+      <div class="curation-actions"><button class="curation-primary" type="submit">预览投稿草稿</button><button type="reset">清空草稿</button></div>
+    </form>
+    <div id="contribution-result" hidden><h3>你的投稿草稿</h3><p id="contribution-status" role="status"></p><dl id="contribution-preview"></dl><a class="curation-text-link" id="contribution-download" download="hearing-china-contribution.json">下载草稿 JSON ↓</a></div>
+  </details>
+</section>
+<section class="curation-section backstage" id="process-authorship" aria-labelledby="process-heading">
+<div class="curation-kicker">策展手记</div>
+<h2 id="process-heading">演奏之外，一次聆听如何形成？</h2>
+<p>这里记录我如何选择作品、安排声音与画面，以及让一次个人演奏逐渐成为可共同参与的展览。</p>
+<details class="curation-details"><summary>走进展览背后</summary>
+<div class="editorial-notes">
+<article><span>01</span><h3>让旅程先于解释</h3><p>我保留飞机、高铁、地铁与船，让观众先有一个“出发”的动作。交通只是入口，抵达之后，真正的主角是音乐。</p></article>
+<article><span>02</span><h3>从一座城，望向岭南</h3><p>广州塔、韶关丹霞山、珠海日月贝与城市地铁，成为四扇不同的窗。我不想让“岭南”只剩下一座城市的形象。</p></article>
+<article><span>03</span><h3>让地图留有下一章</h3><p>我自己的演奏是起点，老师授权的作品把视野打开。未来，我希望更多演奏者带着作品与它的地方故事，一起点亮地图。</p></article>
+</div>
+<div class="credits-block"><h3>制作与署名</h3><p>策展、岭南篇演奏与最终内容选择：梁珏童。《华弦集》作曲与演奏：李泽熙，经授权收录。网页交互与交通插画使用 AI 辅助实现，作品配图使用 AI 生成。</p></div>
+</details>
+</section>
 <footer>
   <div class="footer-seal" aria-hidden="true"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="96" height="96" rx="5" fill="#9e3b2c"/><rect x="9" y="9" width="82" height="82" rx="2" fill="none" stroke="#f4efe4" stroke-width="2.4" opacity="0.9"/><g fill="#f6efe1" font-family="'Songti SC','STSong',serif" font-size="30" text-anchor="middle"><text x="68" y="41">听</text><text x="68" y="80">见</text><text x="32" y="41">中</text><text x="32" y="80">国</text></g></svg></div>
   策展人：梁珏童　｜　本项目为个人数字文化策展实践<br>
-  《华弦集》相关作品由李泽熙原创并演奏，经授权用于本项目；岭南部分由策展人梁珏童演奏；视觉图像由 AI 工具生成。<br>
+  《华弦集》相关作品由李泽熙原创并演奏，经授权用于本项目；岭南部分由策展人梁珏童演奏。作品配图使用 AI 生成；本轮网页与交通插画使用 AI 辅助实现。<br>
   <span style="font-family:Georgia,serif;">Curated by Liang Juetong · A personal digital cultural-curation project.<br>
-  Works from “Hua Xian Ji” are composed and performed by Li Zexi, used with permission; Lingnan pieces are performed by the curator; visuals generated with AI tools.</span><br>
+  Works from “Hua Xian Ji” are composed and performed by Li Zexi, used with permission; Lingnan pieces are performed by the curator. Repertoire images are AI-generated; this web revision and transport illustrations use AI-assisted implementation.</span><br>
   © 2026
 </footer>
 </div>
@@ -731,6 +910,7 @@
   const io = new IntersectionObserver((entries)=>{ entries.forEach((e,i)=>{ if(e.isIntersecting){ setTimeout(()=> e.target.classList.add('show'), (i%2)*120); io.unobserve(e.target);} }); },{threshold:.12});
   cards.forEach(c=>io.observe(c));
   // 顶部阅读进度条
+  function displayText(value){ return window.siteText ? window.siteText(value) : value; }
   var scrollProgress = document.getElementById('scroll-progress');
   function updateScrollProgress(){
     var doc = document.documentElement;
@@ -790,11 +970,13 @@
   document.querySelectorAll('.culture-toggle').forEach(t=>{
     t.addEventListener('click', function(){
       var box=this.nextElementSibling; box.classList.toggle('open');
-      this.innerHTML = box.classList.contains('open') ? '&#8722; 收起 Close' : '&#43; '+this.dataset.label;
+      this.textContent = box.classList.contains('open') ? '− 收起' : '＋ '+this.dataset.label;
+      this.setAttribute('aria-expanded',String(box.classList.contains('open')));
     });
   });
   document.querySelectorAll('.filter-btn').forEach(btn=>{
     btn.addEventListener('click', function(){
+      if(window.openExhibition){window.openExhibition(this.dataset.region);return;}
       document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
       this.classList.add('active');
       var r=this.dataset.region;
@@ -803,157 +985,147 @@
         var allBtn=document.querySelector('.filter-btn[data-region="all"]');
         if(allBtn) allBtn.classList.add('active');
         var story=document.getElementById('game-story');
-        if(story) story.innerHTML='<strong>岭南作品尚未解锁。</strong><br>请先打开五份城市声音档案，并采集全部声音印记。';
+        if(story) story.textContent='选择一条抵达路线，或直接进入岭南作品。';
         var game=document.getElementById('city-game');
         if(game) game.scrollIntoView({behavior:'smooth',block:'center'});
         return;
       }
       cards.forEach(c=>{ if(r==='all' || c.dataset.region===r){ c.classList.remove('hide'); c.classList.add('show'); } else { c.classList.add('hide'); } });
       document.querySelectorAll('.section-block').forEach(sec=>{ var regions=sec.dataset.regions.split(','); if(r==='all' || regions.includes(r)) sec.classList.remove('hide'); else sec.classList.add('hide'); });
+      if(r!=='all')document.getElementById('collection-drawer').open=r!=='岭南';
     });
   });
-  // ===== 城市声音漫游小游戏 =====
-  var soundWalk = {
-    qilou:{ title:'骑楼街', en:'Qilou Street Sound Stamp', stamp:'骑楼', file:'sound-qilou.mp3', visual:'visual-qilou.png', shape:'shape-qilou', tone:[392,440,523],
-      text:'骑楼把街道、商铺和人的日常连在一起。脚步声、招牌声、街边叫卖声，像一条很细的旋律，慢慢织出岭南城市生活。' },
-    tea:{ title:'茶楼', en:'Teahouse Sound Stamp', stamp:'茶楼', file:'sound-tea.mp3', visual:'visual-tea.png', shape:'shape-tea', tone:[330,392,494],
-      text:'茶楼里的声音很有层次：茶盅轻碰、粤语交谈、点心车经过。这种热闹不是喧哗，而是属于广府生活的节奏。' },
-    metro:{ title:'地铁站', en:'Metro Platform Sound Stamp', stamp:'地铁', file:'sound-metro.mp3', visual:'visual-metro.png', shape:'shape-metro', tone:[523,659,587],
-      text:'广州地铁的提示音与广东音乐旋律，已成为城市公共空间的一部分。《旱天雷》的影子，也可以在这样的日常声景里被听见。' },
-    river:{ title:'江边', en:'Pearl River Sound Stamp', stamp:'江风', file:'sound-river.mp3', visual:'visual-river.png', shape:'shape-river', tone:[294,349,440],
-      text:'江风把珠江水岸、码头记忆和岭南城市生活连在一起。《丰收渔歌》背后，有水路、归航与丰收的生活经验。' },
-    kapok:{ title:'木棉树', en:'Kapok Blossom Sound Stamp', stamp:'木棉', file:'sound-kapok.mp3', visual:'visual-kapok.png', shape:'shape-kapok', tone:[440,554,659],
-      text:'木棉是广州市花。它不是静止的城市符号，而是每年重新盛开的当代记忆，也通向《木棉盛开时》里仍在生长的岭南音乐。' }
-  };
-  var collectedSounds = new Set();
-  var currentSoundKey = null;
-  var soundStory = document.getElementById('game-story');
-  var progressFill = document.getElementById('game-progress-fill');
-  var enterLingnan = document.getElementById('enter-lingnan');
-  var archiveLayer = document.getElementById('archive-layer');
-  var archiveWindow = document.getElementById('archive-window');
-  var archiveWave = document.getElementById('archive-wave');
-  var stampAudioPlayer = document.getElementById('stamp-audio-player');
-  var cityAudioCtx;
-  var activeStampAudio = null;
+  // ===== 岭南抵达互动；原录音与动画分别管理，无合成音回退 =====
   function pauseOtherAudio(current){
-    document.querySelectorAll('audio').forEach(function(audio){
-      if(audio!==current && !audio.paused) audio.pause();
-    });
+    document.querySelectorAll('audio').forEach(function(audio){if(audio!==current)audio.pause();});
   }
-  stampAudioPlayer.addEventListener('error', function(){
-    if(!currentSoundKey || !soundWalk[currentSoundKey]) return;
-    var file = soundWalk[currentSoundKey].file;
-    playSynthTone(currentSoundKey);
-    soundStory.innerHTML += '<br><span style="color:#9e3b2c;">音频文件没有加载成功：'+file+'。请确认它和 index.html 在同一个文件夹里。</span>';
-  });
-  // 优先播放AI音频文件;若文件不存在则回退到合成音效
-  function playSoundStamp(key){
-    var data = soundWalk[key];
-    if(!data) return;
-    activeStampAudio = stampAudioPlayer;
-    pauseOtherAudio(activeStampAudio);
-    activeStampAudio.pause();
-    activeStampAudio.currentTime = 0;
-    activeStampAudio.src = new URL(data.file, window.location.href).href;
-    activeStampAudio.volume = 0.92;
-    activeStampAudio.load();
-    activeStampAudio.play().catch(function(){
-      playSynthTone(key);
-      soundStory.innerHTML += '<br><span style="color:#9e3b2c;">真实音频暂未播放成功，已先播放提示音。请确认 '+data.file+' 已和 index.html 放在同一层。</span>';
-    });
-    if(archiveWave){
-      archiveWave.classList.add('playing');
-      setTimeout(function(){ archiveWave.classList.remove('playing'); }, 1400);
+  var arrivalRoutes={
+    plane:{number:'01',title:'穿过云海，向南而来。',description:'从云端望向广州，广州塔与珠江两岸的城市轮廓徐徐展开。从这一扇空中窗口，开启更广阔的岭南聆听之旅。',location:'广州 · 广州塔',caption:'广州地标的艺术化意象 · 非实际飞行路线或机场景观',pending:'广播暂留空，当前为无声预览。',path:'M80 100C260 24 442 92 590 178',candidate:'',file:'',source:'',transcript:''},
+    rail:{number:'02',title:'越过丹霞，循轨入岭南。',description:'赤壁丹崖与青绿山色层层展开。以韶关丹霞山为背景意象，让一段列车旅程，带你认识岭南的另一种风景。',location:'韶关 · 丹霞山',caption:'丹霞山与高铁的艺术化组合 · 不代表列车实际穿越景区',pending:'广播暂留空，当前为无声预览。',path:'M-100 268L585 268',candidate:'',file:'',source:'',transcript:''},
+    metro:{number:'03',title:'穿行街巷，走进日常。',description:'穿过隧道，车厢在站台边停稳。从熟悉的报站声出发，听见岭南城市的日常节奏。',location:'隧道 → 城市站台',caption:'城市轨道交通意象 · 具体站名以最终录音为准',pending:'广播暂留空，当前为无声预览。',path:'M-100 314L558 314',candidate:'',file:'',source:'',transcript:''},
+    boat:{number:'04',title:'向着海风，慢慢靠岸。',description:'海面轻轻起伏，珠海日月贝的双贝轮廓浮现在岸边。从海滨城市的文化地标出发，循着水路走进岭南的音乐。',location:'珠海 · 日月贝',caption:'珠海日月贝与海岸的艺术化意象 · 非实际停靠航线',pending:'广播暂留空，当前为无声预览。',path:'M-80 365C130 343 282 380 521 359',candidate:'',file:'',source:'',transcript:''}
+  };
+  var selectedRoute=null,arrivalAnimation=null,arrivalGeneration=0;
+  var arrivalPanel=document.querySelector('.arrival-experience');
+  var arrivalAudio=document.getElementById('arrival-audio');
+  var arrivalPath=document.getElementById('arrival-path');
+  var arrivalTraveller=document.getElementById('arrival-traveller');
+  var arrivalStart=document.getElementById('start-arrival');
+  var arrivalEnter=document.getElementById('enter-lingnan');
+  var arrivalStatus=document.getElementById('broadcast-status');
+  var arrivalReplay=document.getElementById('replay-arrival');
+  function stopArrival(){
+    arrivalGeneration++;
+    if(arrivalAnimation!==null)cancelAnimationFrame(arrivalAnimation);
+    arrivalAnimation=null;arrivalAudio.pause();
+    if(arrivalPanel.dataset.phase==='travelling')arrivalPanel.dataset.phase='selected';
+  }
+  function placeTraveller(fraction){
+    var length=arrivalPath.getTotalLength(),distance=length*fraction;
+    var point=arrivalPath.getPointAtLength(distance);
+    var bob=selectedRoute==='boat'&&fraction>0&&fraction<1?Math.sin(fraction*Math.PI*5)*2:0;
+    var angle=0;
+    if(selectedRoute==='plane'){
+      var previous=arrivalPath.getPointAtLength(Math.max(0,distance-2));
+      var next=arrivalPath.getPointAtLength(Math.min(length,distance+2));
+      angle=Math.atan2(next.y-previous.y,next.x-previous.x)*180/Math.PI*.4;
     }
+    arrivalTraveller.setAttribute('transform','translate('+point.x+' '+(point.y+bob)+') rotate('+angle+')');
+    document.getElementById('journey-track-fill').style.width=(fraction*100)+'%';
   }
-  function playSynthTone(key){
-    var data = soundWalk[key];
-    if(!data || (!window.AudioContext && !window.webkitAudioContext)) return;
-    cityAudioCtx = cityAudioCtx || new (window.AudioContext || window.webkitAudioContext)();
-    var now = cityAudioCtx.currentTime;
-    data.tone.forEach(function(freq,i){
-      var start=now+i*0.13; var osc=cityAudioCtx.createOscillator(); var gain=cityAudioCtx.createGain();
-      osc.type = i===1?'triangle':'sine'; osc.frequency.setValueAtTime(freq,start);
-      gain.gain.setValueAtTime(0.0001,start); gain.gain.exponentialRampToValueAtTime(0.055,start+0.025); gain.gain.exponentialRampToValueAtTime(0.0001,start+0.12);
-      osc.connect(gain).connect(cityAudioCtx.destination); osc.start(start); osc.stop(start+0.13);
+  function selectArrival(key){
+    var route=arrivalRoutes[key];if(!route)return;
+    stopArrival();pauseOtherAudio(null);selectedRoute=key;
+    arrivalPanel.dataset.mode=key;arrivalPanel.dataset.phase='selected';
+    document.querySelectorAll('.route-option').forEach(function(button){
+      var chosen=button.dataset.route===key;
+      button.setAttribute('aria-pressed',String(chosen));
+      button.querySelector('.route-choice').textContent=chosen?'已选择这段旅程 ✓':'选择这段旅程';
     });
+    document.getElementById('route-title').textContent=route.title;
+    document.getElementById('route-description').textContent=route.description;
+    document.getElementById('ticket-number').textContent=route.number+' / 04';
+    document.getElementById('scene-location').textContent=route.location;
+    document.getElementById('scene-caption').textContent=route.caption;
+    document.getElementById('arrival-vehicle-use').setAttribute('href','#vehicle-'+key);
+    arrivalStatus.textContent=route.file?'真实交通广播已接入。':route.pending;
+    arrivalAudio.hidden=!route.file;arrivalAudio.removeAttribute('src');
+    if(route.file)arrivalAudio.src=route.file;
+    arrivalAudio.load();
+    var source=document.getElementById('broadcast-source');
+    source.hidden=!route.source;source.textContent=route.source?'录音来源：'+route.source:'';
+    var transcript=document.getElementById('broadcast-transcript');
+    transcript.hidden=!route.transcript;transcript.open=false;transcript.querySelector('p').textContent=route.transcript;
+    var candidate=document.getElementById('broadcast-candidate');
+    candidate.hidden=!route.candidate;
+    if(route.candidate)candidate.href=route.candidate;else candidate.removeAttribute('href');
+    arrivalPath.setAttribute('d',route.path);placeTraveller(0);
+    document.getElementById('landscape-message').textContent='你的岭南旅程，即将启程。';
+    document.getElementById('arrival-progress').textContent='01 / 已选择出发方式';
+    arrivalStart.hidden=false;arrivalStart.disabled=false;arrivalStart.textContent=route.file?'启程 · 聆听真实广播 →':'启程 · 先看行进画面 →';
+    arrivalEnter.hidden=true;arrivalReplay.hidden=true;
   }
-  function updateSoundWalk(key){
-    var total=Object.keys(soundWalk).length; var data=soundWalk[key];
-    collectedSounds.add(key);
-    document.querySelectorAll('.sound-node').forEach(function(node){
-      node.classList.toggle('selected', node.dataset.sound===key);
-      if(collectedSounds.has(node.dataset.sound)) node.classList.add('visited');
-    });
-    document.querySelectorAll('.stamp').forEach(function(stamp){ stamp.classList.toggle('collected', collectedSounds.has(stamp.dataset.stamp)); });
-    var count=collectedSounds.size;
-    progressFill.style.width=(count/total*100)+'%';
-    soundStory.innerHTML='<strong>'+data.title+' · '+data.stamp+'印记</strong><br>'+data.text;
-    if(count===total){
-      window.lingnanUnlocked=true;
-      enterLingnan.disabled=false;
-      soundStory.innerHTML+='<br><br><strong>五枚声音印记已集齐。</strong>请点击“进入岭南作品”，再打开后续展区。';
+  function finishArrival(){
+    arrivalAnimation=null;placeTraveller(1);arrivalPanel.dataset.phase='arrived';
+    document.getElementById('landscape-message').textContent='旅程抵达，聆听开始。';
+    document.getElementById('arrival-progress').textContent='02 / 走进岭南 · 音乐在此展开';
+    var moveFocus=document.activeElement===arrivalStart;
+    arrivalStart.hidden=true;arrivalEnter.hidden=false;arrivalReplay.hidden=false;
+    if(moveFocus)arrivalEnter.focus({preventScroll:true});
+  }
+  function startArrival(){
+    if(!selectedRoute)return;
+    stopArrival();var generation=arrivalGeneration,route=arrivalRoutes[selectedRoute];
+    pauseOtherAudio(arrivalAudio);placeTraveller(0);
+    arrivalPanel.dataset.phase='travelling';arrivalStart.hidden=false;arrivalStart.disabled=true;
+    arrivalStart.textContent='正在循声抵达…';arrivalEnter.hidden=true;arrivalReplay.hidden=true;
+    document.getElementById('arrival-progress').textContent='旅途中 · 下一站，岭南';
+    document.getElementById('landscape-message').textContent=route.location;
+    if(route.file){
+      arrivalAudio.currentTime=0;
+      arrivalAudio.play().catch(function(){if(generation===arrivalGeneration)arrivalStatus.textContent='广播暂未播放，请使用播放器重试；仍可继续进入作品。';});
     }
-  }
-  function openSoundArchive(key){
-    currentSoundKey=key;
-    var data=soundWalk[key];
-    if(!data) return;
-    pauseOtherAudio(stampAudioPlayer);
-    stampAudioPlayer.pause();
-    stampAudioPlayer.currentTime = 0;
-    stampAudioPlayer.src = new URL(data.file, window.location.href).href;
-    stampAudioPlayer.load();
-    document.getElementById('archive-title').textContent=data.title;
-    document.getElementById('archive-en').textContent=data.en;
-    document.getElementById('archive-text').textContent=data.text;
-    archiveWindow.style.setProperty('--archive-bg', "url('" + data.visual + "')");
-    archiveWindow.classList.toggle('collected', collectedSounds.has(key));
-    archiveLayer.classList.add('open');
-  }
-  function closeSoundArchive(){
-    archiveLayer.classList.remove('open');
-    if(activeStampAudio){
-      activeStampAudio.pause();
-      activeStampAudio.currentTime=0;
+    if(reduceMotion){finishArrival();return;}
+    var began=performance.now();
+    function frame(now){
+      if(generation!==arrivalGeneration)return;
+      var p=Math.min((now-began)/4800,1);placeTraveller(1-Math.pow(1-p,2));
+      if(p<1)arrivalAnimation=requestAnimationFrame(frame);else finishArrival();
     }
-    if(archiveWave) archiveWave.classList.remove('playing');
+    arrivalAnimation=requestAnimationFrame(frame);
   }
-  document.querySelectorAll('.sound-node').forEach(function(node){
-    node.addEventListener('click', function(){ openSoundArchive(this.dataset.sound); });
-  });
-  document.getElementById('archive-close').addEventListener('click', closeSoundArchive);
-  archiveLayer.addEventListener('click', function(e){ if(e.target===archiveLayer) closeSoundArchive(); });
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeSoundArchive(); });
-  document.getElementById('archive-collect').addEventListener('click', function(){
-    if(!currentSoundKey) return;
-    playSoundStamp(currentSoundKey);
-    updateSoundWalk(currentSoundKey);
-    archiveWindow.classList.add('collected');
-  });
-  document.getElementById('reset-sound-walk').addEventListener('click', function(){
-    collectedSounds.clear();
-    window.lingnanUnlocked=false;
-    document.querySelectorAll('.sound-node').forEach(function(n){ n.classList.remove('visited','selected'); });
-    document.querySelectorAll('.stamp').forEach(function(s){ s.classList.remove('collected'); });
-    document.getElementById('lingnan-section').classList.add('lingnan-locked');
-    document.getElementById('echo-postcard').classList.add('lingnan-locked');
-    progressFill.style.width='0'; enterLingnan.disabled=true;
-    soundStory.textContent='点击城市地图上的地点，开始收集第一枚声音印记。';
-  });
-  enterLingnan.addEventListener('click', function(){
-    if(!window.lingnanUnlocked) return;
-    playUnlockFlare();
+  arrivalStart.addEventListener('click',startArrival);
+  arrivalReplay.addEventListener('click',startArrival);
+  arrivalAudio.addEventListener('error',function(){if(selectedRoute&&arrivalRoutes[selectedRoute].file)arrivalStatus.textContent='广播暂时无法加载；你仍然可以进入岭南篇。';});
+  function enterArrivalWorks(){
+    stopArrival();window.lingnanUnlocked=true;
+    if(window.revealLingnanWorks){document.getElementById('arrival-progress').textContent='03 / 听见岭南';window.revealLingnanWorks();return;}
+    if(window.openExhibition){document.getElementById('arrival-progress').textContent='03 / 听见岭南';window.openExhibition('岭南');return;}
     document.getElementById('lingnan-section').classList.remove('lingnan-locked');
-    var btn=document.querySelector('.filter-btn[data-region="岭南"]'); if(btn) btn.click();
-    var target=document.getElementById('song-fishing');
-    if(target){
-      setTimeout(function(){
-        target.scrollIntoView({behavior:'smooth',block:'center'});
-        target.classList.add('flash'); setTimeout(function(){ target.classList.remove('flash'); },1600);
-      }, reduceMotion ? 0 : 480);
-    }
+    var button=document.querySelector('.filter-btn[data-region="岭南"]');if(button)button.click();
+    document.getElementById('arrival-progress').textContent='03 / 听见岭南';
+    var heading=document.querySelector('#lingnan-section .section-title');
+    heading.setAttribute('tabindex','-1');heading.focus({preventScroll:true});
+    document.getElementById('lingnan-section').scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'start'});
+  }
+  arrivalEnter.addEventListener('click',enterArrivalWorks);
+  document.getElementById('skip-arrival').addEventListener('click',enterArrivalWorks);
+  document.querySelectorAll('.route-option').forEach(function(button){button.addEventListener('click',function(){selectArrival(button.dataset.route);});});
+  document.getElementById('reset-sound-walk').addEventListener('click',function(){
+    stopArrival();selectedRoute=null;arrivalAudio.removeAttribute('src');arrivalAudio.load();arrivalAudio.hidden=true;
+    arrivalPanel.dataset.mode='idle';arrivalPanel.dataset.phase='idle';
+    document.querySelectorAll('.route-option').forEach(function(button){button.setAttribute('aria-pressed','false');button.querySelector('.route-choice').textContent='选择这段旅程';});
+    document.getElementById('route-title').textContent='旅程，从这里开始。';
+    document.getElementById('route-description').textContent='岭南的故事，从一次抵达展开。选择你喜欢的交通方式，让山水、街巷和水岸把你带到音乐之中。';
+    document.getElementById('ticket-number').textContent='— / 04';
+    arrivalStatus.textContent='广播暂留空，当前可以先体验无声旅程。';
+    document.getElementById('broadcast-source').hidden=true;document.getElementById('broadcast-transcript').hidden=true;document.getElementById('broadcast-candidate').hidden=true;
+    document.getElementById('scene-location').textContent='山水之间，声音将至';
+    document.getElementById('scene-caption').textContent='山水、城市与水岸的艺术化意象 · 非实际交通线路';
+    document.getElementById('landscape-message').textContent='四种出发方式，同一份岭南回响。';
+    document.getElementById('arrival-progress').textContent='选择方式 → 循声抵达 → 进入岭南篇';
+    arrivalStart.hidden=false;arrivalStart.disabled=true;arrivalStart.textContent='选择一种出发方式';
+    arrivalEnter.hidden=true;arrivalReplay.hidden=true;placeTraveller(0);
   });
 
   // ===== 结束参观与挥手告别 =====
@@ -985,7 +1157,7 @@
   }
   function openFarewell(){
     pauseOtherAudio(null);
-    closeSoundArchive();
+    stopArrival();
     stopGestureCamera();
     showFarewellView('intro');
     farewellLayer.classList.add('open');
@@ -1096,7 +1268,7 @@
     '我在江风和小提琴之间，听见了广州的记忆。',
     '这一刻，城市像一段慢慢展开的旋律。',
     '茶盏、江水与琴声，让岭南变得可以被听见。',
-    '我把一枚声音印记，留在木棉盛开的地方。',
+    '我把一段旅途的回响，留在木棉盛开的地方。',
     '这不是一次浏览，而像一次温柔的回到。'
   ];
   function setActiveButtons(selector, activeButton){
@@ -1117,7 +1289,7 @@
     });
   });
   document.getElementById('echo-random').addEventListener('click', function(){
-    document.getElementById('echo-message').value = echoLines[Math.floor(Math.random()*echoLines.length)];
+    document.getElementById('echo-message').value = displayText(echoLines[Math.floor(Math.random()*echoLines.length)]);
   });
   function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight){
     var chars = Array.from(text); var line='';
@@ -1180,10 +1352,12 @@
     }else{ drawKapok(ctx,0,0,88,'rgba(158,59,44,.82)'); }
     ctx.restore();
   }
+  var souvenirDrawVersion=0;
   async function drawSouvenirCard(){
+    var drawVersion=++souvenirDrawVersion;
     var canvas=document.getElementById('souvenir-card'); var ctx=canvas.getContext('2d');
-    var message=(document.getElementById('echo-message').value||'我在这次展览中，留下了一枚声音回声。').trim();
-    var visitor=(document.getElementById('echo-name').value||'一位听众').trim();
+    var message=(document.getElementById('echo-message').value||displayText('我在这次展览中，留下了一枚声音回声。')).trim();
+    var visitor=(document.getElementById('echo-name').value||displayText('一位听众')).trim();
     var d=new Date(); var dateText=d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0');
     var palette=souvenirPalettes[postcardState.souvenir] || souvenirPalettes['木棉花'];
     ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -1191,15 +1365,16 @@
     for(var p=0;p<9;p++) drawKapok(ctx,110+p*128,92+(p%2)*42,34,palette.wash);
     ctx.strokeStyle=palette.sub; ctx.globalAlpha=.58; ctx.lineWidth=4; ctx.strokeRect(56,56,1088,668); ctx.globalAlpha=1;
     ctx.setLineDash([18,12]); ctx.strokeStyle=palette.sub; ctx.globalAlpha=.34; ctx.lineWidth=2; ctx.strokeRect(82,82,1036,616); ctx.setLineDash([]); ctx.globalAlpha=1;
-    ctx.fillStyle=palette.accent; ctx.font='58px "Songti SC", "STSong", serif'; ctx.fillText('听后回声',112,154);
-    ctx.fillStyle=palette.sub; ctx.font='24px Georgia, serif'; ctx.fillText('Hearing China · Guangdong Souvenir Card',116,194);
+    ctx.fillStyle=palette.accent; ctx.font='58px "Songti SC", "STSong", serif'; ctx.fillText(displayText('听后回声'),112,154);
+    ctx.fillStyle=palette.sub; ctx.font='24px Georgia, serif'; ctx.fillText(displayText('Hearing China · Guangdong Souvenir Card'),116,194);
     ctx.strokeStyle=palette.sub; ctx.globalAlpha=.45; ctx.beginPath(); ctx.moveTo(112,226); ctx.lineTo(732,226); ctx.stroke(); ctx.globalAlpha=1;
-    ctx.fillStyle=palette.muted; ctx.font='27px "Songti SC", "STSong", serif'; ctx.fillText('我带走了一枚广东手信：'+postcardState.souvenir,112,292);
-    ctx.fillStyle=palette.text; ctx.font='39px "Songti SC", "STSong", serif'; var y=wrapCanvasText(ctx,'“'+message+'”',112,374,560,58);
-    ctx.fillStyle=palette.muted; ctx.font='23px "Songti SC", "STSong", serif'; ctx.fillText('花印评分',112,y+72);
+    ctx.fillStyle=palette.muted; ctx.font='27px "Songti SC", "STSong", serif'; ctx.fillText(displayText('我带走了一枚广东手信：')+displayText(postcardState.souvenir),112,292,620);
+    ctx.fillStyle=palette.text; ctx.font=(window.siteLanguage==='en'?'30':'39')+'px "Songti SC", "STSong", serif'; var y=wrapCanvasText(ctx,'“'+message+'”',112,374,560,58);
+    ctx.fillStyle=palette.muted; ctx.font='23px "Songti SC", "STSong", serif'; ctx.fillText(displayText('花印评分'),112,y+72);
     for(var i=0;i<5;i++) drawKapok(ctx,250+i*50,y+63,28,i<postcardState.rating?palette.accent:palette.wash);
-    ctx.fillStyle=palette.muted; ctx.font='22px "Songti SC", "STSong", serif'; ctx.fillText('署名：'+visitor,112,646); ctx.fillText(dateText,112,682);
+    ctx.fillStyle=palette.muted; ctx.font='22px "Songti SC", "STSong", serif'; ctx.fillText(displayText('署名：')+visitor,112,646); ctx.fillText(dateText,112,682);
     var souvenirImg = await loadImageMaybe(souvenirImageFiles[postcardState.souvenir]);
+    if(drawVersion!==souvenirDrawVersion)return;
     ctx.save();
     ctx.beginPath(); ctx.arc(900,440,132,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,.62)'; ctx.fill();
     ctx.strokeStyle=palette.sub; ctx.globalAlpha=.78; ctx.lineWidth=4; ctx.stroke(); ctx.globalAlpha=1;
@@ -1215,10 +1390,10 @@
       drawSouvenirIcon(ctx, postcardState.souvenir, 890, 355);
     }
     ctx.textAlign='center';
-    ctx.fillStyle=palette.accent; ctx.font='32px "Songti SC", "STSong", serif'; ctx.fillText(postcardState.souvenir+' · '+postcardState.en,900,626);
-    ctx.fillStyle=palette.sub; ctx.font='22px Georgia, "Songti SC", serif'; ctx.fillText('岭南声音手信 / Lingnan Sound Souvenir',900,664);
+    ctx.fillStyle=palette.accent; ctx.font='32px "Songti SC", "STSong", serif'; ctx.fillText(displayText(postcardState.souvenir),900,626,330);
+    ctx.fillStyle=palette.sub; ctx.font='17px Georgia, "Songti SC", serif'; ctx.fillText(displayText('岭南声音手信 / Lingnan Sound Souvenir'),900,664);
     ctx.strokeStyle=palette.sub; ctx.globalAlpha=.45; ctx.beginPath(); ctx.moveTo(790,690); ctx.lineTo(1010,690); ctx.stroke(); ctx.globalAlpha=1; ctx.textAlign='start';
-    ctx.fillStyle=palette.wash; ctx.font='84px "Songti SC", "STSong", serif'; ctx.save(); ctx.translate(1048,130); ctx.rotate(Math.PI/2); ctx.fillText('广东手信',0,0); ctx.restore();
+    ctx.fillStyle=palette.wash; ctx.font='84px "Songti SC", "STSong", serif'; ctx.save(); ctx.translate(1048,130); ctx.rotate(Math.PI/2); ctx.fillText(displayText('广东手信'),0,0,400); ctx.restore();
     document.getElementById('postcard-empty').hidden=true; canvas.hidden=false;
     var url=canvas.toDataURL('image/png'); var link=document.getElementById('postcard-download'); link.href=url; link.download='hearing-china-'+postcardState.en.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'-souvenir-card.png'; link.classList.add('ready');
   }
@@ -1250,6 +1425,7 @@
   });
 
   var chart;
+  window.addEventListener('languagechange',function(){if(chart)chart.setOption({series:[{label:{formatter:function(p){return displayText(p.name);}}}]}); var c=document.getElementById('souvenir-card');if(c&&!c.hidden)drawSouvenirCard();});
   var songs = [
     {name:'扎恩达勒',id:'song-zandale',value:[124.0,48.5]},{name:'长白松',id:'song-changbai',value:[128.1,42.0]},
     {name:'喀什噶尔星空',id:'song-kashgar',value:[75.99,39.47]},{name:'洱海泛舟',id:'song-erhai',value:[100.2,25.6]},
@@ -1262,12 +1438,19 @@
     echarts.registerMap('china', window.CHINA_GEO);
     chart = echarts.init(document.getElementById('china-map'));
     chart.setOption({
-      geo:{ map:'china', roam:false, zoom:1.18, itemStyle:{ areaColor:'#efe7d6', borderColor:'#c9bda3', borderWidth:.6 }, emphasis:{ itemStyle:{ areaColor:'#e6dcc4' }, label:{show:false} } },
-      tooltip:{ trigger:'item', formatter:function(p){ return p.data ? ('&#127931; '+p.data.name) : ''; }, backgroundColor:'#fffdf9', borderColor:'#b08a3e', textStyle:{color:'#262220'} },
-      series:[{ type:'effectScatter', coordinateSystem:'geo', symbolSize:13, rippleEffect:{scale:3.5, brushType:'stroke'}, itemStyle:{ color:'#9e3b2c', shadowBlur:8, shadowColor:'#9e3b2c' }, label:{ show:true, formatter:'{b}', position:'right', color:'#5a3a20', fontSize:11, fontFamily:'serif' }, data: songs.map(s=>({name:s.name, value:s.value, songId:s.id})) }]
+      geo:{ map:'china', silent:true, roam:false, zoom:1.18, itemStyle:{ areaColor:'#efe7d6', borderColor:'#c9bda3', borderWidth:.6 }, emphasis:{ itemStyle:{ areaColor:'#e6dcc4' }, label:{show:false} } },
+      tooltip:{ trigger:'item', formatter:function(p){ return p.data ? (displayText(p.data.name)+'<br>'+displayText(p.data.collection)) : ''; }, backgroundColor:'#fffdf9', borderColor:'#b08a3e', textStyle:{color:'#262220'} },
+      series:[{ type:'effectScatter', coordinateSystem:'geo', symbolSize:13, rippleEffect:{scale:3.5, brushType:'stroke'}, itemStyle:{ color:'#9e3b2c', shadowBlur:5 }, labelLayout:{hideOverlap:true}, label:{ show:window.innerWidth>700, formatter:function(p){return displayText(p.name);}, position:'right', color:'#5a3a20', fontSize:11, fontFamily:'serif' }, data: songs.map(function(s,index){var own=index>=4;return {name:s.name,value:s.value,songId:s.id,collection:own?'岭南篇 · 梁珏童演奏':'华弦集 · 李泽熙作曲与演奏 · 授权收录',symbol:own?'circle':'diamond',itemStyle:{color:own?'#9e3b2c':'#7a8870',shadowColor:own?'#9e3b2c':'#7a8870'}};}) }]
     });
-    chart.on('click', function(p){ if(p.data && p.data.songId){ var el=document.getElementById(p.data.songId); el.scrollIntoView({behavior:'smooth', block:'center'}); el.classList.add('flash'); setTimeout(()=> el.classList.remove('flash'),1600);} });
-    window.addEventListener('resize', ()=> chart.resize());
+    chart.on('click', function(p){ if(p.data && p.data.songId){ if(window.openExhibition){var target=document.getElementById(p.data.songId);window.openExhibition(target.dataset.region,p.data.songId);return;} var el=document.getElementById(p.data.songId); var drawer=el.closest('details');if(drawer)drawer.open=true; if(el.closest('#lingnan-section') && !window.lingnanUnlocked){ document.getElementById('city-game').scrollIntoView({behavior:'smooth',block:'start'}); return; } if(el.classList.contains('hide')||el.closest('.section-block').classList.contains('hide'))document.querySelector('.filter-btn[data-region="all"]').click(); el.scrollIntoView({behavior:'smooth', block:'center'}); el.classList.add('flash'); setTimeout(()=> el.classList.remove('flash'),1600);} });
+    window.addEventListener('resize', ()=>{chart.setOption({series:[{label:{show:window.innerWidth>700}}]});chart.resize();});
+    // Include the visible halo in the hit area, especially for touch input.
+    chart.getZr().on('click',function(event){
+      if(!window.openExhibition || document.getElementById('exhibition').open)return;
+      var nearest=null,distance=25;
+      songs.forEach(function(song){var p=chart.convertToPixel({geoIndex:0},song.value);if(!p)return;var d=Math.hypot(p[0]-event.offsetX,p[1]-event.offsetY);if(d<distance){nearest=song;distance=d;}});
+      if(nearest){var target=document.getElementById(nearest.id);window.openExhibition(target.dataset.region,nearest.id);}
+    });
   }
   if(document.readyState==='complete') initMap(); else window.addEventListener('load', initMap);
   document.querySelectorAll('audio').forEach(au=>{
@@ -1294,7 +1477,8 @@
     var en=(card.querySelector('.en-title')||{}).textContent||'';
     btn.addEventListener('click',function(e){
       e.stopPropagation();
-      if(typeof THREE==='undefined'){ alert('立体观赏需要联网加载 3D 组件，请检查网络后重试。'); return; }
+      if(card.id==='song-kapok'&&window.openExhibition){window.openExhibition('岭南','song-kapok');return;}
+      if(typeof THREE==='undefined'){ alert(displayText('立体观赏需要联网加载 3D 组件，请检查网络后重试。')); return; }
       openStage(img.getAttribute('src'), zh, en, SIDE_CHARS[card.id]||((zh.trim()||'弦').charAt(0)));
     });
   });
@@ -1434,7 +1618,7 @@
     if(!renderer) initThree();
     stage.classList.add('open'); stage.setAttribute('aria-hidden','false');
     document.body.classList.add('particle-open');
-    titleEl.innerHTML=zh+(en?'<small>'+en+'</small>':'');
+    titleEl.textContent=zh;
     document.querySelectorAll('audio').forEach(function(a){ if(!a.paused)a.pause(); });
     viewSize=14; resize();
     camera.position.set(0,0,100);
