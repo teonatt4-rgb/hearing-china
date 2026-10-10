@@ -587,14 +587,14 @@
 <div class="ticket-top"><span>循声入岭南 / A SONIC ARRIVAL</span><span id="ticket-number">— / 04</span></div>
 <h3 id="route-title">旅程，从这里开始。</h3>
 <p id="route-description">岭南的故事，从一次抵达展开。选择你喜欢的交通方式，让山水、街巷和水岸把你带到音乐之中。</p>
-<div class="broadcast-box"><span class="broadcast-label">真实交通广播 / FIELD ANNOUNCEMENT</span><p id="broadcast-status" role="status">广播暂留空，当前可以先体验无声旅程。</p><audio id="arrival-audio" controls preload="none" hidden></audio><p id="broadcast-source" hidden></p><details id="broadcast-transcript" hidden><summary>广播文字 / Transcript</summary><p></p></details><a id="broadcast-candidate" class="candidate-link" target="_blank" rel="noopener noreferrer" hidden>查看候选原录音 ↗</a></div>
+<div class="broadcast-box"><span class="broadcast-label">交通广播 / ANNOUNCEMENT</span><p id="broadcast-status" role="status">选择一种方式出发，就能听到这段旅程的广播。</p><audio id="arrival-audio" controls preload="none" hidden></audio><p id="broadcast-source" hidden></p><details id="broadcast-transcript" hidden><summary>广播文字 / Transcript</summary><p></p></details><a id="broadcast-candidate" class="candidate-link" target="_blank" rel="noopener noreferrer" hidden>查看候选原录音 ↗</a></div>
 <p class="arrival-progress" id="arrival-progress" role="status">选择方式 → 循声抵达 → 进入岭南篇</p>
 <button type="button" class="arrival-primary" id="start-arrival" disabled>选择一种出发方式</button>
 <button type="button" class="arrival-primary" id="enter-lingnan" hidden>进入岭南篇 · 开始聆听 →</button>
 <div class="arrival-secondary"><button type="button" id="skip-arrival">跳过旅程，直接聆听 ↗</button><button type="button" id="replay-arrival" hidden>再看一次</button><button type="button" id="reset-sound-walk">重新选择</button></div>
 </div>
 </div>
-<p class="arrival-preview-note">广州的城市轮廓、韶关的丹霞山色、珠海的海岸风景——从广东的不同窗口，走进岭南。画面为地标意象，非实际交通线路；广播暂留空。</p>
+<p class="arrival-preview-note">广州的城市轮廓、韶关的丹霞山色、珠海的海岸风景——从广东的不同窗口，走进岭南。画面为地标意象，非实际交通线路。</p>
 </section>
 
 <div class="section-block lingnan-locked" id="lingnan-section" data-regions="岭南">
@@ -1051,7 +1051,7 @@
     document.getElementById('scene-location').textContent=route.location;
     document.getElementById('scene-caption').textContent=route.caption;
     document.getElementById('arrival-vehicle-use').setAttribute('href','#vehicle-'+key);
-    arrivalStatus.textContent=route.file?'真实交通广播已接入。':route.pending;
+    arrivalStatus.textContent=route.file?'交通广播 · 粤语 / 普通话 / English':route.pending;
     arrivalAudio.hidden=!route.file;arrivalAudio.removeAttribute('src');
     if(route.file)arrivalAudio.src=route.file;
     arrivalAudio.load();
@@ -1065,7 +1065,7 @@
     arrivalPath.setAttribute('d',route.path);placeTraveller(0);
     document.getElementById('landscape-message').textContent='你的岭南旅程，即将启程。';
     document.getElementById('arrival-progress').textContent='01 / 已选择出发方式';
-    arrivalStart.hidden=false;arrivalStart.disabled=false;arrivalStart.textContent=route.file?'启程 · 聆听真实广播 →':'启程 · 先看行进画面 →';
+    arrivalStart.hidden=false;arrivalStart.disabled=false;arrivalStart.textContent=route.file?'启程 · 听广播 →':'启程 · 先看行进画面 →';
     arrivalEnter.hidden=true;arrivalReplay.hidden=true;
   }
   function finishArrival(){
@@ -1121,7 +1121,7 @@
     document.getElementById('route-title').textContent='旅程，从这里开始。';
     document.getElementById('route-description').textContent='岭南的故事，从一次抵达展开。选择你喜欢的交通方式，让山水、街巷和水岸把你带到音乐之中。';
     document.getElementById('ticket-number').textContent='— / 04';
-    arrivalStatus.textContent='广播暂留空，当前可以先体验无声旅程。';
+    arrivalStatus.textContent='选择一种方式出发，就能听到这段旅程的广播。';
     document.getElementById('broadcast-source').hidden=true;document.getElementById('broadcast-transcript').hidden=true;document.getElementById('broadcast-candidate').hidden=true;
     document.getElementById('scene-location').textContent='山水之间，声音将至';
     document.getElementById('scene-caption').textContent='山水、城市与水岸的艺术化意象 · 非实际交通线路';

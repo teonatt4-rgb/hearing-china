@@ -35,3 +35,26 @@
   .cu-tagline{ font-size:20px; }
   .cu-curator{ flex-direction:column; text-align:center; }
 }
+
+/* films with embedded video */
+.cu-film-media{ min-width:0; }
+.cu-video{ display:block; width:100%; height:auto; aspect-ratio:16/9; background:#111; border-radius:6px; object-fit:contain; }
+.cu-yueyin{ grid-template-columns:minmax(0,6fr) minmax(0,5fr); }
+.cu-poster-thumb{ display:block; width:96px; height:auto; margin-top:12px; border-radius:4px; box-shadow:0 2px 8px rgba(0,0,0,.12); }
+.cu-film .cu-film-link + .cu-poster-thumb{ margin-left:0; }
+.cu-curator img{ width:120px; height:150px; border-radius:8px; object-position:50% 20%; }
+.cu-curator a{ color:var(--cinnabar); }
+
+/* Hua Xian Ji filming stills, folded */
+.cu-stills{ max-width:1000px; margin:30px auto 10px; padding:0 24px; }
+.cu-stills summary{ cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:12px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); color:var(--muted); font-size:14px; }
+.cu-stills summary::-webkit-details-marker{ display:none; }
+.cu-stills summary small{ font-size:12px; letter-spacing:1px; }
+.cu-stills[open] summary small{ visibility:hidden; }
+.cu-stills > p{ font-size:13.5px; line-height:1.85; color:var(--muted); margin:14px 0; }
+.cu-stills-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.cu-stills-grid img{ width:100%; height:auto; border-radius:4px; display:block; }
+@media (max-width:700px){ .cu-stills-grid{ grid-template-columns:1fr; } .cu-yueyin{ grid-template-columns:1fr; } }
+/* keep poster small: generic .cu-film img rule must not stretch it */
+.cu-film .cu-poster-thumb{ width:88px !important; height:auto; margin-top:14px; }
+.cu-film .cu-film-copy{ min-width:0; }
