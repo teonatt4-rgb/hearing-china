@@ -170,12 +170,12 @@
     audio.addEventListener('ended',()=>{video.pause();updateVideo();});
     audio.addEventListener('timeupdate',()=>{updateVideo();if(card.classList.contains('video-flipped'))alignVideo();});
     audio.addEventListener('seeked',()=>{updateVideo();if(card.classList.contains('video-flipped'))alignVideo();});
-    const flip=document.createElement('button');flip.type='button';flip.className='performance-flip';flip.setAttribute('aria-pressed','false');flip.textContent='翻面 · 看完整演奏';box.append(flip);
+    const flip=document.createElement('button');flip.type='button';flip.className='performance-flip';flip.setAttribute('aria-pressed','false');flip.textContent='▶ 观看梁珏童本人演奏录像';box.append(flip);
     box.querySelector('.sound-only')?.classList.add('sound-impression-secondary');
     flip.addEventListener('click',()=>{
       if(card.classList.contains('sound-focused'))box.querySelector('.sound-only')?.click();
       const flipped=card.classList.toggle('video-flipped');
-      flip.setAttribute('aria-pressed',String(flipped));flip.textContent=flipped?'翻回 · 作品画面':'翻面 · 看完整演奏';
+      flip.setAttribute('aria-pressed',String(flipped));flip.textContent=flipped?'返回作品画面':'▶ 观看梁珏童本人演奏录像';
       if(flipped){
         if(video.readyState<1)video.load();
         else followAudio();
@@ -191,7 +191,7 @@
   let current=null,workOrigin=null;
   const stops=new Map(cards.map(card=>{const marker=document.createComment(card.id+' home');card.before(marker);return [card.id,marker];}));
   const pauseAll=()=>{document.querySelectorAll('audio').forEach(a=>a.pause());document.querySelectorAll('.performance-recording').forEach(v=>v.pause());};
-  const restore=()=>{if(current){current.querySelector('.performance-recording')?.pause();current.classList.remove('video-flipped');const flip=current.querySelector('.performance-flip');if(flip){flip.setAttribute('aria-pressed','false');flip.textContent='翻面 · 看完整演奏';}stops.get(current.id).after(current);current=null;}};
+  const restore=()=>{if(current){current.querySelector('.performance-recording')?.pause();current.classList.remove('video-flipped');const flip=current.querySelector('.performance-flip');if(flip){flip.setAttribute('aria-pressed','false');flip.textContent='▶ 观看梁珏童本人演奏录像';}stops.get(current.id).after(current);current=null;}};
   const route=(name)=>{location.hash=name; if(location.hash==='#'+name)showRoute();};
   const openWork=(id)=>{
     const card=document.getElementById(id);
