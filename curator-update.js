@@ -52,7 +52,7 @@
       '<p>在你听这四首作品之前，这是我为什么要做这个展览。一部 8 分 30 秒的短片，用四首岭南小提琴作品，讲一个粤语女孩的出发、回归、再出发。粤语旁白，三语字幕。</p>' +
       '<p class="cu-credit">脚本 · 拍摄 · 剪辑 · 演奏：梁珏童</p>' +
       (VIDEO.yueyin ? '<a class="cu-film-link" href="' + VIDEO.yueyin + '" target="_blank" rel="noopener">观看完整影片 ↗</a>'
-                    : '<span class="cu-film-link is-pending">完整影片即将上线</span>') +
+                    : '<span class="cu-film-link is-pending">完整影片仅随申请材料提供</span>') +
       '</div>';
     const heading = chapter.querySelector('.chapter-listening-heading');
     (heading || chapter.firstChild) ? (heading ? heading.after(yy) : chapter.prepend(yy)) : chapter.append(yy);
@@ -74,7 +74,7 @@
       '<p>一部 2 分 47 秒的动画。女孩戴上耳机穿过广州西关，镜头渐渐停在店员、老人、推车的青年身上。她转过街角离开，镜头留在原地。改变的不是城市的节奏，而是我们感知它的方式。</p>' +
       '<p class="cu-credit">导演 · 编剧 · 分镜 · 小提琴：梁珏童 · 画面由 Seedance 2.0 生成</p>' +
       (VIDEO.beautifulLove ? '<a class="cu-film-link" href="' + VIDEO.beautifulLove + '" target="_blank" rel="noopener">观看影片 ↗</a>'
-                           : '<span class="cu-film-link is-pending">影片即将上线</span>') +
+                           : '<span class="cu-film-link is-pending">完整影片仅随申请材料提供</span>') +
       '</div>';
 
     const curator = document.createElement('section');

@@ -25,6 +25,7 @@ Object.assign(window.SITE_LOCALES.en, {
   "一部 2 分 47 秒的动画。女孩戴上耳机穿过广州西关，镜头渐渐停在店员、老人、推车的青年身上。她转过街角离开，镜头留在原地。改变的不是城市的节奏，而是我们感知它的方式。": "A 2'47\" animation. A girl puts on her earphones and walks through Xiguan in Guangzhou. Little by little, the camera stops on a florist, an old man reading, a young man wheeling his bike. She turns the corner and leaves. The camera stays. It is not the city's rhythm that changes, but the way we perceive it.",
   "导演 · 编剧 · 分镜 · 小提琴：梁珏童 · 画面由 Seedance 2.0 生成": "Direction, writing, storyboard and violin: Liang Juetong · Images generated with Seedance 2.0",
   "观看影片 ↗": "Watch the film ↗",
+  "完整影片仅随申请材料提供": "Full film available on request",
   "影片即将上线": "Film coming soon",
   "关于策展人": "About the curator",
   "在广州长大的粤语小提琴演奏者，星海音乐学院爵士小提琴本科。这个展览的策展、设计与岭南篇演奏都由我完成。": "A Cantonese violinist raised in Guangzhou, with a bachelor's degree in jazz violin from Xinghai Conservatory of Music. I curated and designed this exhibition and performed the Lingnan chapter.",
