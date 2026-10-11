@@ -58,3 +58,76 @@
 /* keep poster small: generic .cu-film img rule must not stretch it */
 .cu-film .cu-poster-thumb{ width:88px !important; height:auto; margin-top:14px; }
 .cu-film .cu-film-copy{ min-width:0; }
+
+/* ---- Work page: artwork and its controls fit on one screen; text in a readable column ---- */
+.layered-ready #layer-work{max-width:1180px;padding:0 32px}
+.layered-ready .layer-work-focus .imgbox{
+  width:min(100%, calc((100vh - 230px) * 16 / 9));
+  max-height:calc(100vh - 230px);
+  margin:0 auto;
+  border-radius:14px;
+}
+.layered-ready .layer-work-focus .body{
+  grid-template-columns:minmax(0,1fr);
+  gap:0;
+  max-width:760px;
+  margin:0 auto;
+  padding:34px 0 30px;
+}
+.layered-ready .layer-work-focus .work-story-heading{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  grid-template-areas:"index index" "title region" "en en" "credit credit";
+  align-items:end;
+  column-gap:16px;
+  padding-bottom:18px;
+  border-bottom:1px solid #d8cbb8;
+}
+.layered-ready .layer-work-focus .work-story-heading .work-index{grid-area:index;margin-bottom:10px}
+.layered-ready .layer-work-focus .work-story-heading h3{grid-area:title;font-size:clamp(34px,3.4vw,46px);margin:0;letter-spacing:5px}
+.layered-ready .layer-work-focus .work-story-heading .region{grid-area:region;justify-self:start;margin-bottom:9px}
+.layered-ready .layer-work-focus .work-story-heading .en-title{grid-area:en;margin:6px 0 0;font-family:Georgia,serif;font-style:italic;color:#8a7a66;font-size:15px}
+.layered-ready .layer-work-focus .work-story-heading .work-credit{grid-area:credit;border:0;margin:10px 0 0;padding:0;font:12.5px/1.6 sans-serif;color:#8b7960;letter-spacing:1px}
+.layered-ready .layer-work-focus .work-story-listening{border-top:0;padding-top:20px}
+.layered-ready .layer-work-focus .exhibit-player{padding:0 0 18px;margin:0}
+.layered-ready .layer-work-focus .body .zh,
+.layered-ready .layer-work-focus .culture-inner .cul-zh{
+  font-family:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC",serif;
+  font-size:16.5px;line-height:2;color:#3d342b;max-width:none;letter-spacing:.3px;
+}
+.layered-ready .layer-work-focus .body .en,
+.layered-ready .layer-work-focus .culture-inner .cul-en{
+  font-family:Georgia,"Times New Roman",serif;font-size:15px;line-height:1.75;color:#6f6252;max-width:none;
+}
+.layered-ready .layer-work-focus .listening-cue{margin:18px 0;padding:12px 16px;border-left:3px solid #c9a46a;background:#efe6d6;border-radius:0 6px 6px 0}
+.layered-ready .layer-work-focus .culture-toggle{margin-top:6px}
+.layered-ready .layer-work-focus .culture-box.open{padding:14px 0 4px;border-top:1px dashed #d3c4aa;margin-top:12px}
+.layered-ready .layer-work-footer{max-width:760px;margin:0 auto}
+@media(max-width:700px){
+  .layered-ready #layer-work{padding:0 16px}
+  .layered-ready .layer-work-focus .imgbox{width:100%;max-height:none}
+  .layered-ready .layer-work-focus .body{padding:24px 0}
+  .layered-ready .layer-work-focus .body .zh,.layered-ready .layer-work-focus .culture-inner .cul-zh{font-size:15.5px}
+}
+
+/* ---- Films on home/Lingnan: keep video and its controls inside one screen ---- */
+.cu-video{max-height:calc(100vh - 160px)}
+/* work page, round 2: artwork + title + player within one screen; prev/next beside the counter */
+.layered-ready .layer-work-focus .imgbox{
+  width:min(100%, calc((100vh - 400px) * 16 / 9));
+  max-height:calc(100vh - 400px);
+  min-height:260px;
+}
+.layered-ready .layer-work-focus .card,
+.layered-ready .layer-work-focus .card:hover{background:transparent!important;border:0!important;box-shadow:none!important}
+.layered-ready .layer-work-focus .body{padding-top:22px}
+.layered-ready .layer-work-focus .work-story-heading{padding-bottom:12px}
+.layered-ready .layer-work-focus .work-story-heading .work-index{margin-bottom:6px}
+.layered-ready .layer-work-focus .work-story-listening{padding-top:14px}
+.cu-work-nav{display:inline-flex;align-items:center;gap:6px}
+.cu-work-nav button{border:1px solid #d3c4aa;background:#fbf7ef;color:#863e30;border-radius:999px;padding:4px 12px;font:12px/1.6 sans-serif;cursor:pointer}
+.cu-work-nav button:hover{background:#863e30;color:#fff;border-color:#863e30}
+.cu-work-nav button:disabled{opacity:.35;cursor:default;background:#fbf7ef;color:#863e30}
+.cu-work-nav span{min-width:44px;text-align:center;color:#8b7960;font:12px/1.6 sans-serif}
+@media(max-width:700px){.layered-ready .layer-work-focus .imgbox{width:100%;max-height:none;min-height:0}}
+.layered-ready .layer-work-focus .card::before{display:none!important}

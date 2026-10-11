@@ -10,8 +10,8 @@
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%239e3b2c'/><circle cx='16' cy='16' r='7' fill='none' stroke='%23b08a3e' stroke-width='2'/></svg>">
 <title>听见中国 · Hearing China</title>
-<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="vendor/echarts.min.js"></script>
+<script src="vendor/three.min.js"></script>
 <script src="china.js"></script>
 <style>
   :root{ --ink:#262220; --paper:#f4efe4; --paper2:#ece4d4; --cinnabar:#9e3b2c; --gold:#b08a3e; --muted:#726b5e; --card:#fffdf9; --line:#ddd3c0;}
@@ -421,7 +421,6 @@
   <h2 id="origin-heading">我从熟悉的声音出发。</h2>
   <div class="origin-columns"><div><h3>为什么是岭南？</h3><p>我是来自岭南的广府小提琴演奏者。与其一开始就替全国的声音作总结，我选择从自己演奏过、生活中熟悉的作品出发，把音乐里的地域记忆讲清楚。岭南是第一章，不是整个中国的缩影。</p></div><div><h3>从《华弦集》得到的启发</h3><p>老师李泽熙的《华弦集》启发我：不同地域的音乐，可以通过小提琴被重新认识。因此，我把自己的演奏与老师授权收录的作品放在同一张地图上，同时清楚区分作曲者、演奏者与策展者。</p></div></div>
   <p class="curation-english">Lingnan is my starting point, not a stand-in for all of China. Inspired by my teacher's Hua Xian Ji collection, this project brings my performances and her authorised recordings into a shared, growing map.</p>
-  <a class="curation-text-link" href="#process-authorship">查看项目分工与制作记录 ↗</a>
 </section>
 <div class="filter-bar">
   <button class="filter-btn active" data-region="all">全部 All</button>
@@ -587,7 +586,7 @@
 <div class="ticket-top"><span>循声入岭南 / A SONIC ARRIVAL</span><span id="ticket-number">— / 04</span></div>
 <h3 id="route-title">旅程，从这里开始。</h3>
 <p id="route-description">岭南的故事，从一次抵达展开。选择你喜欢的交通方式，让山水、街巷和水岸把你带到音乐之中。</p>
-<div class="broadcast-box"><span class="broadcast-label">交通广播 / ANNOUNCEMENT</span><p id="broadcast-status" role="status">选择一种方式出发，就能听到这段旅程的广播。</p><audio id="arrival-audio" controls preload="none" hidden></audio><p id="broadcast-source" hidden></p><details id="broadcast-transcript" hidden><summary>广播文字 / Transcript</summary><p></p></details><a id="broadcast-candidate" class="candidate-link" target="_blank" rel="noopener noreferrer" hidden>查看候选原录音 ↗</a></div>
+<div class="broadcast-box"><span class="broadcast-label">交通广播 / ANNOUNCEMENT</span><p id="broadcast-status" role="status">选择一种方式出发，就能听到这段旅程的广播。</p><audio id="arrival-audio" preload="none"></audio><p id="broadcast-source" hidden></p><details id="broadcast-transcript" hidden><summary>广播文字 / Transcript</summary><p></p></details><a id="broadcast-candidate" class="candidate-link" target="_blank" rel="noopener noreferrer" hidden>查看候选原录音 ↗</a></div>
 <p class="arrival-progress" id="arrival-progress" role="status">选择方式 → 循声抵达 → 进入岭南篇</p>
 <button type="button" class="arrival-primary" id="start-arrival" disabled>选择一种出发方式</button>
 <button type="button" class="arrival-primary" id="enter-lingnan" hidden>进入岭南篇 · 开始聆听 →</button>
@@ -915,13 +914,16 @@
   // 顶部阅读进度条
   function displayText(value){ return window.siteText ? window.siteText(value) : value; }
   var scrollProgress = document.getElementById('scroll-progress');
-  function updateScrollProgress(){
-    var doc = document.documentElement;
-    var max = doc.scrollHeight - doc.clientHeight;
-    scrollProgress.style.width = (max>0 ? (doc.scrollTop/max*100) : 0) + '%';
-  }
+  var progressTicking = false, progressMax = 0;
+  scrollProgress.style.width = '100%'; scrollProgress.style.transformOrigin = '0 50%';
+  function measureProgress(){ var doc = document.documentElement; progressMax = doc.scrollHeight - doc.clientHeight; }
+  function drawProgress(){ progressTicking = false; scrollProgress.style.transform = 'scaleX(' + (progressMax>0 ? Math.min(1, window.scrollY/progressMax) : 0) + ')'; }
+  function updateScrollProgress(){ if(!progressTicking){ progressTicking = true; requestAnimationFrame(drawProgress); } }
   window.addEventListener('scroll', updateScrollProgress, {passive:true});
-  window.addEventListener('resize', updateScrollProgress);
+  window.addEventListener('resize', function(){ measureProgress(); updateScrollProgress(); });
+  window.addEventListener('hashchange', function(){ setTimeout(function(){ measureProgress(); updateScrollProgress(); }, 120); });
+  if('ResizeObserver' in window) new ResizeObserver(function(){ measureProgress(); updateScrollProgress(); }).observe(document.body);
+  measureProgress();
   updateScrollProgress();
   // 章节标题滚动浮现（JS 失败时不隐藏内容）
   var revealIO = new IntersectionObserver(function(entries){
@@ -948,8 +950,9 @@
   function applyParallax(){
     var vh = window.innerHeight;
     parallaxImgs.forEach(function(img){
+      if(!img.offsetParent) return;
       var box = img.parentElement.getBoundingClientRect();
-      if(box.bottom < 0 || box.top > vh) { parallaxTicking = false; return; }
+      if(box.bottom < 0 || box.top > vh) return;
       var ratio = (box.top + box.height/2 - vh/2) / (vh/2);
       ratio = Math.max(-1, Math.min(1, ratio));
       img.style.objectPosition = '50% ' + (50 - ratio*12).toFixed(1) + '%';
@@ -1052,7 +1055,7 @@
     document.getElementById('scene-caption').textContent=route.caption;
     document.getElementById('arrival-vehicle-use').setAttribute('href','#vehicle-'+key);
     arrivalStatus.textContent=route.file?'交通广播 · 粤语 / 普通话 / English':route.pending;
-    arrivalAudio.hidden=!route.file;arrivalAudio.removeAttribute('src');
+    arrivalAudio.removeAttribute('src');
     if(route.file)arrivalAudio.src=route.file;
     arrivalAudio.load();
     var source=document.getElementById('broadcast-source');
@@ -1086,7 +1089,7 @@
     document.getElementById('landscape-message').textContent=route.location;
     if(route.file){
       arrivalAudio.currentTime=0;
-      arrivalAudio.play().catch(function(){if(generation===arrivalGeneration)arrivalStatus.textContent='广播暂未播放，请使用播放器重试；仍可继续进入作品。';});
+      arrivalAudio.play().catch(function(){if(generation===arrivalGeneration)arrivalStatus.textContent='广播没有播放成功，可以点“再看一次”重试，或直接进入作品。';});
     }
     if(reduceMotion){finishArrival();return;}
     var began=performance.now();

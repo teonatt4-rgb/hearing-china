@@ -7,7 +7,7 @@
   const $ = (s, r = document) => r.querySelector(s);
 
   const LINKS = {
-    yueyinTrailer: 'https://youtu.be/07EZbPHOvIE',
+    yueyinFull: 'https://youtu.be/07EZbPHOvIE',
     beautifulLove: 'https://youtu.be/SqWFoLmZcYE'
   };
 
@@ -52,9 +52,9 @@
       '<div class="cu-film-copy">' +
       '<span class="cu-kicker">岭南篇 · 粤音 · 预告片</span>' +
       '<h3>粤音 Cantonese Voice</h3>' +
-      '<p>在你听这四首作品之前，这是我为什么要做这个展览。一部 8 分 30 秒的短片，用四首岭南小提琴作品，讲一个粤语女孩的出发、回归、再出发。粤语旁白，三语字幕。</p>' +
+      '<p>在你听这四首作品之前，这是我为什么要做这个展览。《粤音》是一部 8 分 30 秒的短片，用四首岭南小提琴作品，讲一个粤语女孩的出发、回归、再出发。粤语旁白，三语字幕。这里播放的是预告片，完整影片请到 YouTube 观看。</p>' +
       '<p class="cu-credit">脚本 · 拍摄 · 剪辑 · 演奏：梁珏童</p>' +
-      '<a class="cu-film-link" href="' + LINKS.yueyinTrailer + '" target="_blank" rel="noopener">在 YouTube 观看预告片 ↗</a>' +
+      '<a class="cu-film-link" href="' + LINKS.yueyinFull + '" target="_blank" rel="noopener">在 YouTube 观看完整影片 ↗</a>' +
       '<img class="cu-poster-thumb" src="yueyin-poster.jpg" alt="《粤音》海报" loading="lazy">' +
       '</div>';
     const heading = chapter.querySelector('.chapter-listening-heading');
@@ -99,7 +99,7 @@
     stills.className = 'cu-stills';
     stills.innerHTML =
       '<summary><span>幕后 · 我为《华弦集》拍摄的画面</span><small>展开看 4 张截图 ＋</small></summary>' +
-      '<p>《华弦集》是李泽熙老师的国家艺术基金申报项目，申报视频的拍摄与剪辑由我完成。这里收录的四首作品，录音来自同一次拍摄。完整视频属于项目申报材料，不在此公开。以下截图经李泽熙老师同意展示，只选取她本人的演奏画面。</p>' +
+      '<p>《华弦集》是李泽熙老师的一个创作与演奏项目，项目视频的拍摄与剪辑由我完成。这里收录的四首作品，录音来自这次拍摄。完整视频不在此公开。以下截图经李泽熙老师同意展示，只选取她本人的演奏画面。</p>' +
       '<div class="cu-stills-grid">' +
       [1, 2, 3, 4].map(i => '<img src="huaxian-still-' + i + '.jpg" alt="《华弦集》拍摄截图 ' + i + '：李泽熙演奏" loading="lazy">').join('') +
       '</div>' +
@@ -154,4 +154,27 @@
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) document.querySelectorAll('.cu-video').forEach(v => v.pause());
   });
+})();
+
+/* Work page: previous / next beside the counter, so a visitor can move on while watching. */
+(() => {
+  'use strict';
+  const crumb = document.querySelector('.layer-work-breadcrumb');
+  const count = document.getElementById('layer-work-count');
+  const prev = document.getElementById('layer-prev'), next = document.getElementById('layer-next');
+  if (!crumb || !count || !prev || !next) return;
+  const nav = document.createElement('span');
+  nav.className = 'cu-work-nav';
+  const p = document.createElement('button'), n = document.createElement('button');
+  p.type = n.type = 'button';
+  p.textContent = '← 上一首'; n.textContent = '下一首 →';
+  p.setAttribute('aria-label', '上一首作品'); n.setAttribute('aria-label', '下一首作品');
+  count.replaceWith(nav);
+  nav.append(p, count, n);
+  p.addEventListener('click', () => prev.click());
+  n.addEventListener('click', () => next.click());
+  const sync = () => { p.disabled = prev.disabled; n.disabled = next.disabled; };
+  new MutationObserver(sync).observe(prev, { attributes: true, attributeFilter: ['disabled'] });
+  new MutationObserver(sync).observe(next, { attributes: true, attributeFilter: ['disabled'] });
+  sync();
 })();
