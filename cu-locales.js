@@ -42,7 +42,7 @@ Object.assign(window.SITE_LOCALES.en, {
   "粤音": "Cantonese Voice",
   "岭南篇 · 粤音": "Lingnan chapter · Cantonese Voice",
   "第一章 · 岭南篇 · 粤音": "Chapter one · Lingnan · Cantonese Voice",
-  "在你听这四首作品之前，这是我为什么要做这个展览。《粤音》是一部 8 分 30 秒的短片，用四首岭南小提琴作品，讲一个粤语女孩的出发、回归、再出发。粤语旁白，三语字幕。这里播放的是预告片，完整影片请到 YouTube 观看。": "Before the four pieces, here is why I made this exhibition. Cantonese Voice is an 8'30\" film that uses four Lingnan violin works to follow a Cantonese girl as she leaves home, returns, and sets out again. Cantonese narration, with subtitles in three languages. This is the trailer. The full film is on YouTube.",
+  "在你听这四首作品之前，这是我为什么要做这个展览。《粤音》是一部 8 分 30 秒的短片，用四首岭南小提琴作品，讲一个粤语女孩的出发、回归、再出发。粤语旁白，中英文字幕。这里播放的是预告片，完整影片请到 YouTube 观看。": "Before the four pieces, here is why I made this exhibition. Cantonese Voice is an 8'30\" film that uses four Lingnan violin works to follow a Cantonese girl as she leaves home, returns, and sets out again. Cantonese narration, with Chinese and English subtitles. This is the trailer. The full film is on YouTube.",
   "脚本 · 拍摄 · 剪辑 · 演奏：梁珏童": "Script, filming, editing and violin: Liang Juetong",
   "观看完整影片 ↗": "Watch the full film ↗",
   "完整影片即将上线": "Full film coming soon",

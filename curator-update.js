@@ -52,7 +52,7 @@
       '<div class="cu-film-copy">' +
       '<span class="cu-kicker">岭南篇 · 粤音 · 预告片</span>' +
       '<h3>粤音 Cantonese Voice</h3>' +
-      '<p>在你听这四首作品之前，这是我为什么要做这个展览。《粤音》是一部 8 分 30 秒的短片，用四首岭南小提琴作品，讲一个粤语女孩的出发、回归、再出发。粤语旁白，三语字幕。这里播放的是预告片，完整影片请到 YouTube 观看。</p>' +
+      '<p>在你听这四首作品之前，这是我为什么要做这个展览。《粤音》是一部 8 分 30 秒的短片，用四首岭南小提琴作品，讲一个粤语女孩的出发、回归、再出发。粤语旁白，中英文字幕。这里播放的是预告片，完整影片请到 YouTube 观看。</p>' +
       '<p class="cu-credit">脚本 · 拍摄 · 剪辑 · 演奏：梁珏童</p>' +
       '<a class="cu-film-link" href="' + LINKS.yueyinFull + '" target="_blank" rel="noopener">在 YouTube 观看完整影片 ↗</a>' +
       '<img class="cu-poster-thumb" src="yueyin-poster.jpg" alt="《粤音》海报" loading="lazy">' +
